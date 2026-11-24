@@ -1,0 +1,378 @@
+<!doctype html>
+<!--
+PANDUAN SINGKAT
+- CSS     : assets/css/style.css  (warna/ukuran ada di variabel :root)
+- JS      : assets/js/main.js (animasi & interaksi), vendor/ = GSAP, ScrollTrigger, Lenis
+- Gambar  : assets/img/{ui,talent,gallery,venues,brands}/  (semua .webp)
+- Video   : assets/video/collecteak_loop.mp4
+- Font (Google Fonts) & Three.js (CDN) dimuat dari internet.
+-->
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" type="image/webp" sizes="32x32" href="assets/img/ui/favicon-32.webp">
+<link rel="icon" type="image/webp" sizes="16x16" href="assets/img/ui/favicon-16.webp">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/ui/apple-touch-icon.png"><meta name="theme-color" content="#04070f"><meta property="og:type" content="website"><meta property="og:title" content="COLLECTEAK"><meta property="og:description" content="Jakarta electronic music collective. RnB, Hip Hop, UK Garage and more. Book us for your night."><meta property="og:image" content="https://farrizkyibnu.github.io/collecteak/assets/img/share-preview.webp"><meta property="og:image:type" content="image/webp"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="COLLECTEAK, Jakarta electronic music collective, live crowd under red lasers"><meta property="og:url" content="https://farrizkyibnu.github.io/collecteak/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="COLLECTEAK"><meta name="twitter:description" content="Jakarta electronic music collective. RnB, Hip Hop, UK Garage and more. Book us for your night."><meta name="twitter:image" content="https://collecteak.github.io/assets/img/share-preview.webp"><title>COLLECTEAK</title>
+<meta name="description" content="Jakarta electronic music collective. RnB, Hip Hop, UK Garage and more. Book us for your night.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,800;1,800&family=Fraunces:ital,opsz,wght@1,9..144,300&family=Doto:wght@300&family=Bebas+Neue&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,800;1,800&family=Fraunces:ital,opsz,wght@1,9..144,300&family=Doto:wght@300&family=Bebas+Neue&display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+
+<script src="assets/js/anti-flash.js"></script>
+</head>
+<body>
+<div id="intro"><i class="ip top"></i><i class="ip bot"></i><i class="iflash"></i>
+  <div class="ibox"><p class="iw" aria-label="COLLECTEAK"></p></div>
+  <span class="ic">000</span><button class="iskip" type="button">Skip</button></div>
+<script src="assets/js/intro-fallback.js"></script>
+
+<header class="nav">
+  <a class="logo" href="#top" aria-label="COLLECTEAK home">
+    <img src="assets/img/ui/logo.webp" width="40" height="40" alt="COLLECTEAK">
+  </a>
+  <nav>
+    <div class="side" inert><a href="#talent">Performers</a><a href="#gallery">Gallery</a><a href="#partners">Partnership</a><a href="https://drive.google.com/file/d/1TA0PlPCqAmGu-Fb9R7sBhVUICGeK_vtX/view?usp=sharing" target="_blank" rel="noopener noreferrer" data-presskit aria-label="Press kit, all performers (opens in a new tab)">Press kit</a><a href="#book">Booking</a></div>
+    <button class="pill-menu" aria-expanded="false" aria-controls="menu">
+      <svg width="10" height="10" viewBox="0 0 10 10"><path d="M0 0h4v4H0zM6 0h4v4H6zM0 6h4v4H0zM6 6h4v4H6z" fill="currentColor"/></svg><span>Menu</span>
+    </button>
+  </nav>
+</header>
+
+<div id="menu" class="overlay" inert>
+  <div class="menu-links"><a class="l" href="#talent"><b>Performers</b><span class="arx" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg></span></a><a class="l" href="#gallery"><b>Gallery</b><span class="arx" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg></span></a><a class="l" href="#partners"><b>Partnership</b><span class="arx" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg></span></a><a class="l" href="https://drive.google.com/file/d/1TA0PlPCqAmGu-Fb9R7sBhVUICGeK_vtX/view?usp=sharing" target="_blank" rel="noopener noreferrer" data-presskit aria-label="Press kit, all performers (opens in a new tab)"><b>Press kit</b><span class="arx" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg></span></a><a class="l" href="#book"><b>Booking</b><span class="arx" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg></span></a></div>
+  <div class="soc menu-soc"><a href="https://www.instagram.com/collecteak/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".5" fill="currentColor"/></svg></a><a href="https://soundcloud.com/collecteak" target="_blank" rel="noopener" aria-label="SoundCloud"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5v6M6 10v8.5"/><path d="M9 18.5V8.6c1.1-1.7 2.6-2.6 4.5-2.6 3.1 0 5.5 2.3 5.7 5.3.3-.1.6-.2 1-.2 1.4 0 2.5 1.1 2.5 2.5s-1.1 4.9-2.5 4.9z"/></svg></a><a href="https://www.youtube.com/channel/UCy3XAcR4PoA_2_HxWDRNWUg" target="_blank" rel="noopener" aria-label="Youtube"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="5.5" width="18.4" height="13" rx="4"/><path d="M10 9.3v5.4l4.7-2.7z"/></svg></a><a href="https://www.tiktok.com/@collec.teak" target="_blank" rel="noopener" aria-label="Tiktok"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v9.6a3.6 3.6 0 1 1-3.6-3.6"/><path d="M14 4c.3 2.4 1.9 4 4.6 4.2"/></svg></a></div>
+</div>
+
+<div id="soon" class="soon" role="dialog" aria-modal="true" aria-labelledby="soonT" aria-describedby="soonP" aria-hidden="true" inert>
+  <div class="soon-card">
+    <span class="soon-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12M6 21h12"/><path d="M7 3v3.2a5 5 0 0 0 1.6 3.7L12 12l-3.4 2.1A5 5 0 0 0 7 17.8V21"/><path d="M17 3v3.2a5 5 0 0 1-1.6 3.7L12 12l3.4 2.1a5 5 0 0 1 1.6 3.7V21"/></svg></span>
+    <h3 id="soonT" class="soon-t">Coming soon</h3>
+    <p id="soonP" class="soon-p">The press kit is on its way. Stay tuned.</p>
+    <button type="button" class="btn btn-solid soon-x" aria-label="Close"><span class="bt" aria-hidden="true"><span class="c" style="--i:0" data-c="C">C</span><span class="c" style="--i:1" data-c="l">l</span><span class="c" style="--i:2" data-c="o">o</span><span class="c" style="--i:3" data-c="s">s</span><span class="c" style="--i:4" data-c="e">e</span></span></button>
+  </div>
+</div>
+
+<main>
+<section id="top" class="hero">
+  <div class="ph hero-bg"><img src="assets/img/ui/hero-crowd.webp" alt="Club crowd under red laser light" fetchpriority="high" decoding="async"></div>
+  <div class="hero-copy">
+    <h1 class="wm" aria-label="COLLECTEAK"><span aria-hidden="true"><span class="wl" style="--i:0">C</span><span class="wl" style="--i:1">O</span><span class="wl" style="--i:2">L</span><span class="wl" style="--i:3">L</span><span class="wl" style="--i:4">E</span><span class="wl" style="--i:5">C</span><span class="wl" style="--i:6">T</span><span class="wl" style="--i:7">E</span><span class="wl" style="--i:8">A</span><span class="wl" style="--i:9">K</span></span></h1>
+    <div class="hero-cta"><p><span class="nw">Electronic music collective based in Jakarta.</span><br class="hbr"> <span class="ln">Built as a creative space</span> <span class="ln">for us and our collaborators.</span></p></div>
+  </div>
+  <a class="scue" href="#talent" aria-label="Scroll to explore"><span class="sct">Scroll<span class="sct-x"> to explore</span></span><span class="arw" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M6 1v10M2 7l4 4 4-4"/></svg><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M6 1v10M2 7l4 4 4-4"/></svg></span></a>
+  </section>
+<div class="run-band" role="img" aria-label="RnB, Hip Hop, UK Garage. Jakarta. Book us for your night.">
+  <div class="led" aria-hidden="true"><div class="led-t"><span>RNB · HIP HOP · UK GARAGE · JAKARTA · BOOK US FOR YOUR NIGHT · RNB · HIP HOP · UK GARAGE · JAKARTA · BOOK US FOR YOUR NIGHT · RNB · HIP HOP · UK GARAGE · JAKARTA · BOOK US FOR YOUR NIGHT · RNB · HIP HOP · UK GARAGE · JAKARTA · BOOK US FOR YOUR NIGHT · </span><span>RNB · HIP HOP · UK GARAGE · JAKARTA · BOOK US FOR YOUR NIGHT · RNB · HIP HOP · UK GARAGE · JAKARTA · BOOK US FOR YOUR NIGHT · RNB · HIP HOP · UK GARAGE · JAKARTA · BOOK US FOR YOUR NIGHT · RNB · HIP HOP · UK GARAGE · JAKARTA · BOOK US FOR YOUR NIGHT · </span></div></div>
+</div>
+<section id="talent" class="sec tal-sec">
+  <h2 class="rv">Performers</h2>
+  <p class="sub rv">Selectors who never play it safe.</p>
+  <!-- PERFORMER: tiap talent = 1 blok .tw (kartu .tcard; semua kontrol ada di dalam kartu).
+       Foto = <img>. Desktop: bar glass bawah = SoundCloud (.tsc), Instagram (.tin), tombol Press kit (.tpk-btn, ikon folder). Mobile: .tsocial (IG di atas SoundCloud) pindah ke kanan atas kartu, Press kit jadi pil glass di bawah.
+       Ganti href="#" dengan URL-nya (link Drive untuk Press Kit). Selama href="#", tombolnya tetap tampil aktif tapi kalau diklik tidak terjadi apa-apa.
+       Kartu terakhir (.tw-cta) = video loop 3D logo + copy 3 baris, link ke #book; file video ada di assets/video/collecteak_loop.mp4. -->
+  <div class="tal">
+    <div class="tw stg">
+      <div class="ph tcard">
+        <img src="assets/img/talent/yung-pablo.webp" alt="Yung Pablo" width="960" height="1440" loading="lazy" decoding="async">
+        <div class="tinfo">
+          <h3 class="tname">Yung Pablo</h3>
+          <div class="tsocial">
+            <a class="tic tsc" href="#" target="_blank" rel="noopener noreferrer" draggable="false" title="SoundCloud" aria-label="Yung Pablo on SoundCloud (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.27" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5v6M6 10v8.5"/><path d="M9 18.5V8.6c1.1-1.7 2.6-2.6 4.5-2.6 3.1 0 5.5 2.3 5.7 5.3.3-.1.6-.2 1-.2 1.4 0 2.5 1.1 2.5 2.5s-1.1 4.9-2.5 4.9z"/></svg></a>
+            <a class="tic tin" href="https://www.instagram.com/___yungpablo/" target="_blank" rel="noopener noreferrer" draggable="false" title="@___yungpablo" aria-label="Yung Pablo on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".5" fill="currentColor"/></svg></a>
+          </div>
+          <div class="tpk">
+            <a class="btn btn-solid tpk-btn" href="https://drive.google.com/file/d/1j81QEkkll_fjA2ugAFl0mXU8m2eyGKOW/view?usp=sharing" target="_blank" rel="noopener noreferrer" draggable="false" aria-label="Yung Pablo press kit (opens in a new tab)"><span class="bt"><span class="c" style="--i:0" data-c="P">P</span><span class="c" style="--i:1" data-c="r">r</span><span class="c" style="--i:2" data-c="e">e</span><span class="c" style="--i:3" data-c="s">s</span><span class="c" style="--i:4" data-c="s">s</span><span class="c" style="--i:5" data-c=" "> </span><span class="c" style="--i:6" data-c="k">k</span><span class="c" style="--i:7" data-c="i">i</span><span class="c" style="--i:8" data-c="t">t</span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw stg">
+      <div class="ph tcard">
+        <img src="assets/img/talent/jennie.webp" alt="Jennie" width="960" height="1440" loading="lazy" decoding="async">
+        <div class="tinfo">
+          <h3 class="tname">Jennie</h3>
+          <div class="tsocial">
+            <a class="tic tsc" href="#" target="_blank" rel="noopener noreferrer" draggable="false" title="SoundCloud" aria-label="Jennie on SoundCloud (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.27" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5v6M6 10v8.5"/><path d="M9 18.5V8.6c1.1-1.7 2.6-2.6 4.5-2.6 3.1 0 5.5 2.3 5.7 5.3.3-.1.6-.2 1-.2 1.4 0 2.5 1.1 2.5 2.5s-1.1 4.9-2.5 4.9z"/></svg></a>
+            <a class="tic tin" href="https://instagram.com/jennisoepeno" target="_blank" rel="noopener noreferrer" draggable="false" title="@jennisoepeno" aria-label="Jennie on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".5" fill="currentColor"/></svg></a>
+          </div>
+          <div class="tpk">
+            <a class="btn btn-solid tpk-btn" href="https://drive.google.com/file/d/1p7YWulDwiQ9xz5FQZ9GSKikWlBSEY9ms/view?usp=sharing" target="_blank" rel="noopener noreferrer" draggable="false" aria-label="Jennie press kit (opens in a new tab)"><span class="bt"><span class="c" style="--i:0" data-c="P">P</span><span class="c" style="--i:1" data-c="r">r</span><span class="c" style="--i:2" data-c="e">e</span><span class="c" style="--i:3" data-c="s">s</span><span class="c" style="--i:4" data-c="s">s</span><span class="c" style="--i:5" data-c=" "> </span><span class="c" style="--i:6" data-c="k">k</span><span class="c" style="--i:7" data-c="i">i</span><span class="c" style="--i:8" data-c="t">t</span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw stg">
+      <div class="ph tcard">
+        <img src="assets/img/talent/z4ck.webp" alt="Z4ck" width="960" height="1440" loading="lazy" decoding="async">
+        <div class="tinfo">
+          <h3 class="tname">Z4ck</h3>
+          <div class="tsocial">
+            <a class="tic tsc" href="#" target="_blank" rel="noopener noreferrer" draggable="false" title="SoundCloud" aria-label="Z4ck on SoundCloud (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.27" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5v6M6 10v8.5"/><path d="M9 18.5V8.6c1.1-1.7 2.6-2.6 4.5-2.6 3.1 0 5.5 2.3 5.7 5.3.3-.1.6-.2 1-.2 1.4 0 2.5 1.1 2.5 2.5s-1.1 4.9-2.5 4.9z"/></svg></a>
+            <a class="tic tin" href="https://instagram.com/alifmdzaki" target="_blank" rel="noopener noreferrer" draggable="false" title="@alifmdzaki" aria-label="Z4ck on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".5" fill="currentColor"/></svg></a>
+          </div>
+          <div class="tpk">
+            <a class="btn btn-solid tpk-btn" href="https://drive.google.com/file/d/1dZNICSJsno-XjHZZxwqtmz1XHr4N5GVG/view?usp=sharing" target="_blank" rel="noopener noreferrer" draggable="false" aria-label="Z4ck press kit (opens in a new tab)"><span class="bt"><span class="c" style="--i:0" data-c="P">P</span><span class="c" style="--i:1" data-c="r">r</span><span class="c" style="--i:2" data-c="e">e</span><span class="c" style="--i:3" data-c="s">s</span><span class="c" style="--i:4" data-c="s">s</span><span class="c" style="--i:5" data-c=" "> </span><span class="c" style="--i:6" data-c="k">k</span><span class="c" style="--i:7" data-c="i">i</span><span class="c" style="--i:8" data-c="t">t</span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw stg">
+      <div class="ph tcard">
+        <img src="assets/img/talent/dof.webp" alt="Dof" width="960" height="1440" loading="lazy" decoding="async">
+        <div class="tinfo">
+          <h3 class="tname">Dof</h3>
+          <div class="tsocial">
+            <a class="tic tsc" href="#" target="_blank" rel="noopener noreferrer" draggable="false" title="SoundCloud" aria-label="Dof on SoundCloud (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.27" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5v6M6 10v8.5"/><path d="M9 18.5V8.6c1.1-1.7 2.6-2.6 4.5-2.6 3.1 0 5.5 2.3 5.7 5.3.3-.1.6-.2 1-.2 1.4 0 2.5 1.1 2.5 2.5s-1.1 4.9-2.5 4.9z"/></svg></a>
+            <a class="tic tin" href="https://instagram.com/aldofallah16" target="_blank" rel="noopener noreferrer" draggable="false" title="@aldofallah16" aria-label="Dof on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".5" fill="currentColor"/></svg></a>
+          </div>
+          <div class="tpk">
+            <a class="btn btn-solid tpk-btn" href="https://drive.google.com/file/d/1KveHzVBWaFE5jzjagZq701WuIuUrKxcj/view?usp=sharing" target="_blank" rel="noopener noreferrer" draggable="false" aria-label="Dof press kit (opens in a new tab)"><span class="bt"><span class="c" style="--i:0" data-c="P">P</span><span class="c" style="--i:1" data-c="r">r</span><span class="c" style="--i:2" data-c="e">e</span><span class="c" style="--i:3" data-c="s">s</span><span class="c" style="--i:4" data-c="s">s</span><span class="c" style="--i:5" data-c=" "> </span><span class="c" style="--i:6" data-c="k">k</span><span class="c" style="--i:7" data-c="i">i</span><span class="c" style="--i:8" data-c="t">t</span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw stg">
+      <div class="ph tcard">
+        <img src="assets/img/talent/fate.webp" alt="Fate" width="960" height="1440" loading="lazy" decoding="async">
+        <div class="tinfo">
+          <h3 class="tname">Fate</h3>
+          <div class="tsocial">
+            <a class="tic tsc" href="#" target="_blank" rel="noopener noreferrer" draggable="false" title="SoundCloud" aria-label="Fate on SoundCloud (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.27" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5v6M6 10v8.5"/><path d="M9 18.5V8.6c1.1-1.7 2.6-2.6 4.5-2.6 3.1 0 5.5 2.3 5.7 5.3.3-.1.6-.2 1-.2 1.4 0 2.5 1.1 2.5 2.5s-1.1 4.9-2.5 4.9z"/></svg></a>
+            <a class="tic tin" href="https://instagram.com/fadlanrst" target="_blank" rel="noopener noreferrer" draggable="false" title="@fadlanrst" aria-label="Fate on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".5" fill="currentColor"/></svg></a>
+          </div>
+          <div class="tpk">
+            <a data-soon="Fate" class="btn btn-solid tpk-btn" href="#" target="_blank" rel="noopener noreferrer" draggable="false" aria-label="Fate press kit (opens in a new tab)"><span class="bt"><span class="c" style="--i:0" data-c="P">P</span><span class="c" style="--i:1" data-c="r">r</span><span class="c" style="--i:2" data-c="e">e</span><span class="c" style="--i:3" data-c="s">s</span><span class="c" style="--i:4" data-c="s">s</span><span class="c" style="--i:5" data-c=" "> </span><span class="c" style="--i:6" data-c="k">k</span><span class="c" style="--i:7" data-c="i">i</span><span class="c" style="--i:8" data-c="t">t</span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw stg">
+      <div class="ph tcard">
+        <img src="assets/img/talent/giga.webp" alt="Giga" width="960" height="1440" loading="lazy" decoding="async">
+        <div class="tinfo">
+          <h3 class="tname">Giga</h3>
+          <div class="tsocial">
+            <a class="tic tsc" href="#" target="_blank" rel="noopener noreferrer" draggable="false" title="SoundCloud" aria-label="Giga on SoundCloud (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.27" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5v6M6 10v8.5"/><path d="M9 18.5V8.6c1.1-1.7 2.6-2.6 4.5-2.6 3.1 0 5.5 2.3 5.7 5.3.3-.1.6-.2 1-.2 1.4 0 2.5 1.1 2.5 2.5s-1.1 4.9-2.5 4.9z"/></svg></a>
+            <a class="tic tin" href="https://instagram.com/rizqigiga" target="_blank" rel="noopener noreferrer" draggable="false" title="@rizqigiga" aria-label="Giga on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".5" fill="currentColor"/></svg></a>
+          </div>
+          <div class="tpk">
+            <a class="btn btn-solid tpk-btn" href="https://drive.google.com/file/d/18lRAJBxxQIAngoZY_5yyotQmap37esQr/view?usp=sharing" target="_blank" rel="noopener noreferrer" draggable="false" aria-label="Giga press kit (opens in a new tab)"><span class="bt"><span class="c" style="--i:0" data-c="P">P</span><span class="c" style="--i:1" data-c="r">r</span><span class="c" style="--i:2" data-c="e">e</span><span class="c" style="--i:3" data-c="s">s</span><span class="c" style="--i:4" data-c="s">s</span><span class="c" style="--i:5" data-c=" "> </span><span class="c" style="--i:6" data-c="k">k</span><span class="c" style="--i:7" data-c="i">i</span><span class="c" style="--i:8" data-c="t">t</span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw stg">
+      <div class="ph tcard">
+        <img src="assets/img/talent/rayonner.webp" alt="Rayonner" width="960" height="1440" loading="lazy" decoding="async">
+        <div class="tinfo">
+          <h3 class="tname">Rayonner</h3>
+          <div class="tsocial">
+            <a class="tic tsc" href="#" target="_blank" rel="noopener noreferrer" draggable="false" title="SoundCloud" aria-label="Rayonner on SoundCloud (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.27" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5v6M6 10v8.5"/><path d="M9 18.5V8.6c1.1-1.7 2.6-2.6 4.5-2.6 3.1 0 5.5 2.3 5.7 5.3.3-.1.6-.2 1-.2 1.4 0 2.5 1.1 2.5 2.5s-1.1 4.9-2.5 4.9z"/></svg></a>
+            <a class="tic tin" href="https://instagram.com/pumpkinsnakes" target="_blank" rel="noopener noreferrer" draggable="false" title="@pumpkinsnakes" aria-label="Rayonner on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".5" fill="currentColor"/></svg></a>
+          </div>
+          <div class="tpk">
+            <a class="btn btn-solid tpk-btn" href="https://drive.google.com/file/d/1yjTZFXxUTSAuqsoCupFoXzbyNoQwmXmi/view?usp=sharing" target="_blank" rel="noopener noreferrer" draggable="false" aria-label="Rayonner press kit (opens in a new tab)"><span class="bt"><span class="c" style="--i:0" data-c="P">P</span><span class="c" style="--i:1" data-c="r">r</span><span class="c" style="--i:2" data-c="e">e</span><span class="c" style="--i:3" data-c="s">s</span><span class="c" style="--i:4" data-c="s">s</span><span class="c" style="--i:5" data-c=" "> </span><span class="c" style="--i:6" data-c="k">k</span><span class="c" style="--i:7" data-c="i">i</span><span class="c" style="--i:8" data-c="t">t</span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw stg">
+      <div class="ph tcard">
+        <img src="assets/img/talent/mayli.webp" alt="Mayli" width="960" height="1440" loading="lazy" decoding="async">
+        <div class="tinfo">
+          <h3 class="tname">Mayli</h3>
+          <div class="tsocial">
+            <a class="tic tsc" href="#" target="_blank" rel="noopener noreferrer" draggable="false" title="SoundCloud" aria-label="Mayli on SoundCloud (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.27" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5v6M6 10v8.5"/><path d="M9 18.5V8.6c1.1-1.7 2.6-2.6 4.5-2.6 3.1 0 5.5 2.3 5.7 5.3.3-.1.6-.2 1-.2 1.4 0 2.5 1.1 2.5 2.5s-1.1 4.9-2.5 4.9z"/></svg></a>
+            <a class="tic tin" href="https://instagram.com/lenaabgl" target="_blank" rel="noopener noreferrer" draggable="false" title="@lenaabgl" aria-label="Mayli on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".5" fill="currentColor"/></svg></a>
+          </div>
+          <div class="tpk">
+            <a data-soon="Mayli" class="btn btn-solid tpk-btn" href="#" target="_blank" rel="noopener noreferrer" draggable="false" aria-label="Mayli press kit (opens in a new tab)"><span class="bt"><span class="c" style="--i:0" data-c="P">P</span><span class="c" style="--i:1" data-c="r">r</span><span class="c" style="--i:2" data-c="e">e</span><span class="c" style="--i:3" data-c="s">s</span><span class="c" style="--i:4" data-c="s">s</span><span class="c" style="--i:5" data-c=" "> </span><span class="c" style="--i:6" data-c="k">k</span><span class="c" style="--i:7" data-c="i">i</span><span class="c" style="--i:8" data-c="t">t</span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw stg">
+      <div class="ph tcard">
+        <img src="assets/img/talent/moraff.webp" alt="Moraff" width="960" height="1440" loading="lazy" decoding="async">
+        <div class="tinfo">
+          <h3 class="tname">Moraff</h3>
+          <div class="tsocial">
+            <a class="tic tsc" href="#" target="_blank" rel="noopener noreferrer" draggable="false" title="SoundCloud" aria-label="Moraff on SoundCloud (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.27" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5v6M6 10v8.5"/><path d="M9 18.5V8.6c1.1-1.7 2.6-2.6 4.5-2.6 3.1 0 5.5 2.3 5.7 5.3.3-.1.6-.2 1-.2 1.4 0 2.5 1.1 2.5 2.5s-1.1 4.9-2.5 4.9z"/></svg></a>
+            <a class="tic tin" href="https://instagram.com/moraff__" target="_blank" rel="noopener noreferrer" draggable="false" title="@moraff__" aria-label="Moraff on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".5" fill="currentColor"/></svg></a>
+          </div>
+          <div class="tpk">
+            <a class="btn btn-solid tpk-btn" href="https://drive.google.com/file/d/16b2PAPaH00AlkIKMuXknJc8siJheEP7R/view?usp=sharing" target="_blank" rel="noopener noreferrer" draggable="false" aria-label="Moraff press kit (opens in a new tab)"><span class="bt"><span class="c" style="--i:0" data-c="P">P</span><span class="c" style="--i:1" data-c="r">r</span><span class="c" style="--i:2" data-c="e">e</span><span class="c" style="--i:3" data-c="s">s</span><span class="c" style="--i:4" data-c="s">s</span><span class="c" style="--i:5" data-c=" "> </span><span class="c" style="--i:6" data-c="k">k</span><span class="c" style="--i:7" data-c="i">i</span><span class="c" style="--i:8" data-c="t">t</span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw stg">
+      <div class="ph tcard">
+        <img src="assets/img/talent/sskim.webp" alt="$$KIM" width="960" height="1440" loading="lazy" decoding="async">
+        <div class="tinfo">
+          <h3 class="tname">$$KIM</h3>
+          <div class="tsocial">
+            <a class="tic tin" href="https://instagram.com/ohmygodiskim" target="_blank" rel="noopener noreferrer" draggable="false" title="@ohmygodiskim" aria-label="$$KIM on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".5" fill="currentColor"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw stg">
+      <div class="ph tcard">
+        <img src="assets/img/talent/dipn.webp" alt="Dip'n" width="960" height="1440" loading="lazy" decoding="async">
+        <div class="tinfo">
+          <h3 class="tname">Dip'n</h3>
+          <div class="tsocial">
+            <a class="tic tin" href="https://instagram.com/dipn.mc" target="_blank" rel="noopener noreferrer" draggable="false" title="@dipn.mc" aria-label="Dip'n on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".5" fill="currentColor"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tw tw-cta stg">
+      <div class="ph tcard tvid">
+        <video class="tloop" src="assets/video/collecteak_loop.mp4" poster="assets/img/ui/video-poster.webp" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1" aria-hidden="true"></video>
+        <div class="tcta">
+          <a class="tcta-main" href="#book" aria-label="Book Collecteak">
+            <small>Work with us</small>
+            <p>Book us for your night.</p>
+            <span class="tsub">Send a request or grab every performer’s press kit.</span>
+          </a>
+          <a class="btn tcta-pk" href="https://drive.google.com/file/d/1TA0PlPCqAmGu-Fb9R7sBhVUICGeK_vtX/view?usp=sharing" target="_blank" rel="noopener noreferrer" data-presskit draggable="false" aria-label="All press kit, every performer (opens in a new tab)"><span class="bt" aria-hidden="true"><span class="c" style="--i:0" data-c="A">A</span><span class="c" style="--i:1" data-c="l">l</span><span class="c" style="--i:2" data-c="l">l</span><span class="c" style="--i:3" data-c=" "> </span><span class="c" style="--i:4" data-c="p">p</span><span class="c" style="--i:5" data-c="r">r</span><span class="c" style="--i:6" data-c="e">e</span><span class="c" style="--i:7" data-c="s">s</span><span class="c" style="--i:8" data-c="s">s</span><span class="c" style="--i:9" data-c=" "> </span><span class="c" style="--i:10" data-c="k">k</span><span class="c" style="--i:11" data-c="i">i</span><span class="c" style="--i:12" data-c="t">t</span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tprog" aria-hidden="true"><i></i></div>
+</section>
+
+<section id="gallery" class="sec gal-sec">
+  <h2 class="rv">Gallery</h2>
+  <p class="sub rv">Proof that the night happened.</p>
+  <div class="gal">
+    <div class="col"><div class="ph s stg"><img src="assets/img/gallery/gallery-01-dj-playing-a-set-in.webp" alt="DJ playing a set in a store between clothing racks" loading="lazy" decoding="async" draggable="false"></div><div class="ph t stg"><img src="assets/img/gallery/gallery-02-friends-dancing-with-their-hands.webp" alt="Friends dancing with their hands raised on the dance floor" loading="lazy" decoding="async" draggable="false"></div></div>
+    <div class="col"><div class="ph t stg"><img src="assets/img/gallery/gallery-03-friends-on-a-sofa-reacting.webp" alt="Friends on a sofa reacting to a heart-shaped hand sign" loading="lazy" decoding="async" draggable="false"></div><div class="ph s stg"><img src="assets/img/gallery/gallery-04-crowd-dancing-under-a-disco.webp" alt="Crowd dancing under a disco ball" loading="lazy" decoding="async" draggable="false"></div></div>
+    <div class="col"><div class="ph s stg"><img src="assets/img/gallery/gallery-05-dj-at-the-decks-with.webp" alt="DJ at the decks with dancers behind him" loading="lazy" decoding="async" draggable="false"></div><div class="ph t stg"><img src="assets/img/gallery/gallery-06-mc-pointing-up-on-stage.webp" alt="MC pointing up on stage above a packed crowd" loading="lazy" decoding="async" draggable="false"></div></div>
+    <div class="col"><div class="ph t stg"><img src="assets/img/gallery/gallery-07-dj-in-a-white-tee.webp" alt="DJ in a white tee mixing under red lights" loading="lazy" decoding="async" draggable="false"></div><div class="ph s stg"><img src="assets/img/gallery/gallery-08-friends-toasting-with-a-tray.webp" alt="Friends toasting with a tray of shots" loading="lazy" decoding="async" draggable="false"></div></div>
+  </div>
+</section>
+
+<section id="videos" class="sec vid-sec">
+  <h2 class="rv">Latest Videos</h2>
+  <p class="sub rv">Sets worth replaying.</p>
+  <div class="vids">
+    <a class="vid stg" data-cur="Play" href="https://youtu.be/1fXWgU--9Vw" data-id="1fXWgU--9Vw" target="_blank" rel="noopener" aria-label="Play video: MORAFF | Live DJ Set at Berkawan Hub">
+      <span class="vthumb ph"><img src="https://i.ytimg.com/vi/1fXWgU--9Vw/maxresdefault.jpg" alt="" loading="lazy" decoding="async" onerror="if(this.dataset.f){this.style.display='none'}else{this.dataset.f=1;this.src='https://i.ytimg.com/vi/1fXWgU--9Vw/hqdefault.jpg'}"><i class="play"><svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M5 2.6v12.8a.6.6 0 0 0 .9.5l10.2-6.4a.6.6 0 0 0 0-1L5.9 2.1a.6.6 0 0 0-.9.5z"/></svg></i></span>
+      <span class="vmeta"><b>MORAFF | Live DJ Set at Berkawan Hub</b><small>Collecteak · 16 Apr 2026</small></span>
+    </a>
+    <a class="vid stg" data-cur="Play" href="https://youtu.be/YzDcLJdaTBw" data-id="YzDcLJdaTBw" target="_blank" rel="noopener" aria-label="Play video: JENNIE | Live DJ Set at Berkawan Hub">
+      <span class="vthumb ph"><img src="https://i.ytimg.com/vi/YzDcLJdaTBw/maxresdefault.jpg" alt="" loading="lazy" decoding="async" onerror="if(this.dataset.f){this.style.display='none'}else{this.dataset.f=1;this.src='https://i.ytimg.com/vi/YzDcLJdaTBw/hqdefault.jpg'}"><i class="play"><svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M5 2.6v12.8a.6.6 0 0 0 .9.5l10.2-6.4a.6.6 0 0 0 0-1L5.9 2.1a.6.6 0 0 0-.9.5z"/></svg></i></span>
+      <span class="vmeta"><b>JENNIE | Live DJ Set at Berkawan Hub</b><small>Collecteak · 9 Apr 2026</small></span>
+    </a>
+    <a class="vid stg" data-cur="Play" href="https://youtu.be/DLXv9aKKjM8" data-id="DLXv9aKKjM8" target="_blank" rel="noopener" aria-label="Play video: RAYONNER | Live DJ Set at Berkawan Hub">
+      <span class="vthumb ph"><img src="https://i.ytimg.com/vi/DLXv9aKKjM8/maxresdefault.jpg" alt="" loading="lazy" decoding="async" onerror="if(this.dataset.f){this.style.display='none'}else{this.dataset.f=1;this.src='https://i.ytimg.com/vi/DLXv9aKKjM8/hqdefault.jpg'}"><i class="play"><svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M5 2.6v12.8a.6.6 0 0 0 .9.5l10.2-6.4a.6.6 0 0 0 0-1L5.9 2.1a.6.6 0 0 0-.9.5z"/></svg></i></span>
+      <span class="vmeta"><b>RAYONNER | Live DJ Set at Berkawan Hub</b><small>Collecteak · 12 Apr 2026</small></span>
+    </a>
+  </div>
+  <div class="vmore"><a class="btn" href="https://www.youtube.com/channel/UCy3XAcR4PoA_2_HxWDRNWUg" target="_blank" rel="noopener" aria-label="Watch more"><span class="bt" aria-hidden="true"><span class="c" style="--i:0" data-c="W">W</span><span class="c" style="--i:1" data-c="a">a</span><span class="c" style="--i:2" data-c="t">t</span><span class="c" style="--i:3" data-c="c">c</span><span class="c" style="--i:4" data-c="h">h</span><span class="c" style="--i:5" data-c=" "> </span><span class="c" style="--i:6" data-c="m">m</span><span class="c" style="--i:7" data-c="o">o</span><span class="c" style="--i:8" data-c="r">r</span><span class="c" style="--i:9" data-c="e">e</span></span><span class="arx" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 11L11 3M5 3h6v6"/></svg><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 11L11 3M5 3h6v6"/></svg></span></a></div>
+</section>
+<section id="listen" class="sec listen">
+  <h2 class="rv">Listen</h2>
+  <p class="sub rv">Press play. Thank us later.</p>
+  <div class="lwrap rv">
+    <div class="deck" id="deck" data-cur="Play">
+      <div class="disc"><div class="vinyl"><span class="dlabel"><img class="dlogo" alt="" loading="lazy" decoding="async"></span></div></div>
+      <div class="sleeve"><img src="assets/img/ui/cover-blanco-z4ck-edit.webp" alt="Blanco (Z4CK Edit) cover art" loading="lazy" decoding="async">
+        <div><small>BLANCO (Z4CK EDIT)</small><em>COLLECTEAK · VOL. 1</em></div></div>
+      <button class="dplay" id="pbtn" type="button" aria-pressed="false" aria-label="Play Blanco (Z4CK Edit)"><svg viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M5 2.6v12.8a.6.6 0 0 0 .9.5l10.2-6.4a.6.6 0 0 0 0-1L5.9 2.1a.6.6 0 0 0-.9.5z"/></svg></button>
+    </div>
+    <iframe class="scsrc" id="scframe" title="SoundCloud: Blanco (Z4CK Edit)" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" tabindex="-1" aria-hidden="true" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/collecteak/blanco-z4ck-edit&auto_play=false&hide_related=true&show_comments=false&show_reposts=false&show_teaser=false"></iframe>
+    <a class="btn sc-btn" href="https://soundcloud.com/collecteak" target="_blank" rel="noopener noreferrer" aria-label="Listen via SoundCloud (opens in a new tab)"><span class="bt" aria-hidden="true"><span class="c" style="--i:0" data-c="v">v</span><span class="c" style="--i:1" data-c="i">i</span><span class="c" style="--i:2" data-c="a">a</span><span class="c" style="--i:3" data-c=" "> </span><span class="c" style="--i:4" data-c="S">S</span><span class="c" style="--i:5" data-c="o">o</span><span class="c" style="--i:6" data-c="u">u</span><span class="c" style="--i:7" data-c="n">n</span><span class="c" style="--i:8" data-c="d">d</span><span class="c" style="--i:9" data-c="C">C</span><span class="c" style="--i:10" data-c="l">l</span><span class="c" style="--i:11" data-c="o">o</span><span class="c" style="--i:12" data-c="u">u</span><span class="c" style="--i:13" data-c="d">d</span></span><span class="arx" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg></span></a>
+  </div>
+</section>
+<section id="partners" class="sec part-sec">
+  <h2 class="rv">Partnership</h2>
+  <p class="sub rv"><span class="ln">Venues that trusted us with the night,</span> <span class="ln">brands that match our vibe.</span></p>
+  <h3 class="plabel rv">Venues</h3>
+  <div class="wall" id="wall">
+    <div class="lg stg"><img class="sq" src="assets/img/venues/izzy.webp" alt="Izzy" width="369" height="400" loading="lazy" decoding="async"><small aria-hidden="true">Izzy</small></div>
+    <div class="lg stg"><img src="assets/img/venues/delulu.webp" alt="Delulu" width="520" height="167" loading="lazy" decoding="async"><small aria-hidden="true">Delulu</small></div>
+    <div class="lg stg"><img src="assets/img/venues/lucy-in-the-sky.webp" alt="Lucy in the Sky" width="520" height="153" loading="lazy" decoding="async"><small aria-hidden="true">Lucy in the Sky</small></div>
+    <div class="lg stg"><img class="sq" src="assets/img/venues/hatchi.webp" alt="Hatchi" width="400" height="400" loading="lazy" decoding="async"><small aria-hidden="true">Hatchi</small></div>
+    <div class="lg stg"><img src="assets/img/venues/brotherhood.webp" alt="Brotherhood" width="520" height="156" loading="lazy" decoding="async"><small aria-hidden="true">Brotherhood</small></div>
+    <div class="lg stg"><img src="assets/img/venues/cantinero.webp" alt="Cantinero" width="520" height="107" loading="lazy" decoding="async"><small aria-hidden="true">Cantinero</small></div>
+    <div class="lg stg"><img src="assets/img/venues/continent.webp" alt="Continent" width="520" height="95" loading="lazy" decoding="async"><small aria-hidden="true">Continent</small></div>
+    <div class="lg stg"><img src="assets/img/venues/ding-dong-disko.webp" alt="Ding Dong Disko" width="520" height="171" loading="lazy" decoding="async"><small aria-hidden="true">Ding Dong Disko</small></div>
+    <div class="lg stg m"><img src="assets/img/venues/stories-scbd.webp" alt="Stories SCBD" width="520" height="96" loading="lazy" decoding="async"><small aria-hidden="true">Stories SCBD</small></div>
+    <div class="lg stg m"><img src="assets/img/venues/puero.webp" alt="Puero" width="520" height="165" loading="lazy" decoding="async"><small aria-hidden="true">Puero</small></div>
+    <div class="lg stg m"><img src="assets/img/venues/easy-gunawarman.webp" alt="Easy Gunawarman" width="520" height="118" loading="lazy" decoding="async"><small aria-hidden="true">Easy Gunawarman</small></div>
+    <div class="lg stg m"><img class="sq" src="assets/img/venues/inner-circle.webp" alt="Inner Circle" width="231" height="278" loading="lazy" decoding="async"><small aria-hidden="true">Inner Circle</small></div>
+    <div class="lg stg m"><img class="sq" src="assets/img/venues/ltx-scbd.webp" alt="LTX SCBD" width="382" height="382" loading="lazy" decoding="async"><small aria-hidden="true">LTX SCBD</small></div>
+    <div class="lg stg m"><img src="assets/img/venues/wu-backroom.webp" alt="WU Backroom" width="520" height="183" loading="lazy" decoding="async"><small aria-hidden="true">WU Backroom</small></div>
+    <div class="lg stg m"><img src="assets/img/venues/opiuci-bdg.webp" alt="Opiuci BDG" width="520" height="200" loading="lazy" decoding="async"><small aria-hidden="true">Opiuci BDG</small></div>
+    <div class="lg stg x"><img src="assets/img/venues/rose-gunawarman.webp" alt="Rosé Gunawarman" width="520" height="212" loading="lazy" decoding="async"><small aria-hidden="true">Rosé Gunawarman</small></div>
+    <div class="lg stg x"><img src="assets/img/venues/tekira.webp" alt="Tekira" width="520" height="138" loading="lazy" decoding="async"><small aria-hidden="true">Tekira</small></div>
+    <div class="lg stg x"><img src="assets/img/venues/vol.webp" alt="Vol." width="520" height="334" loading="lazy" decoding="async"><small aria-hidden="true">Vol.</small></div>
+    <div class="lg stg x"><img src="assets/img/venues/basque-jakarta.webp" alt="Basque Jakarta" width="520" height="240" loading="lazy" decoding="async"><small aria-hidden="true">Basque Jakarta</small></div>
+    <div class="lg stg x"><img src="assets/img/venues/dnd-gunawarman.webp" alt="DND Gunawarman" width="520" height="253" loading="lazy" decoding="async"><small aria-hidden="true">DND Gunawarman</small></div>
+  </div>
+  <div class="vm"><button class="vm-btn" type="button" aria-expanded="false" aria-controls="wall" aria-label="View more venues"><span class="vm-label" aria-hidden="true"><span class="vm-f">View more</span><span class="vm-f vm-b">View less</span></span><svg class="vm-chev" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5l4.5 4.5L11.5 5"/></svg></button></div>
+  <h3 class="plabel pl-b rv">Brands</h3>
+  <ul class="lu" aria-label="Brands we've worked with">
+    <li class="lu-i t1 stg" style="--w:var(--w-deus)"><img src="assets/img/brands/deus.webp" alt="Deus" width="640" height="483" loading="lazy" decoding="async"></li>
+    <li class="lu-brk" aria-hidden="true"></li>
+    <li class="lu-i t2 stg" style="--w:var(--w-gs)"><img src="assets/img/brands/g-shock.webp" alt="G-Shock" width="691" height="132" loading="lazy" decoding="async"></li>
+    <li class="lu-i t2 lu-c stg" style="--w:var(--w-uq)"><img src="assets/img/brands/uniqlo.webp" alt="Uniqlo" width="400" height="400" loading="lazy" decoding="async"></li>
+    <li class="lu-brk" aria-hidden="true"></li>
+    <li class="lu-i t3 stg" style="--w:var(--w-hw)"><img src="assets/img/brands/holywings-apparel.webp" alt="Holywings Apparel" width="640" height="199" loading="lazy" decoding="async"></li>
+    <li class="lu-i t3 lu-c stg" style="--w:var(--w-jw)"><img src="assets/img/brands/joiway.webp" alt="Joiway" width="646" height="122" loading="lazy" decoding="async"></li>
+    <li class="lu-i t3 lu-c stg" style="--w:var(--w-rt)"><img src="assets/img/brands/rentalin-dj.webp" alt="Rentalin.dj" width="720" height="83" loading="lazy" decoding="async"></li>
+    <li class="lu-brk" aria-hidden="true"></li>
+  </ul>
+</section>
+
+<section id="book" class="sec book-sec" aria-labelledby="book-h">
+  <h2 id="book-h" class="bk-h rv">Let’s work on events<br class="bk-br"> and projects together</h2>
+  <p class="bk-sub rv">Tell us the date, venue and vibe.<span class="bk-x"> We’ll take it from there.</span></p>
+  <div class="bk-cta rv">
+    <a class="btn btn-solid" id="bookbtn" href="mailto:collecteak@gmail.com?subject=Booking%20request" aria-label="Book us"><span class="bt" aria-hidden="true"><span class="c" style="--i:0" data-c="B">B</span><span class="c" style="--i:1" data-c="o">o</span><span class="c" style="--i:2" data-c="o">o</span><span class="c" style="--i:3" data-c="k">k</span><span class="c" style="--i:4" data-c=" "> </span><span class="c" style="--i:5" data-c="u">u</span><span class="c" style="--i:6" data-c="s">s</span></span></a>
+  </div>
+</section>
+
+</main>
+
+<footer id="booking">
+  <div class="ft">
+    <div class="ft-mail"><h3>Contact</h3><a href="mailto:collecteak@gmail.com">collecteak@gmail.com</a></div>
+    <div class="ft-r">
+      <div><h3>Navigate</h3><a href="#talent">Performers</a><a href="#gallery">Gallery</a><a href="#partners">Partnership</a><a href="https://drive.google.com/file/d/1TA0PlPCqAmGu-Fb9R7sBhVUICGeK_vtX/view?usp=sharing" target="_blank" rel="noopener noreferrer" data-presskit aria-label="Press kit, all performers (opens in a new tab)">Press kit</a></div>
+      <div><h3>Find us</h3><div class="soc"><a href="https://www.instagram.com/collecteak/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".5" fill="currentColor"/></svg></a><a href="https://soundcloud.com/collecteak" target="_blank" rel="noopener" aria-label="SoundCloud"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12.5v6M6 10v8.5"/><path d="M9 18.5V8.6c1.1-1.7 2.6-2.6 4.5-2.6 3.1 0 5.5 2.3 5.7 5.3.3-.1.6-.2 1-.2 1.4 0 2.5 1.1 2.5 2.5s-1.1 4.9-2.5 4.9z"/></svg></a><a href="https://www.youtube.com/channel/UCy3XAcR4PoA_2_HxWDRNWUg" target="_blank" rel="noopener" aria-label="Youtube"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="5.5" width="18.4" height="13" rx="4"/><path d="M10 9.3v5.4l4.7-2.7z"/></svg></a><a href="https://www.tiktok.com/@collec.teak" target="_blank" rel="noopener" aria-label="Tiktok"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v9.6a3.6 3.6 0 1 1-3.6-3.6"/><path d="M14 4c.3 2.4 1.9 4 4.6 4.2"/></svg></a></div></div>
+    </div>
+  </div>
+  <p class="giant" role="img" aria-label="COLLECTEAK"><span class="gt" aria-hidden="true">COLLEC<b>TEAK</b><i class="bl"></i></span><canvas class="gc" aria-hidden="true"></canvas></p>
+  <p class="ft-end"><span>&copy; Collecteak 2026 All rights reserved</span><i aria-hidden="true">|</i><span class="cr-line">Designed &amp; Crafted by<a class="ft-cr" href="https://www.instagram.com/tardsworks/" target="_blank" rel="noopener noreferrer" aria-label="tardsworks on Instagram (opens in a new tab)"><svg class="cr-logo" viewBox="0 8.8 21.74 21.4" fill="currentColor" aria-hidden="true" focusable="false"><path d="M21.7344 14.9152C21.7344 11.5392 18.9976 8.80237 15.6215 8.80237H6.11265C2.73662 8.80237 -0.000209694 11.5392 -0.000209694 14.9152H21.7344Z"/><path d="M0 18.6512H2.67891C6.05495 18.6512 8.79177 21.388 8.79177 24.764V30.1977H6.11285C2.73682 30.1977 0 27.4609 0 24.0848V18.6512Z"/><path d="M12.9424 18.6512H15.9609C19.1494 18.6512 21.7341 21.236 21.7341 24.4244V24.4244C21.7341 27.6129 19.1494 30.1977 15.9609 30.1977H12.9424V18.6512Z"/></svg><span class="cr-t" aria-hidden="true"><span class="cr-c" style="--i:0" data-c="t">t</span><span class="cr-c" style="--i:1" data-c="a">a</span><span class="cr-c" style="--i:2" data-c="r">r</span><span class="cr-c" style="--i:3" data-c="d">d</span><span class="cr-c" style="--i:4" data-c="s">s</span><span class="cr-c" style="--i:5" data-c="w">w</span><span class="cr-c" style="--i:6" data-c="o">o</span><span class="cr-c" style="--i:7" data-c="r">r</span><span class="cr-c" style="--i:8" data-c="k">k</span><span class="cr-c" style="--i:9" data-c="s">s</span></span></a></span></p>
+</footer>
+
+<div class="cur" aria-hidden="true"><span></span></div>
+<script src="assets/js/grain.js"></script>
+<script src="assets/js/vendor/gsap.min.js"></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/js/vendor/lenis.min.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/cta-booking.js"></script>
+<script src="assets/js/venues-toggle.js"></script>
+<script src="assets/js/visibility-observer.js"></script>
+<a class="fab" href="#book" aria-label="Book Collecteak now">
+  <svg class="fab-ring" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="fabPath" d="M50 50m-37 0a37 37 0 1 1 74 0a37 37 0 1 1-74 0"/></defs><text><textPath href="#fabPath" textLength="230" lengthAdjust="spacing">Book us now&#160;&#160;•&#160;&#160;Book us now&#160;&#160;•&#160;&#160;</textPath></text></svg>
+  <span class="fab-core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+</a>
+<script src="assets/js/fab.js"></script>
+</body>
+</html>

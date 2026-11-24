@@ -1,0 +1,1 @@
+/* anti-flash: sembunyikan elemen yang akan dianimasikan sampai GSAP siap; kalau GSAP gagal dimuat, tampilkan semuanya */if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('js');setTimeout(function(){if(!window.gsap)document.documentElement.classList.remove('js')},5000)}

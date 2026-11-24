@@ -1,0 +1,6 @@
+/* grain kecil dibuat sekali lewat canvas (lebih ringan dari filter SVG layar penuh di iOS) */
+try{var gc=document.createElement('canvas');gc.width=gc.height=128;var gx=gc.getContext('2d'),gi=gx.createImageData(128,128);for(var gi_i=0;gi_i<gi.data.length;gi_i+=4){gi.data[gi_i]=gi.data[gi_i+1]=gi.data[gi_i+2]=255;gi.data[gi_i+3]=Math.random()*140}gx.putImageData(gi,0,0);document.documentElement.style.setProperty('--grain','url('+gc.toDataURL()+')')}catch(e){}
+/* grain abu halus untuk band abu: 256px ditampilkan 128px (2x lebih rapat), alpha rata-rata 3 acak = distribusi lonceng (tanpa titik ekstrem) */
+try{var dc=document.createElement('canvas');dc.width=dc.height=256;var dx=dc.getContext('2d'),di=dx.createImageData(256,256);for(var dk=0;dk<di.data.length;dk+=4){di.data[dk]=di.data[dk+1]=di.data[dk+2]=120;di.data[dk+3]=(Math.random()+Math.random()+Math.random())/3*150}dx.putImageData(di,0,0);document.documentElement.style.setProperty('--grain-d','url('+dc.toDataURL()+')')}catch(e){}
+/* kalau library CDN gagal dimuat (offline / diblokir), jangan biarkan layar hitam: tampilkan halaman apa adanya */
+window.addEventListener('load',function(){if(!(window.gsap&&window.ScrollTrigger)){document.documentElement.classList.remove('js');var i=document.getElementById('intro');if(i)i.style.display='none'}});
