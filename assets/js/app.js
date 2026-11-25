@@ -90,7 +90,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   function now(){return (window.performance&&performance.now)?performance.now():Date.now()}
   function fmt(ms){if(!isFinite(ms)||ms<0)ms=0;var s=Math.floor(ms/1000);return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2)}
   function slug(u){return u.replace(/[?#].*$/,'').split('/').pop()}
-  /* judul: nama DJ (bagian "(NAMA Edit)") pakai Bebas Neue, sisanya Plus Jakarta Sans */
+  /* judul: semua Plus Jakarta Sans, nama DJ (bagian "(NAMA Edit)") bold caps */
   function setTitle(t){
     var m=/\(([^()]+?)\s+Edit\)/i.exec(t);
     elTitle.textContent='';
@@ -276,7 +276,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   }
   function bindEvents(w){
     var E=SC.Widget.Events;
-    w.bind(E.PLAY,function(){playing=true;hasPlayed=true;lastTs=now();ui();status('');kick()});
+    w.bind(E.PLAY,function(){var was=playing;playing=true;hasPlayed=true;lastTs=now();ui();if(!was)startGrow();status('');kick()});
     w.bind(E.PAUSE,function(){lastPos=curPos();playing=false;ui();draw()});
     w.bind(E.FINISH,function(){lastPos=0;playing=false;ui();go(idx+1>=n?0:idx+1,idx+1<n)});
     w.bind(E.PLAY_PROGRESS,function(e){
