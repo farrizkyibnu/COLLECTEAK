@@ -344,32 +344,83 @@ footer{padding:260px var(--p) 0;overflow:hidden}
 /* grain film */
 body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.035;background:var(--grain,none) 0 0/128px 128px}
 
-/* listen: piringan hitam 33 1/3 RPM (1,8 detik per putaran) */
-.lwrap{margin:72px auto 0;text-align:center}
-.deck{position:relative;width:100%;max-width:680px;aspect-ratio:1.5/1;margin:0 auto;text-align:left;cursor:pointer;outline-offset:10px}
-.sleeve{position:absolute;z-index:2;left:0;top:50%;width:66%;aspect-ratio:1;transform:translateY(-50%);overflow:hidden;border-radius:6px;padding:7%;display:flex;flex-direction:column;justify-content:flex-end;background:#14365b;box-shadow:0 30px 70px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.08)}
-.sleeve>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.sleeve b{font-size:clamp(30px,5.4vw,66px);font-weight:800;font-style:italic;line-height:.92;line-height:round(.92em,1px);letter-spacing:-.04em}
-.sleeve>div{position:relative;z-index:1;display:none} /* cover baru sudah punya judul sendiri; hapus baris display:none ini untuk menampilkan teks lagi */
-.sleeve small,.sleeve em{display:block;font-size:11px;font-style:normal;font-weight:500;letter-spacing:.18em;color:var(--t2)}
-.sleeve em{margin-top:6px;color:var(--t3)}
-.disc{position:absolute;z-index:1;left:20%;top:50%;width:64%;aspect-ratio:1;transform:translateY(-50%);transition:transform 1s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 20px 40px rgba(0,0,0,.6))}
-.deck.on .disc{transform:translate(25%,-50%)}
-.deck{transform:translateX(8%);transition:transform 1s cubic-bezier(.2,.7,.2,1)}
-.deck.on{transform:none}
-.vinyl{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,#0a0a0d 0 1.5px,#15151b 1.5px 3px);will-change:transform}
-.vinyl::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,transparent 0 8%,rgba(255,255,255,.14) 12%,transparent 18% 50%,rgba(255,255,255,.1) 56%,transparent 62%)}
-.dlabel{position:absolute;left:50%;top:50%;width:34%;aspect-ratio:1;margin:-17% 0 0 -17%;border-radius:50%;background:#14365b;display:grid;place-items:center;box-shadow:inset 0 0 0 2px rgba(0,0,0,.25),0 0 0 3px #0a0a0d}
-.dlogo{width:36%;display:block}
-.scwrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.03)}
-@media(max-width:900px){.deck{max-width:460px}}
-.scsrc{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0}
-.dplay{position:absolute;z-index:3;left:33%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;display:grid;place-items:center;border-radius:50%;cursor:pointer;color:#fff;background:rgba(8,10,16,.42);border:1px solid rgba(255,255,255,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .35s,color .35s,transform .5s cubic-bezier(.2,.7,.2,1)}
-.dplay svg{margin-left:3px;transition:margin .3s}
-.deck.on .dplay svg{margin-left:0}
-.dplay:active{transform:scale(.94)}
-@media(hover:hover){.dplay:hover{background:#fff;color:#0a0a0a;transform:scale(1.08)}}
-@media(max-width:480px){.dplay{width:48px;height:48px;margin:-24px 0 0 -24px}}
+/* ===== LISTEN: multi-track player ===== */
+.kl{--s:min(30vw,400px);width:min(1240px,100%);margin:var(--hg) auto 0;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:clamp(40px,6vw,96px);align-items:center;position:relative}
+.kl *,.kl *::before,.kl *::after{box-sizing:border-box}
+.kl-left{display:flex;flex-direction:column;align-items:center}
+.kl-side{min-width:0;text-align:center}
+
+/* sleeve + piringan hitam: piringan geser keluar saat play */
+.kl-art{position:relative;width:calc(var(--s)*1.515);height:var(--s);flex:none;transform:translateX(calc(var(--s)*.12));transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.kl.is-playing .kl-art{transform:none}
+.kl-cover{position:absolute;left:0;top:0;width:var(--s);height:var(--s);z-index:2;overflow:hidden;border-radius:6px;background:#14365b;box-shadow:0 30px 70px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.08)}
+.kl-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.kl-vinyl{position:absolute;z-index:1;left:calc(var(--s)*.303);top:calc(var(--s)*.015);width:calc(var(--s)*.97);height:calc(var(--s)*.97);transition:transform 1s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 20px 40px rgba(0,0,0,.6))}
+.kl.is-playing .kl-vinyl{transform:translateX(calc(var(--s)*.242))}
+.kl-disc{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,#0a0a0d 0 1.5px,#15151b 1.5px 3px);will-change:transform;animation:klspin 1.8s linear infinite;animation-play-state:paused}
+.kl-disc::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,transparent 0 8%,rgba(255,255,255,.14) 12%,transparent 18% 50%,rgba(255,255,255,.1) 56%,transparent 62%)}
+.kl.is-playing .kl-disc{animation-play-state:running}
+.kl.gs .kl-disc{animation:none}
+.kl-lab{position:absolute;left:50%;top:50%;width:34%;aspect-ratio:1;margin:-17% 0 0 -17%;border-radius:50%;background:#14365b;display:grid;place-items:center;box-shadow:inset 0 0 0 2px rgba(0,0,0,.25),0 0 0 3px #0a0a0d}
+.kl-lab img{width:36%;display:block}
+@keyframes klspin{to{transform:rotate(360deg)}}
+.kl .sc-btn{margin-top:clamp(32px,4vw,44px)}
+
+/* judul + status */
+.kl-ti{font:600 clamp(22px,2.6vw,32px)/1.2 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.01em;overflow-wrap:anywhere;color:var(--t1);text-wrap:balance}
+.kl-ti .dj{font:400 1.32em/1 'Bebas Neue','Anton',Impact,sans-serif;letter-spacing:.03em;text-transform:uppercase}
+.kl-now{margin-top:12px;font:300 clamp(14px,1.6vw,16px)/1 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.04em;color:var(--t3)}
+.kl-st{min-height:1.3em;margin-top:8px;font-size:12px;line-height:1.3;color:rgba(255,170,170,.9)}
+
+/* tracklist */
+.kl-list{list-style:none;margin-top:clamp(22px,3vw,38px);text-align:left}
+.kl-list li{list-style:none;border-bottom:1px solid var(--line)}
+.kl-list li:last-child{border-bottom:0}
+.kl:not(.open) .kl-list li.x{display:none}
+.kl:not(.open) .kl-list li:nth-child(3){border-bottom:0}
+.kl-row{-webkit-appearance:none;appearance:none;display:grid;grid-template-columns:clamp(26px,3vw,40px) minmax(0,1fr) auto 24px;align-items:center;gap:clamp(8px,1.4vw,16px);width:100%;padding:clamp(18px,2vw,24px) 0;border:0;background:transparent;color:inherit;font:400 clamp(15px,1.6vw,20px)/1.25 'Plus Jakarta Sans',system-ui,sans-serif;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.kl-row[aria-current="true"]{padding-bottom:10px}
+.kl-n{color:var(--t3);font-variant-numeric:tabular-nums;transition:color .25s}
+.kl-t{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--t2);transition:color .25s}
+.kl-pc{font-size:clamp(11px,1.1vw,13px);color:var(--t3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.kl-ic{display:grid;place-items:center;width:24px;height:24px;color:#fff;transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.kl-ic .ic-pause{display:none}
+.kl-row[aria-current="true"] .kl-n,.kl-row[aria-current="true"] .kl-t{color:var(--t1)}
+.kl-row[aria-current="true"] .kl-t{font-weight:600}
+.kl.is-playing .kl-row[aria-current="true"] .ic-play{display:none}
+.kl.is-playing .kl-row[aria-current="true"] .ic-pause{display:block}
+.kl-row:focus-visible{outline:2px solid #fff;outline-offset:2px;border-radius:4px}
+.kl .vm{margin-top:clamp(28px,3.4vw,44px)}
+
+/* waveform: pindah ke baris lagu yang aktif */
+.kl-wfw{display:flex;align-items:center;gap:12px;padding:0 0 clamp(16px,2vw,22px) clamp(34px,4.4vw,56px);animation:klin .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes klin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.kl-wfw time{flex:none;min-width:34px;font:500 12px/1 'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;color:var(--t3)}
+.kl-wfw time:last-child{text-align:right}
+.kl-wf{position:relative;flex:1;min-width:0;height:clamp(46px,4.4vw,58px);cursor:pointer;touch-action:pan-y;-webkit-tap-highlight-color:transparent;outline:none;-webkit-user-select:none;user-select:none}
+.kl-wf canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.kl-wf:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:4px}
+.kl-tip{position:absolute;bottom:calc(100% + 6px);left:0;transform:translateX(-50%);padding:5px 8px;border-radius:6px;background:#fff;color:#04070f;font:600 11px/1 'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;pointer-events:none;opacity:0;transition:opacity .15s;white-space:nowrap}
+.kl-tip.on{opacity:1}
+.kl-frame{position:absolute;width:1px;height:1px;left:0;bottom:0;border:0;opacity:.01;pointer-events:none}
+
+@media(hover:hover){
+  .kl-row:hover .kl-t,.kl-row:hover .kl-n{color:var(--t1)}
+  .kl-row:hover .kl-ic{transform:scale(1.18)}
+}
+@media(max-width:899px){
+  .kl{--s:min(54vw,290px);grid-template-columns:minmax(0,1fr)}
+  .kl-side{margin-top:clamp(32px,6vw,48px)}
+  .kl-list{margin-top:clamp(20px,4vw,30px)}
+  .kl-row{padding:18px 0}
+  .kl-row[aria-current="true"]{padding-bottom:10px}
+}
+@media(max-width:767px){
+  .kl-pc i{display:none}
+  .kl-wfw{padding-left:0;gap:10px}
+  .kl-wfw time{min-width:30px;font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){.kl-disc{animation:none!important}.kl-wfw{animation:none}.kl-art,.kl-vinyl,.kl-ic{transition:none!important}}
 .sclink{display:inline-flex;align-items:center;gap:6px;margin-top:28px;font-size:12px;letter-spacing:.08em;color:var(--mut);transition:color .3s}
 @media(hover:hover){.sclink:hover{color:#fff}}
 
@@ -419,7 +470,6 @@ html.lenis,html.lenis body{height:auto}
 .bform input[type=date]{min-width:0;-webkit-appearance:none;appearance:none;min-height:46px}
 .bform input[aria-invalid=true]{border-color:#ff5a5f}
 @media(max-width:480px){
-  .sleeve small{letter-spacing:.12em;font-size:10px}
   .lg-cta{font-size:17px}
 }
 @media(max-width:340px){
@@ -441,7 +491,7 @@ html.lenis,html.lenis body{height:auto}
 @media(max-width:1199px){:root{--sec:168px;--hg:56px;--ft:200px}}
 @media(max-width:767px){:root{--sec:128px;--hg:48px;--ft:160px}}
 #places,.tal-sec,.gal-sec,.vid-sec,.listen,.part-sec,.book{padding-top:var(--sec)}
-.vc,.tal,.gal,.vids,.lwrap,.wall,.bform{margin-top:var(--hg)}
+.vc,.tal,.gal,.vids,.wall,.bform{margin-top:var(--hg)}
 .vmore{margin-top:48px}
 footer{padding-top:var(--ft)}
 .giant{margin-top:calc(var(--sec)*.75)}
@@ -458,7 +508,6 @@ a,button,[role=button],label,select,summary{touch-action:manipulation;-webkit-ta
 .dots b{transition:width .4s cubic-bezier(.2,.7,.2,1),background .2s}
 .l b{transition:transform .3s cubic-bezier(.2,.7,.2,1)}
 .l svg{transition:transform .3s cubic-bezier(.2,.7,.2,1),opacity .2s}
-.disc,.deck{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
 /* performer: tiap talent = .tw (kartu). Semua kontrol ada DI DALAM kartu.
    Aktif saat hover (desktop) / kartu di tengah carousel (.on) / di-tap (.tap) / fokus KEYBOARD (:focus-visible, supaya klik mouse tidak bikin kartu nyangkut terbuka):
    - kartu jadi berwarna, nama muncul di TENGAH
@@ -933,10 +982,9 @@ footer{padding-top:calc(var(--sec)*.25)}
 .sub{color:var(--t3)}
 .bk-sub,.book-sec .bk-sub{color:var(--t2)}
 /* overline: semua label kecil satu gaya */
-.plabel,.tcta small,.deck small,.deck em{font-size:var(--fs-over);font-weight:500;letter-spacing:var(--ls-over);text-transform:uppercase}
+.plabel,.tcta small{font-size:var(--fs-over);font-weight:500;letter-spacing:var(--ls-over);text-transform:uppercase}
 .plabel{color:var(--t3)}
 .tcta small{color:var(--t2)}
-.deck small{color:var(--t1)}.deck em{color:var(--t3)}
 /* card: judul L1, meta L3 */
 .vmeta b{color:var(--t1)}
 .vmeta small{color:var(--t3);font-size:13px}

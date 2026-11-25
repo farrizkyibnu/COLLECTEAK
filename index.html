@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-PANDUAN SINGKAT
+Intro
 - CSS     : assets/css/style.css  (warna/ukuran ada di variabel :root)
 - JS      : assets/js/main.js (animasi & interaksi), vendor/ = GSAP, ScrollTrigger, Lenis
 - Gambar  : assets/img/{ui,talent,gallery,venues,brands}/  (semua .webp)
@@ -31,7 +31,6 @@ PANDUAN SINGKAT
 <div id="intro"><i class="ip top"></i><i class="ip bot"></i><i class="iflash"></i>
   <div class="ibox"><p class="iw" aria-label="COLLECTEAK"></p></div>
   <span class="ic">000</span><button class="iskip" type="button">Skip</button></div>
-<script src="assets/js/intro-fallback.js"></script>
 
 <header class="nav">
   <a class="logo" href="#top" aria-label="COLLECTEAK home">
@@ -286,15 +285,29 @@ PANDUAN SINGKAT
 <section id="listen" class="sec listen">
   <h2 class="rv">Listen</h2>
   <p class="sub rv">Press play. Thank us later.</p>
-  <div class="lwrap rv">
-    <div class="deck" id="deck" data-cur="Play">
-      <div class="disc"><div class="vinyl"><span class="dlabel"><img class="dlogo" alt="" loading="lazy" decoding="async"></span></div></div>
-      <div class="sleeve"><img src="assets/img/ui/cover-blanco-z4ck-edit.webp" alt="Blanco (Z4CK Edit) cover art" loading="lazy" decoding="async">
-        <div><small>BLANCO (Z4CK EDIT)</small><em>COLLECTEAK · VOL. 1</em></div></div>
-      <button class="dplay" id="pbtn" type="button" aria-pressed="false" aria-label="Play Blanco (Z4CK Edit)"><svg viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M5 2.6v12.8a.6.6 0 0 0 .9.5l10.2-6.4a.6.6 0 0 0 0-1L5.9 2.1a.6.6 0 0 0-.9.5z"/></svg></button>
+  <div class="kl rv" id="kl">
+    <div class="kl-left">
+      <div class="kl-art" id="klArt">
+        <div class="kl-vinyl"><div class="kl-disc"><span class="kl-lab"><img src="assets/img/ui/logo.webp" alt="" decoding="async"></span></div></div>
+        <div class="kl-cover"><img id="klCover" src="assets/img/ui/cover-blanco-z4ck-edit.webp" alt="Kolektikan Vol. 1 cover art" width="580" height="580" decoding="async"></div>
+      </div>
+      <a class="btn sc-btn" href="https://soundcloud.com/collecteak" target="_blank" rel="noopener noreferrer" aria-label="Listen via SoundCloud (opens in a new tab)"><span class="bt" aria-hidden="true"><span class="c" style="--i:0" data-c="v">v</span><span class="c" style="--i:1" data-c="i">i</span><span class="c" style="--i:2" data-c="a">a</span><span class="c" style="--i:3" data-c=" "> </span><span class="c" style="--i:4" data-c="S">S</span><span class="c" style="--i:5" data-c="o">o</span><span class="c" style="--i:6" data-c="u">u</span><span class="c" style="--i:7" data-c="n">n</span><span class="c" style="--i:8" data-c="d">d</span><span class="c" style="--i:9" data-c="C">C</span><span class="c" style="--i:10" data-c="l">l</span><span class="c" style="--i:11" data-c="o">o</span><span class="c" style="--i:12" data-c="u">u</span><span class="c" style="--i:13" data-c="d">d</span></span><span class="arx" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg></span></a>
     </div>
-    <iframe class="scsrc" id="scframe" title="SoundCloud: Blanco (Z4CK Edit)" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" tabindex="-1" aria-hidden="true" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/collecteak/blanco-z4ck-edit&auto_play=false&hide_related=true&show_comments=false&show_reposts=false&show_teaser=false"></iframe>
-    <a class="btn sc-btn" href="https://soundcloud.com/collecteak" target="_blank" rel="noopener noreferrer" aria-label="Listen via SoundCloud (opens in a new tab)"><span class="bt" aria-hidden="true"><span class="c" style="--i:0" data-c="v">v</span><span class="c" style="--i:1" data-c="i">i</span><span class="c" style="--i:2" data-c="a">a</span><span class="c" style="--i:3" data-c=" "> </span><span class="c" style="--i:4" data-c="S">S</span><span class="c" style="--i:5" data-c="o">o</span><span class="c" style="--i:6" data-c="u">u</span><span class="c" style="--i:7" data-c="n">n</span><span class="c" style="--i:8" data-c="d">d</span><span class="c" style="--i:9" data-c="C">C</span><span class="c" style="--i:10" data-c="l">l</span><span class="c" style="--i:11" data-c="o">o</span><span class="c" style="--i:12" data-c="u">u</span><span class="c" style="--i:13" data-c="d">d</span></span><span class="arx" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11L11 3M5 3h6v6"/></svg></span></a>
+    <div class="kl-side">
+      <h3 class="kl-ti" id="klTitle">Runaway (U &amp; I) (<span class="dj">JENNIE</span> Edit)</h3>
+      <p class="kl-now" id="klNow">Tap to play</p>
+      <p class="kl-st" id="klSt" role="status" aria-live="polite"></p>
+      <ol class="kl-list" id="klList" aria-label="Tracklist, Kolektikan Vol. 1">
+        <li><button type="button" class="kl-row" data-url="https://soundcloud.com/collecteak/runaway-u-i-jennie-edit" data-title="Runaway (U &amp; I) (JENNIE Edit)" data-by="Jennie" data-plays="19700" data-cur="Play" aria-label="Play Runaway (U &amp; I) (JENNIE Edit)"><span class="kl-n" aria-hidden="true">1</span><span class="kl-t">Runaway (U &amp; I) (JENNIE Edit)</span><span class="kl-pc"><b>19.7K</b><i> plays</i></span><span class="kl-ic" aria-hidden="true"><svg class="ic-play" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.4v13.2a.5.5 0 0 0 .77.42l10.4-6.6a.5.5 0 0 0 0-.84L4.77 1.98A.5.5 0 0 0 4 2.4z"/></svg><svg class="ic-pause" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.5h3.5v13H4zM10.5 2.5H14v13h-3.5z"/></svg></span></button><div class="kl-wfw" id="klWfw"><time id="klCur">0:00</time><div class="kl-wf" id="klWf" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-cur="Seek"><canvas id="klCv"></canvas><span class="kl-tip" id="klTip"></span></div><time id="klDur">--:--</time></div></li>
+        <li><button type="button" class="kl-row" data-url="https://soundcloud.com/collecteak/no-money-galantis-moraff-edit" data-title="No Money (MORAFF Edit)" data-by="Moraff" data-plays="18800" data-cur="Play" aria-label="Play No Money (MORAFF Edit)"><span class="kl-n" aria-hidden="true">2</span><span class="kl-t">No Money (MORAFF Edit)</span><span class="kl-pc"><b>18.8K</b><i> plays</i></span><span class="kl-ic" aria-hidden="true"><svg class="ic-play" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.4v13.2a.5.5 0 0 0 .77.42l10.4-6.6a.5.5 0 0 0 0-.84L4.77 1.98A.5.5 0 0 0 4 2.4z"/></svg><svg class="ic-pause" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.5h3.5v13H4zM10.5 2.5H14v13h-3.5z"/></svg></span></button></li>
+        <li><button type="button" class="kl-row" data-url="https://soundcloud.com/collecteak/blanco-z4ck-edit" data-title="Blanco (Z4CK Edit)" data-by="Z4ck" data-plays="10400" data-cur="Play" aria-label="Play Blanco (Z4CK Edit)"><span class="kl-n" aria-hidden="true">3</span><span class="kl-t">Blanco (Z4CK Edit)</span><span class="kl-pc"><b>10.4K</b><i> plays</i></span><span class="kl-ic" aria-hidden="true"><svg class="ic-play" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.4v13.2a.5.5 0 0 0 .77.42l10.4-6.6a.5.5 0 0 0 0-.84L4.77 1.98A.5.5 0 0 0 4 2.4z"/></svg><svg class="ic-pause" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.5h3.5v13H4zM10.5 2.5H14v13h-3.5z"/></svg></span></button></li>
+        <li class="x"><button type="button" class="kl-row" data-url="https://soundcloud.com/collecteak/crazy-frog-rayonner-edit" data-title="Crazy Frog (RAYONNER Edit)" data-by="Rayonner" data-plays="1874" data-cur="Play" aria-label="Play Crazy Frog (RAYONNER Edit)"><span class="kl-n" aria-hidden="true">4</span><span class="kl-t">Crazy Frog (RAYONNER Edit)</span><span class="kl-pc"><b>1,874</b><i> plays</i></span><span class="kl-ic" aria-hidden="true"><svg class="ic-play" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.4v13.2a.5.5 0 0 0 .77.42l10.4-6.6a.5.5 0 0 0 0-.84L4.77 1.98A.5.5 0 0 0 4 2.4z"/></svg><svg class="ic-pause" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.5h3.5v13H4zM10.5 2.5H14v13h-3.5z"/></svg></span></button></li>
+        <li class="x"><button type="button" class="kl-row" data-url="https://soundcloud.com/collecteak/feeling-lethal-industry-yung" data-title="Feeling Lethal Industry (YUNG PABLO Edit)" data-by="Yung Pablo" data-plays="1620" data-cur="Play" aria-label="Play Feeling Lethal Industry (YUNG PABLO Edit)"><span class="kl-n" aria-hidden="true">5</span><span class="kl-t">Feeling Lethal Industry (YUNG PABLO Edit)</span><span class="kl-pc"><b>1,620</b><i> plays</i></span><span class="kl-ic" aria-hidden="true"><svg class="ic-play" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.4v13.2a.5.5 0 0 0 .77.42l10.4-6.6a.5.5 0 0 0 0-.84L4.77 1.98A.5.5 0 0 0 4 2.4z"/></svg><svg class="ic-pause" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.5h3.5v13H4zM10.5 2.5H14v13h-3.5z"/></svg></span></button></li>
+        <li class="x"><button type="button" class="kl-row" data-url="https://soundcloud.com/collecteak/danza-kuduro-giga-edit" data-title="Danza Kuduro (GIGA Edit)" data-by="Giga" data-plays="1510" data-cur="Play" aria-label="Play Danza Kuduro (GIGA Edit)"><span class="kl-n" aria-hidden="true">6</span><span class="kl-t">Danza Kuduro (GIGA Edit)</span><span class="kl-pc"><b>1,510</b><i> plays</i></span><span class="kl-ic" aria-hidden="true"><svg class="ic-play" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.4v13.2a.5.5 0 0 0 .77.42l10.4-6.6a.5.5 0 0 0 0-.84L4.77 1.98A.5.5 0 0 0 4 2.4z"/></svg><svg class="ic-pause" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.5h3.5v13H4zM10.5 2.5H14v13h-3.5z"/></svg></span></button></li>
+        <li class="x"><button type="button" class="kl-row" data-url="https://soundcloud.com/collecteak/dip-it-low-dof-edit-preview" data-title="Dip It Low (DOF Edit) | Pitched due a copyright" data-by="Dof" data-plays="1399" data-cur="Play" aria-label="Play Dip It Low (DOF Edit) | Pitched due a copyright"><span class="kl-n" aria-hidden="true">7</span><span class="kl-t">Dip It Low (DOF Edit) | Pitched due a copyright</span><span class="kl-pc"><b>1,399</b><i> plays</i></span><span class="kl-ic" aria-hidden="true"><svg class="ic-play" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.4v13.2a.5.5 0 0 0 .77.42l10.4-6.6a.5.5 0 0 0 0-.84L4.77 1.98A.5.5 0 0 0 4 2.4z"/></svg><svg class="ic-pause" viewBox="0 0 18 18" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.5h3.5v13H4zM10.5 2.5H14v13h-3.5z"/></svg></span></button></li>
+      </ol>
+      <div class="vm"><button class="vm-btn" id="klMore" type="button" aria-expanded="false" aria-controls="klList" aria-label="See more tracks"><span class="vm-label" aria-hidden="true"><span class="vm-f">See more</span><span class="vm-f vm-b">See less</span></span><svg class="vm-chev" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5l4.5 4.5L11.5 5"/></svg></button></div>
+    </div>
   </div>
 </section>
 <section id="partners" class="sec part-sec">
@@ -361,18 +374,13 @@ PANDUAN SINGKAT
 </footer>
 
 <div class="cur" aria-hidden="true"><span></span></div>
-<script src="assets/js/grain.js"></script>
 <script src="assets/js/vendor/gsap.min.js"></script>
 <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/js/vendor/lenis.min.js"></script>
-<script src="assets/js/main.js"></script>
-<script src="assets/js/cta-booking.js"></script>
-<script src="assets/js/venues-toggle.js"></script>
-<script src="assets/js/visibility-observer.js"></script>
 <a class="fab" href="#book" aria-label="Book Collecteak now">
   <svg class="fab-ring" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="fabPath" d="M50 50m-37 0a37 37 0 1 1 74 0a37 37 0 1 1-74 0"/></defs><text><textPath href="#fabPath" textLength="230" lengthAdjust="spacing">Book us now&#160;&#160;•&#160;&#160;Book us now&#160;&#160;•&#160;&#160;</textPath></text></svg>
   <span class="fab-core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
 </a>
-<script src="assets/js/fab.js"></script>
+<script src="assets/js/app.js"></script>
 </body>
 </html>

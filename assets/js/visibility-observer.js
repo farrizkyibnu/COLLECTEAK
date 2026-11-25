@@ -1,1 +1,0 @@
-(function(){if(!('IntersectionObserver' in window))return;var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('off',!e.isIntersecting)})},{rootMargin:'80px'});['top'].forEach(function(i){var h=document.getElementById(i);h&&io.observe(h)});var r=document.querySelector('.run-band');r&&io.observe(r)})();
