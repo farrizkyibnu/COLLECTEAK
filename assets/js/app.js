@@ -92,7 +92,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   var OPT={hide_related:true,show_comments:false,show_reposts:false,show_teaser:false,visual:false};
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  var idx=0,loadedIdx=-1,widget=null,wp=null,apiP=null,loading=false,loadT=0;
+  var idx=0,W=[],durs=[],apiP=null,opt=null,optT=0;
   var playing=false,hasPlayed=false,dur=0,lastPos=0,lastTs=0,lastSec=-1;
   var growRaf=0,born=0,drag=false,dragRatio=0,hoverRatio=null,vis=false,raf=0;
   var spin=null,more=$('klMore'),isOpen=false,busy=false,xs=[].slice.call(root.querySelectorAll('.kl-list li.x'));
@@ -112,8 +112,10 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
     elTitle.appendChild(document.createTextNode(' Edit)'+t.slice(m.index+m[0].length)));
   }
   function status(t){elSt.textContent=t||''}
-  /* loading: selama lagu baru dimuat, tap lagi di baris yang sama diabaikan (kalau tidak, toggle() membatalkan auto-play) */
-  function setLoading(v){loading=v;clearTimeout(loadT);if(v)loadT=setTimeout(function(){loading=false},8000)}
+  /* optimistic UI: tampilan langsung berubah saat di-tap (opt=true/false), tanpa menunggu event dari iframe SoundCloud.
+     Event PLAY/PAUSE yang asli menggantikannya. Kalau tidak ada konfirmasi dalam 4 dtk, kembali ke status asli. */
+  function isOn(){return opt!==null?opt:playing}
+  function setOpt(v){opt=v;clearTimeout(optT);if(v!==null)optT=setTimeout(function(){var was=opt;opt=null;ui();if(was===true&&!playing)status('Tap again to play')},4000)}
   function fmtCount(v){
     if(v<10000)return v.toLocaleString('en-US');
     if(v<1e6)return (v/1000).toFixed(1).replace(/\.0$/,'')+'K';
@@ -234,13 +236,14 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
 
   /* UI */
   function labels(){
-    rows.forEach(function(r,i){r.dataset.cur=(i===idx&&playing)?'Pause':'Play'});
+    rows.forEach(function(r,i){r.dataset.cur=(i===idx&&isOn())?'Pause':'Play'});
   }
   function ui(){
-    root.classList.toggle('is-playing',playing);
-    elNow.textContent=playing?'Now playing':(hasPlayed?'Paused':'');
-    if(spin&&window.gsap)gsap.to(spin,{timeScale:playing?1:0,duration:playing?1.2:2,ease:playing?'power2.in':'power2.out',overwrite:true});
-    labels();
+    var on=isOn();
+    root.classList.toggle('is-playing',on);
+    elNow.textContent=on?'Now playing':(hasPlayed?'Paused':'');
+    if(spin&&window.gsap)gsap.to(spin,{timeScale:on?1:0,duration:on?1.2:2,ease:on?'power2.in':'power2.out',overwrite:true});
+    labels();if(on)draw();
     if('mediaSession' in navigator)navigator.mediaSession.playbackState=playing?'playing':'paused';
   }
   function markActive(){
@@ -273,57 +276,80 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
     f.setAttribute('aria-hidden','true');f.setAttribute('scrolling','no');f.setAttribute('frameborder','no');
     f.src=src;root.appendChild(f);return f;
   }
-  function fetchMeta(){
-    if(!widget)return;
-    widget.getCurrentSound(function(s){
-      if(!s)return;
-      if(s.permalink_url&&s.permalink_url.indexOf(slug(rows[idx].dataset.url))===-1)return;
-      if(s.title){setTitle(s.title);var t=rows[idx].querySelector('.kl-t');if(t)t.textContent=s.title}
-      dur=s.duration||dur;elDur.textContent=fmt(dur);
-      if(typeof s.playback_count==='number'){counts[idx]=s.playback_count;renderCount(idx)}
-      loadWaveform(idx,s.waveform_url);
-      draw();
+  /* Satu iframe per track: track yang sudah siap bisa langsung play()/pause() saat di-tap (tanpa fetch ulang),
+     dan play() terpanggil sinkron di handler klik (lebih lolos aturan autoplay mobile). Top 3 di-preload, sisanya dibuat
+     saat hover/sentuh atau saat dipilih. */
+  function cw(){var s=W[idx];return s&&s.ready?s.w:null}
+  function fetchMeta(i){
+    var s=W[i];if(!s||!s.ready)return;
+    s.w.getCurrentSound(function(m){
+      if(!m)return;
+      if(m.permalink_url&&m.permalink_url.indexOf(slug(rows[i].dataset.url))===-1)return;
+      durs[i]=m.duration||durs[i]||0;
+      if(typeof m.playback_count==='number'){counts[i]=m.playback_count;renderCount(i)}
+      if(m.title){var t=rows[i].querySelector('.kl-t');if(t)t.textContent=m.title}
+      loadWaveform(i,m.waveform_url);
+      if(i!==idx)return;
+      if(m.title)setTitle(m.title);
+      dur=durs[i];elDur.textContent=fmt(dur);draw();
       if('mediaSession' in navigator&&window.MediaMetadata)
         navigator.mediaSession.metadata=new MediaMetadata({title:elTitle.textContent,artist:rows[idx].dataset.by,album:'Kolektikan Vol. 1',artwork:[{src:COVER0,sizes:'500x500'}]});
     });
   }
-  function bindEvents(w){
+  function bindEvents(w,i){
     var E=SC.Widget.Events;
-    w.bind(E.PLAY,function(){setLoading(false);var was=playing;playing=true;hasPlayed=true;lastTs=now();ui();if(!was)startGrow();status('');kick()});
-    w.bind(E.PAUSE,function(){lastPos=curPos();playing=false;ui();draw()});
-    w.bind(E.FINISH,function(){lastPos=0;playing=false;ui();go(idx+1>=n?0:idx+1,idx+1<n)});
+    w.bind(E.PLAY,function(){
+      if(i!==idx){try{w.pause()}catch(e){}return}
+      setOpt(null);var was=playing;playing=true;hasPlayed=true;lastTs=now();ui();if(!was)startGrow();status('');kick();
+    });
+    w.bind(E.PAUSE,function(){if(i!==idx)return;lastPos=curPos();playing=false;setOpt(null);ui();draw()});
+    w.bind(E.FINISH,function(){if(i!==idx)return;lastPos=0;playing=false;setOpt(null);ui();go(idx+1>=n?0:idx+1,idx+1<n)});
     w.bind(E.PLAY_PROGRESS,function(e){
+      if(i!==idx)return;
       if(!dur&&e.relativePosition>0){dur=e.currentPosition/e.relativePosition;elDur.textContent=fmt(dur)}
       lastPos=e.currentPosition;lastTs=now();
     });
-    if(E.ERROR)w.bind(E.ERROR,function(){setLoading(false);playing=false;ui();status('This track can\u2019t be played right now.')});
+    if(E.ERROR)w.bind(E.ERROR,function(){if(i!==idx)return;playing=false;setOpt(null);ui();status('This track can\u2019t be played right now.')});
   }
-  function ensure(i,auto){
-    if(wp)return wp;
-    wp=loadApi().then(function(){
+  function makeWidget(i){
+    if(W[i])return W[i];
+    var s=W[i]={w:null,ready:false,p:null};
+    s.p=loadApi().then(function(){
       return new Promise(function(resolve){
-        var f=makeFrame(embedSrc(rows[i].dataset.url,auto)),w=SC.Widget(f),first=true;
+        var f=makeFrame(embedSrc(rows[i].dataset.url,false)),w=SC.Widget(f);
+        s.w=w;
         w.bind(SC.Widget.Events.READY,function(){
-          if(first){first=false;widget=w;loadedIdx=i;bindEvents(w);resolve(w)}
-          fetchMeta();
+          if(s.ready)return;
+          s.ready=true;bindEvents(w,i);resolve(w);fetchMeta(i);
         });
       });
-    }).catch(function(){wp=null;status('Player failed to load. Check your connection.');throw 0});
-    return wp;
+    }).catch(function(){W[i]=null;throw 0});
+    s.p.catch(function(){});
+    return s;
+  }
+  function preload(){
+    var seq=Promise.resolve();
+    for(var k=1;k<Math.min(3,n);k++)(function(i){
+      seq=seq.then(function(){return (W[i]||makeWidget(i)).p}).then(function(){return new Promise(function(r){setTimeout(r,500)})}).catch(function(){});
+    })(k);
+    return seq;
   }
   function go(i,auto){
-    idx=(i+n)%n;if(idx>=3&&!isOpen)setOpen(true);markActive();setMeta(idx);
-    if(loadedIdx!==idx){lastPos=0;playing=false;ui()}
-    ensure(idx,auto).then(function(w){
-      if(loadedIdx===idx){if(auto&&!playing)w.play();fetchMeta();return}
-      loadedIdx=idx;
-      var at=idx;setLoading(true);
-      var o={auto_play:!!auto,callback:function(){
-        setLoading(false);fetchMeta();
-        if(auto)setTimeout(function(){if(idx===at&&!playing)status('Tap again to play')},1500);
-      }};for(var k in OPT)o[k]=OPT[k];
-      w.load(rows[idx].dataset.url,o);
-    }).catch(function(){});
+    var prev=idx;idx=(i+n)%n;if(idx>=3&&!isOpen)setOpen(true);
+    if(prev!==idx){
+      var o=W[prev];if(o&&o.ready){try{o.w.pause()}catch(e){}}
+      playing=false;lastPos=0;
+    }
+    markActive();setMeta(idx);
+    if(durs[idx]){dur=durs[idx];elDur.textContent=fmt(dur)}
+    var s=W[idx]||makeWidget(idx),at=idx;
+    setOpt(auto?true:null);ui();
+    if(s.ready){if(auto&&!playing)s.w.play();fetchMeta(idx);return}
+    s.p.then(function(w){
+      if(idx!==at)return;
+      if(auto&&!playing)w.play();
+      fetchMeta(at);
+    }).catch(function(){if(idx===at){setOpt(null);ui();status('Player failed to load. Check your connection.')}});
   }
 
   /* jumlah play live: widget kedua membaca playback_count tiap track, diulang tiap 3 menit selama section terlihat */
@@ -352,14 +378,21 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   /* kontrol */
   rows.forEach(function(r,i){
     r.addEventListener('click',function(){
-      if(i===idx&&widget&&loadedIdx===idx){if(loading)return;widget.toggle();return}
+      var s=W[i];
+      if(i===idx&&s&&s.ready){
+        if(isOn()){setOpt(false);ui();s.w.pause()}else{setOpt(true);ui();s.w.play()}
+        return;
+      }
       go(i,true);
     });
+    /* siapkan iframe track ini lebih awal (hover mouse / mulai sentuh) supaya klik berikutnya langsung bunyi */
+    r.addEventListener('pointerdown',function(){if(!W[i])makeWidget(i)},{passive:true});
+    r.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'&&!W[i])makeWidget(i)},{passive:true});
   });
   function commit(r){
-    if(!widget||!dur||loadedIdx!==idx)return;
+    var w=cw();if(!w||!dur)return;
     var ms=Math.max(0,Math.min(.999,r))*dur;
-    widget.seekTo(ms);lastPos=ms;lastTs=now();lastSec=-1;
+    w.seekTo(ms);lastPos=ms;lastTs=now();lastSec=-1;
     elCur.textContent=fmt(ms);draw();
   }
   function ratioOf(e){var b=elWf.getBoundingClientRect();return Math.min(1,Math.max(0,(e.clientX-b.left)/b.width))}
@@ -394,8 +427,8 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
 
   if('mediaSession' in navigator){
     try{
-      navigator.mediaSession.setActionHandler('play',function(){if(widget)widget.play()});
-      navigator.mediaSession.setActionHandler('pause',function(){if(widget)widget.pause()});
+      navigator.mediaSession.setActionHandler('play',function(){var w=cw();if(w)w.play()});
+      navigator.mediaSession.setActionHandler('pause',function(){var w=cw();if(w)w.pause()});
       navigator.mediaSession.setActionHandler('previoustrack',function(){go(idx-1,true)});
       navigator.mediaSession.setActionHandler('nexttrack',function(){go(idx+1,true)});
       navigator.mediaSession.setActionHandler('seekto',function(d){if(dur&&d.seekTime!=null)commit(d.seekTime*1000/dur)});
@@ -406,7 +439,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   rows.forEach(function(_,i){renderCount(i)});
   markActive();setMeta(0);ui();
   var started=false;
-  function boot(){ensure(idx,false).then(function(){setTimeout(statsInit,800)}).catch(function(){})}
+  function boot(){makeWidget(idx).p.then(function(){fetchMeta(idx);return preload()}).then(function(){setTimeout(statsInit,800)}).catch(function(){status('Player failed to load. Check your connection.')})}
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(en){
       vis=en[0].isIntersecting;

@@ -1136,3 +1136,8 @@ p,li{text-wrap:pretty}
 .pill-menu span::after{content:"Close";display:block;height:0;overflow:hidden;visibility:hidden}
 /* scroll dikunci saat menu terbuka: sisakan ruang scrollbar agar halaman tidak melebar 15px (geser) */
 html{scrollbar-gutter:stable}
+
+/* mobile: tombol "via SoundCloud" 8px dari vinyl */
+@media(max-width:899px){
+  .kl .sc-btn{margin-top:8px}
+}
