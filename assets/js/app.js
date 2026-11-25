@@ -28,14 +28,25 @@ var pend=false;
 addEventListener('scroll',function(){if(pend)return;pend=true;requestAnimationFrame(function(){pend=false;u();var y=scrollY,n=performance.now(),v=Math.abs(y-ly)/Math.max(1,n-lt);ly=y;lt=n;
   var tg=1+Math.min(v*4,9);if(tg>rate)rate+=(tg-rate)*.4;var a=spin();if(a)a.playbackRate=rate;if(!raf)raf=requestAnimationFrame(tick)})},{passive:true});
 })();
+/* setelah View more / See more dibuka, tombolnya terdorong ke bawah layar. Scroll seperlunya (minimal) supaya tombol tetap kelihatan,
+   tapi item baru pertama tidak keluar dari layar. Tidak scroll kalau tombol sudah terlihat. */
+function keepToggleInView(btn,first){try{
+  var vh=window.innerHeight,dy=btn.getBoundingClientRect().bottom-(vh-28);
+  if(first)dy=Math.min(dy,first.getBoundingClientRect().top-vh*.2);
+  if(dy<=4)return;
+  var y=scrollY+dy,L=false,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  try{L=typeof lenis!=='undefined'&&lenis}catch(e){}
+  if(L)L.scrollTo(y,{duration:rm?0:.7,immediate:rm,easing:function(t){return 1-Math.pow(1-t,3)}});
+  else window.scrollTo({top:y,behavior:rm?'auto':'smooth'});
+}catch(e){}}
 /* ===== Venues toggle ===== */
 /* venue: View more / View less. Mobile menampilkan 6 dulu (.m ikut disembunyikan), sisanya (.x) disembunyikan di semua ukuran.
    Animasi: tinggi wall dianimasikan (clip), tile hanya fade (tanpa geser, supaya garis grid tidak bergetar), scroll dijaga saat menutup. */
-(function(){var w=document.getElementById('wall'),b=document.querySelector('.vm-btn');if(!w||!b)return;
+(function(){var w=document.getElementById('wall'),b=document.querySelector('.vm-btn[aria-controls="wall"]');if(!w||!b)return;
 var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,busy=false,g=window.gsap;
 function state(o){b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'View fewer venues':'View more venues')}
 function lv(){try{return typeof lenis!=='undefined'&&lenis}catch(e){return false}}
-function setY(y){if(lv())lenis.scrollTo(y,{immediate:true,force:true});else scrollTo(0,y)}
+function setY(y){if(lv())lenis.scrollTo(y,{immediate:true,force:true});else window.scrollTo(0,y)}
 function H(){return w.getBoundingClientRect().height}
 function autoH(){w.style.height='auto';return H()}
 function refresh(){if(window.ScrollTrigger)ScrollTrigger.refresh()}
@@ -46,7 +57,7 @@ function open(){
   var hid=[].slice.call(w.querySelectorAll('.lg')).filter(function(e){return getComputedStyle(e).display==='none'});
   w.classList.add('open');
   var fresh=hid.filter(function(e){return getComputedStyle(e).display!=='none'}).concat(cta);
-  w.style.height='';
+  w.style.height='';keepToggleInView(b,fresh[0]);
   /* ringan: tinggi tidak dianimasikan (tidak ada layout per frame), tile baru cuma fade + naik sedikit (opacity/transform saja) */
   if(rm||!g){clr(fresh);refresh();busy=false;return}
   g.fromTo(fresh,{autoAlpha:0,y:14},{autoAlpha:1,y:0,duration:.4,stagger:{amount:.16},ease:'power2.out',clearProps:'opacity,visibility,transform',onComplete:function(){refresh();busy=false}});
@@ -65,7 +76,7 @@ function close(){
   if(rm||!g)collapse();
   else g.to(tiles.concat(cta).reverse(),{autoAlpha:0,duration:.14,stagger:{amount:.06},ease:'power1.in',onComplete:collapse});
 }
-b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expanded')==='true'?close():open()});
+b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expanded')==='true'?close():open();setTimeout(function(){busy=false},1500)});
 })();
 /* ===== Listen (Kolektikan Vol. 1) ===== */
 /* ===== LISTEN: multi-track player. SoundCloud Widget API (iframe tersembunyi) + waveform seek + jumlah play live ===== */
@@ -81,7 +92,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   var OPT={hide_related:true,show_comments:false,show_reposts:false,show_teaser:false,visual:false};
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  var idx=0,loadedIdx=-1,widget=null,wp=null,apiP=null;
+  var idx=0,loadedIdx=-1,widget=null,wp=null,apiP=null,loading=false,loadT=0;
   var playing=false,hasPlayed=false,dur=0,lastPos=0,lastTs=0,lastSec=-1;
   var growRaf=0,born=0,drag=false,dragRatio=0,hoverRatio=null,vis=false,raf=0;
   var spin=null,more=$('klMore'),isOpen=false,busy=false,xs=[].slice.call(root.querySelectorAll('.kl-list li.x'));
@@ -101,6 +112,8 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
     elTitle.appendChild(document.createTextNode(' Edit)'+t.slice(m.index+m[0].length)));
   }
   function status(t){elSt.textContent=t||''}
+  /* loading: selama lagu baru dimuat, tap lagi di baris yang sama diabaikan (kalau tidak, toggle() membatalkan auto-play) */
+  function setLoading(v){loading=v;clearTimeout(loadT);if(v)loadT=setTimeout(function(){loading=false},8000)}
   function fmtCount(v){
     if(v<10000)return v.toLocaleString('en-US');
     if(v<1e6)return (v/1000).toFixed(1).replace(/\.0$/,'')+'K';
@@ -192,17 +205,17 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
 
   /* See more / See less: tampil top 3, sisanya dibuka lewat tombol */
   function lv(){try{return typeof lenis!=='undefined'&&lenis}catch(e){return false}}
-  function setY(y){var l=lv();if(l)l.scrollTo(y,{immediate:true,force:true});else scrollTo(0,y)}
+  function setY(y){var l=lv();if(l)l.scrollTo(y,{immediate:true,force:true});else window.scrollTo(0,y)}
   function refresh(){if(window.ScrollTrigger)ScrollTrigger.refresh()}
   function clr(){xs.forEach(function(e){e.style.opacity='';e.style.visibility='';e.style.transform=''})}
   function setOpen(o){
     if(o===isOpen||busy)return;
     busy=true;isOpen=o;
     more.setAttribute('aria-expanded',o?'true':'false');
-    more.setAttribute('aria-label',o?'See fewer tracks':'See more tracks');
+    more.setAttribute('aria-label',o?'View fewer tracks':'View more tracks');
     var g=window.gsap;
     if(o){
-      root.classList.add('open');
+      root.classList.add('open');keepToggleInView(more,xs[0]);
       if(reduce||!g){busy=false;refresh();return}
       g.fromTo(xs,{autoAlpha:0,y:14},{autoAlpha:1,y:0,duration:.4,stagger:{amount:.16},ease:'power2.out',clearProps:'opacity,visibility,transform',onComplete:function(){busy=false;refresh()}});
     }else{
@@ -225,7 +238,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   }
   function ui(){
     root.classList.toggle('is-playing',playing);
-    elNow.textContent=playing?'Now playing':(hasPlayed?'Paused':'Tap to play');
+    elNow.textContent=playing?'Now playing':(hasPlayed?'Paused':'');
     if(spin&&window.gsap)gsap.to(spin,{timeScale:playing?1:0,duration:playing?1.2:2,ease:playing?'power2.in':'power2.out',overwrite:true});
     labels();
     if('mediaSession' in navigator)navigator.mediaSession.playbackState=playing?'playing':'paused';
@@ -276,14 +289,14 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   }
   function bindEvents(w){
     var E=SC.Widget.Events;
-    w.bind(E.PLAY,function(){var was=playing;playing=true;hasPlayed=true;lastTs=now();ui();if(!was)startGrow();status('');kick()});
+    w.bind(E.PLAY,function(){setLoading(false);var was=playing;playing=true;hasPlayed=true;lastTs=now();ui();if(!was)startGrow();status('');kick()});
     w.bind(E.PAUSE,function(){lastPos=curPos();playing=false;ui();draw()});
     w.bind(E.FINISH,function(){lastPos=0;playing=false;ui();go(idx+1>=n?0:idx+1,idx+1<n)});
     w.bind(E.PLAY_PROGRESS,function(e){
       if(!dur&&e.relativePosition>0){dur=e.currentPosition/e.relativePosition;elDur.textContent=fmt(dur)}
       lastPos=e.currentPosition;lastTs=now();
     });
-    if(E.ERROR)w.bind(E.ERROR,function(){playing=false;ui();status('This track can\u2019t be played right now.')});
+    if(E.ERROR)w.bind(E.ERROR,function(){setLoading(false);playing=false;ui();status('This track can\u2019t be played right now.')});
   }
   function ensure(i,auto){
     if(wp)return wp;
@@ -304,7 +317,11 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
     ensure(idx,auto).then(function(w){
       if(loadedIdx===idx){if(auto&&!playing)w.play();fetchMeta();return}
       loadedIdx=idx;
-      var o={auto_play:!!auto,callback:fetchMeta};for(var k in OPT)o[k]=OPT[k];
+      var at=idx;setLoading(true);
+      var o={auto_play:!!auto,callback:function(){
+        setLoading(false);fetchMeta();
+        if(auto)setTimeout(function(){if(idx===at&&!playing)status('Tap again to play')},1500);
+      }};for(var k in OPT)o[k]=OPT[k];
       w.load(rows[idx].dataset.url,o);
     }).catch(function(){});
   }
@@ -335,7 +352,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   /* kontrol */
   rows.forEach(function(r,i){
     r.addEventListener('click',function(){
-      if(i===idx&&widget&&loadedIdx===idx){widget.toggle();return}
+      if(i===idx&&widget&&loadedIdx===idx){if(loading)return;widget.toggle();return}
       go(i,true);
     });
   });
@@ -514,7 +531,7 @@ const D = reduce ? 0 : 1;
 const tl = gsap.timeline({ paused: true, onReverseComplete: () => gsap.set(menu, { visibility: 'hidden' }) })
   .set(menu, { visibility: 'visible' }, 0)
   .fromTo(menu, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.3 * D, ease: 'power4.inOut' }, 0)
-  .from('.menu-links .l', { y: 24, autoAlpha: 0, scale: 0.97, duration: 0.35 * D, stagger: 0.025 * D, ease: 'power4.out' }, 0.08 * D)
+  .from('.menu-links .l', { y: 24, autoAlpha: 0, duration: 0.35 * D, stagger: 0.025 * D, ease: 'power4.out' }, 0.08 * D)
   .from('.menu-soc a', { autoAlpha: 0, y: 12, duration: 0.22 * D, stagger: 0.02 * D, ease: 'power3.out' }, 0.22 * D);
 let open = false;
 const isDesk = () => matchMedia('(min-width:1200px)').matches;
