@@ -86,7 +86,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   var $=function(i){return document.getElementById(i)};
   var elCover=$('klCover'),elTitle=$('klTitle'),elNow=$('klNow'),
       elCur=$('klCur'),elDur=$('klDur'),elWf=$('klWf'),cv=$('klCv'),tip=$('klTip'),
-      elBox=$('klWfw'),elSt=$('klSt');
+      elBox=$('klWfw'),elSt=$('klSt'),elVol=$('klVol'),elMute=$('klMute'),elVolBox=$('klVolBox');
   var COVER0=elCover.getAttribute('src');
   var FLAGS='&hide_related=true&show_comments=false&show_reposts=false&show_teaser=false&visual=false';
   var OPT={hide_related:true,show_comments:false,show_reposts:false,show_teaser:false,visual:false};
@@ -102,15 +102,18 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   function fmt(ms){if(!isFinite(ms)||ms<0)ms=0;var s=Math.floor(ms/1000);return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2)}
   function slug(u){return u.replace(/[?#].*$/,'').split('/').pop()}
   /* judul: semua Plus Jakarta Sans, nama DJ (bagian "(NAMA Edit)") bold caps */
-  function setTitle(t){
-    var m=/\(([^()]+?)\s+Edit\)/i.exec(t);
+  var ALBUM='Kolektikan Vol. 1',curTitle='';
+  function paintTitle(){
     elTitle.textContent='';
+    if(!(hasPlayed||isOn())){elTitle.textContent=ALBUM;return}
+    var t=curTitle,m=/\(([^()]+?)\s+Edit\)/i.exec(t);
     if(!m){elTitle.textContent=t;return}
     var dj=document.createElement('span');dj.className='dj';dj.textContent=m[1];
     elTitle.appendChild(document.createTextNode(t.slice(0,m.index+1)));
     elTitle.appendChild(dj);
     elTitle.appendChild(document.createTextNode(' Edit)'+t.slice(m.index+m[0].length)));
   }
+  function setTitle(t){curTitle=t;paintTitle()}
   function status(t){elSt.textContent=t||''}
   /* optimistic UI: tampilan langsung berubah saat di-tap (opt=true/false), tanpa menunggu event dari iframe SoundCloud.
      Event PLAY/PAUSE yang asli menggantikannya. Kalau tidak ada konfirmasi dalam 4 dtk, kembali ke status asli. */
@@ -167,6 +170,19 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
     if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
     else ctx.fillRect(x,y,w,h);
   }
+  /* beat pulse: a track with data-bpm (and data-beat, the first beat in seconds) on its row gets a hit on every beat, locked to the playback clock.
+     Tracks without data-bpm keep the static waveform. Calibrate the values with the tap helper (open the page with #beatlab). */
+  var lastKp=-1;
+  function beatPulse(){
+    var k=0,r=rows[idx],bpm=parseFloat(r.dataset.bpm);
+    if(playing&&!reduce&&bpm>0){
+      var per=60/bpm,t=curPos()/1000-(parseFloat(r.dataset.beat)||0);
+      if(t>=0)k=Math.exp(-(t%per)/per*6);
+    }
+    k=Math.round(k*100)/100;
+    if(k!==lastKp){lastKp=k;root.style.setProperty('--kp',k)}
+    return k;
+  }
   function draw(){
     var w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;
     var dpr=Math.min(window.devicePixelRatio||1,2),W=Math.round(w*dpr),H=Math.round(h*dpr);
@@ -174,12 +190,13 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
     var ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
     var bw=w<360?2:(w<520?2.2:2.6),gap=w<520?1.5:1.8,step=bw+gap,nb=Math.max(10,Math.floor((w+gap)/step));
     var s=getWf(idx).s,L=s.length,p=drag?dragRatio:curRatio(),hv=hoverRatio,x0=(w-(nb*step-gap))/2;
-    var base=h*.7,gt=reduce?1e5:now()-born;
+    var base=h*.7,gt=reduce?1e5:now()-born,pulse=beatPulse();
     for(var i=0;i<nb;i++){
       var a=Math.floor(i*L/nb),b=Math.max(a+1,Math.floor((i+1)*L/nb)),m=0;
       for(var k=a;k<b;k++)if(s[k]>m)m=s[k];
       var e=Math.min(1,Math.max(0,(gt-(i/nb)*420)/460));e=1-Math.pow(1-e,3);
-      var up=Math.max(2,Math.pow(m,.8)*base*.96*e),dn=up*.34,pos=(i+.5)/nb,x=x0+i*step;
+      var pos=(i+.5)/nb,fo=pulse?pulse*(.1+.5*Math.max(0,1-Math.abs(pos-p)/.07)):0;
+      var up=Math.min(base-1,Math.max(2,Math.pow(m,.8)*base*.96*e*(1+fo))),dn=up*.34,x=x0+i*step;
       var on=pos<=p,pv=!on&&hv!==null&&pos<=hv;
       ctx.fillStyle=on?'#fff':(pv?'rgba(255,255,255,.62)':'rgba(255,255,255,.3)');
       rr(ctx,x,base-up,bw,up,bw/2);
@@ -241,7 +258,8 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   function ui(){
     var on=isOn();
     root.classList.toggle('is-playing',on);
-    elNow.textContent=on?'Now playing':(hasPlayed?'Paused':'');
+    elNow.textContent=on?'Now playing':(hasPlayed?'Paused':n+' tracks · Collecteak');
+    paintTitle();
     if(spin&&window.gsap)gsap.to(spin,{timeScale:on?1:0,duration:on?1.2:2,ease:on?'power2.in':'power2.out',overwrite:true});
     labels();if(on)draw();
     if('mediaSession' in navigator)navigator.mediaSession.playbackState=playing?'playing':'paused';
@@ -293,17 +311,98 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
       if(m.title)setTitle(m.title);
       dur=durs[i];elDur.textContent=fmt(dur);draw();
       if('mediaSession' in navigator&&window.MediaMetadata)
-        navigator.mediaSession.metadata=new MediaMetadata({title:elTitle.textContent,artist:rows[idx].dataset.by,album:'Kolektikan Vol. 1',artwork:[{src:COVER0,sizes:'500x500'}]});
+        navigator.mediaSession.metadata=new MediaMetadata({title:curTitle,artist:rows[idx].dataset.by,album:'Kolektikan Vol. 1',artwork:[{src:COVER0,sizes:'500x500'}]});
     });
+  }
+  /* beat lab (dev helper, only active when the URL contains #beatlab):
+     play a track, press T on every beat to estimate its BPM and first beat, press [ or ] to nudge the offset by 10 ms, press R to restart the taps.
+     The values are shown in a small box and logged to the console; copy them to the track row as data-bpm and data-beat. */
+  if(/beatlab/.test(location.hash+location.search)){
+    var taps=[],box=document.createElement('pre');
+    box.style.cssText='position:fixed;left:12px;bottom:12px;z-index:200;margin:0;padding:10px 12px;border-radius:10px;background:rgba(0,0,0,.72);color:#fff;font:12px/1.5 ui-monospace,Menlo,monospace;white-space:pre-wrap;pointer-events:none';
+    document.body.appendChild(box);
+    var show=function(){
+      var r=rows[idx];
+      box.textContent='BEAT LAB  T = tap on the beat  [ ] = nudge 10 ms  R = reset\n'+
+        'track '+(idx+1)+': taps '+taps.length+(taps.length<8?' (tap at least 8, 24+ is better)':'')+(r.dataset.bpm?'\ndata-bpm="'+r.dataset.bpm+'" data-beat="'+(r.dataset.beat||'0')+'"':'');
+      if(r.dataset.bpm)console.log('track '+(idx+1)+' data-bpm="'+r.dataset.bpm+'" data-beat="'+(r.dataset.beat||'0')+'"');
+    };
+    var estimate=function(){
+      if(taps.length<8)return;
+      /* rough period from the median gap, then a least-squares fit of tap time against beat index (precise BPM and first beat) */
+      var d=[],i;for(i=1;i<taps.length;i++)d.push(taps[i]-taps[i-1]);
+      d.sort(function(a,b){return a-b});
+      var p0=d[Math.floor(d.length/2)],n=taps.length,sx=0,sy=0,sxx=0,sxy=0,idxs=taps.map(function(t){return Math.round((t-taps[0])/p0)});
+      for(i=0;i<n;i++){sx+=idxs[i];sy+=taps[i];sxx+=idxs[i]*idxs[i];sxy+=idxs[i]*taps[i]}
+      var den=n*sxx-sx*sx;if(!den)return;
+      var per=(n*sxy-sx*sy)/den,a=(sy-per*sx)/n,r=rows[idx];
+      r.dataset.bpm=(60/per).toFixed(2);r.dataset.beat=(((a%per)+per)%per).toFixed(3);
+    };
+    document.addEventListener('keydown',function(e){
+      var k=e.key.toLowerCase(),r=rows[idx];
+      if(e.metaKey||e.ctrlKey||e.altKey)return;
+      if(k==='t'&&playing){taps.push(curPos()/1000);if(taps.length>64)taps.shift();estimate();show()}
+      else if(k==='r'){taps=[];delete r.dataset.bpm;delete r.dataset.beat;show()}
+      else if((k==='['||k===']')&&r.dataset.bpm){r.dataset.beat=((parseFloat(r.dataset.beat)||0)+(k===']'?.01:-.01)).toFixed(3);show()}
+    });
+    root.addEventListener('click',function(){taps=[];setTimeout(show,0)});
+    show();
+  }
+
+  /* volume: one SoundCloud widget exists per track, so the level is stored here and pushed to each widget when it is ready, when it plays and when the slider moves */
+  var vol=1,lastVol=1;
+  try{var sv=parseFloat(localStorage.getItem('kl-vol'));if(isFinite(sv)&&sv>=0&&sv<=1)vol=sv}catch(e){}
+  if(vol>0)lastVol=vol;
+  function applyVol(w){try{w.setVolume(vol*100)}catch(e){}}
+  function paintVol(){
+    if(!elVol)return;
+    var p=Math.round(vol*100);
+    elVol.value=p;elVol.style.setProperty('--v',p+'%');
+    elVolBox.dataset.level=vol===0?'0':(vol<.5?'1':'2');
+    elMute.setAttribute('aria-pressed',vol===0?'true':'false');
+    elMute.setAttribute('aria-label',vol===0?'Unmute':'Mute');
+  }
+  function setVol(v,keep){
+    vol=Math.max(0,Math.min(1,v));if(vol>0)lastVol=vol;
+    W.forEach(function(s){if(s&&s.ready)applyVol(s.w)});
+    paintVol();
+    if(!keep)try{localStorage.setItem('kl-vol',String(vol))}catch(e){}
+  }
+  if(elVol){
+    elVol.addEventListener('input',function(){setVol(elVol.value/100)});
+    elMute.addEventListener('click',function(){setVol(vol>0?0:(lastVol||.6))});
+    paintVol();
+  }
+  /* shuffle: when on, the next track is a random one that has not played yet in this round (a round restarts once every track has played) */
+  var elShuffle=$('klShuffle'),shuffle=false,bag=[];
+  try{shuffle=localStorage.getItem('kl-shuffle')==='1'}catch(e){}
+  function paintShuffle(){
+    if(!elShuffle)return;
+    elShuffle.setAttribute('aria-pressed',shuffle?'true':'false');
+    elShuffle.setAttribute('aria-label',shuffle?'Shuffle on':'Shuffle off');
+    elShuffle.title=shuffle?'Shuffle on':'Shuffle off';
+  }
+  function nextTrack(){
+    if(!shuffle)return {i:idx+1>=n?0:idx+1,auto:idx+1<n};
+    bag=bag.filter(function(k){return k!==idx});
+    if(!bag.length){for(var k=0;k<n;k++)if(k!==idx)bag.push(k)}
+    return {i:bag.splice(Math.floor(Math.random()*bag.length),1)[0],auto:true};
+  }
+  if(elShuffle){
+    elShuffle.addEventListener('click',function(){
+      shuffle=!shuffle;bag=[];paintShuffle();
+      try{localStorage.setItem('kl-shuffle',shuffle?'1':'0')}catch(e){}
+    });
+    paintShuffle();
   }
   function bindEvents(w,i){
     var E=SC.Widget.Events;
     w.bind(E.PLAY,function(){
       if(i!==idx){try{w.pause()}catch(e){}return}
-      setOpt(null);var was=playing;playing=true;hasPlayed=true;lastTs=now();ui();if(!was)startGrow();status('');kick();
+      applyVol(w);setOpt(null);var was=playing;playing=true;hasPlayed=true;lastTs=now();ui();if(!was)startGrow();status('');kick();
     });
     w.bind(E.PAUSE,function(){if(i!==idx)return;lastPos=curPos();playing=false;setOpt(null);ui();draw()});
-    w.bind(E.FINISH,function(){if(i!==idx)return;lastPos=0;playing=false;setOpt(null);ui();go(idx+1>=n?0:idx+1,idx+1<n)});
+    w.bind(E.FINISH,function(){if(i!==idx)return;lastPos=0;playing=false;setOpt(null);ui();var nx=nextTrack();go(nx.i,nx.auto)});
     w.bind(E.PLAY_PROGRESS,function(e){
       if(i!==idx)return;
       if(!dur&&e.relativePosition>0){dur=e.currentPosition/e.relativePosition;elDur.textContent=fmt(dur)}
@@ -320,7 +419,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
         s.w=w;
         w.bind(SC.Widget.Events.READY,function(){
           if(s.ready)return;
-          s.ready=true;bindEvents(w,i);resolve(w);fetchMeta(i);
+          s.ready=true;applyVol(w);bindEvents(w,i);resolve(w);fetchMeta(i);
         });
       });
     }).catch(function(){W[i]=null;throw 0});
@@ -430,7 +529,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
       navigator.mediaSession.setActionHandler('play',function(){var w=cw();if(w)w.play()});
       navigator.mediaSession.setActionHandler('pause',function(){var w=cw();if(w)w.pause()});
       navigator.mediaSession.setActionHandler('previoustrack',function(){go(idx-1,true)});
-      navigator.mediaSession.setActionHandler('nexttrack',function(){go(idx+1,true)});
+      navigator.mediaSession.setActionHandler('nexttrack',function(){go(nextTrack().i,true)});
       navigator.mediaSession.setActionHandler('seekto',function(d){if(dur&&d.seekTime!=null)commit(d.seekTime*1000/dur)});
     }catch(e){}
   }

@@ -307,7 +307,6 @@ body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .kl-lab{position:absolute;left:50%;top:50%;width:34%;aspect-ratio:1;margin:-17% 0 0 -17%;border-radius:50%;background:#14365b;display:grid;place-items:center;box-shadow:inset 0 0 0 2px rgba(0,0,0,.25),0 0 0 3px #0a0a0d}
 .kl-lab img{width:36%;display:block}
 @keyframes klspin{to{transform:rotate(360deg)}}
-.kl .sc-btn{margin-top:clamp(32px,4vw,44px)}
 
 /* title and status */
 .kl-ti{font:600 clamp(22px,2.6vw,32px)/1.2 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.01em;overflow-wrap:anywhere;color:var(--t1);text-wrap:balance}
@@ -340,7 +339,7 @@ body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .kl-wfw{display:flex;align-items:center;gap:12px;padding:0 0 clamp(16px,2vw,22px) clamp(34px,4.4vw,56px);animation:klin .45s cubic-bezier(.2,.7,.2,1)}
 @keyframes klin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .kl-wfw time{flex:none;min-width:34px;font:500 12px/1 'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;color:var(--t3)}
-.kl-wfw time:last-child{text-align:right}
+.kl-wfw time:last-of-type{text-align:right}
 .kl-wf{position:relative;flex:1;min-width:0;height:clamp(46px,4.4vw,58px);cursor:pointer;touch-action:pan-y;-webkit-tap-highlight-color:transparent;outline:none;-webkit-user-select:none;user-select:none}
 .kl-wf canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .kl-wf:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:4px}
@@ -753,10 +752,6 @@ footer{padding-top:calc(var(--sec)*.25)}
 .gal-sec::before,.listen::before,.book-sec::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:-14%;bottom:-14%;pointer-events:none;background:linear-gradient(180deg,rgba(30,40,62,0.000) 0.0%,rgba(30,40,62,0.006) 3.5%,rgba(30,40,62,0.020) 7.0%,rgba(30,40,62,0.042) 10.5%,rgba(30,40,62,0.070) 14.0%,rgba(30,40,62,0.102) 17.5%,rgba(30,40,62,0.136) 21.0%,rgba(30,40,62,0.170) 24.5%,rgba(30,40,62,0.202) 28.0%,rgba(30,40,62,0.230) 31.5%,rgba(30,40,62,0.252) 35.0%,rgba(30,40,62,0.266) 38.5%,rgba(30,40,62,0.272) 42.0%,rgba(30,40,62,0.272) 58.0%,rgba(30,40,62,0.266) 61.5%,rgba(30,40,62,0.252) 65.0%,rgba(30,40,62,0.230) 68.5%,rgba(30,40,62,0.202) 72.0%,rgba(30,40,62,0.170) 75.5%,rgba(30,40,62,0.136) 79.0%,rgba(30,40,62,0.102) 82.5%,rgba(30,40,62,0.070) 86.0%,rgba(30,40,62,0.042) 89.5%,rgba(30,40,62,0.020) 93.0%,rgba(30,40,62,0.006) 96.5%,rgba(30,40,62,0.000) 100.0%)}
 /* fine static gray noise only inside the gray band, fading together with the gradient (photos and video do not get speckled) */
 .gal-sec::after,.listen::after,.book-sec::after{content:"";position:absolute;z-index:-1;left:0;right:0;top:-14%;bottom:-14%;pointer-events:none;opacity:.18;background:var(--grain-d,none) 0 0/128px 128px;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 38%,#000 62%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 38%,#000 62%,transparent 100%)}
-/* "via SoundCloud" button: same as the other buttons, icon on the left */
-.sc-btn{margin-top:40px}
-@media(hover:hover){.sc-btn:hover svg{transform:none}}
-@media(max-width:767px){.sc-btn{margin-top:32px}}
 /* arrow overlap like "Scroll to explore": the old arrow exits to the top right, its copy enters from the bottom left (hover, desktop only) */
 .arx{position:relative;display:block;flex:none;overflow:hidden;width:var(--ax,14px);height:var(--ax,14px)}
 .arx svg{position:absolute;left:0;top:0;width:100%;height:100%}
@@ -791,7 +786,7 @@ footer{padding-top:calc(var(--sec)*.25)}
 /* mobile: button +4px (55 to 59) and section buttons as wide as the grid */
 @media(max-width:767px){
   .btn,.vm-btn,.tpk,.tpk-btn,.book-sec .bk-cta .btn{height:59px}
-  .vmore .btn,.sc-btn,.vm-btn{width:100%;min-width:0;justify-content:center}
+  .vmore .btn,.vm-btn{width:100%;min-width:0;justify-content:center}
   .vmore,.vm{display:flex}
 }
 /* ===== VISUAL FOCUS LEVELS (hierarchy) =====
@@ -822,16 +817,11 @@ footer{padding-top:calc(var(--sec)*.25)}
 @media(max-width:767px){.ft-r>div:nth-child(1) a{font-size:15px}.ft-mail a{font-size:16px}}
 
 /* ===== SOUNDCLOUD BUTTON: arrow at the top right. Desktop: overlap roll (.arx component), same direction as the other buttons ===== */
-.sc-btn .arx{--ax:14px;margin-left:2px}
-@media(hover:hover){.sc-btn:hover .arx svg{transform:none}} /* tablet with mouse: no roll, the arrow stays still */
-@media(hover:hover) and (max-width:1023px){.sc-btn:hover .arx svg:first-child{transform:translate(2px,-2px)}}
 
 /* ===== MOBILE AND TOUCH SCREENS: no hover animation, only a press feel (pressing shrinks and dims slightly, then returns quickly) ===== */
 @media(hover:none){
   .btn,.tic,.tpk-btn,.soc a{transition:transform .12s ease-out,opacity .12s ease-out,background-color .12s ease-out}
   .btn:active,.tic:active,.tpk-btn:active,.soc a:active{transform:scale(.96);opacity:.78}
-  .sc-btn .arx svg{transition:transform .12s ease-out}
-  .sc-btn:active .arx svg{transform:translate(1.5px,-1.5px)}
 }
 
 /* ===== SCROLL TO EXPLORE: more transparent text, thin glow on the arrow (filter on .arw so the glow is not clipped by overflow) ===== */
@@ -871,14 +861,6 @@ p,li{text-wrap:pretty}
   .sub{max-width:56ch}
 }
 
-/* ===== SOUNDCLOUD BUTTON: text button (no stroke, no fill, no cloud icon), text slightly darker than white; the arrow stays ===== */
-.sc-btn{height:auto;min-height:48px;padding:0 6px;gap:8px;border-color:transparent;background:none;color:rgba(255,255,255,.72)}
-.sc-btn::before{display:none}
-.sc-btn .c{color:rgba(255,255,255,.72)}
-.sc-btn .c::after{color:#fff}
-.sc-btn:focus-visible{transform:none;color:#fff;outline:1px solid rgba(255,255,255,.5);outline-offset:6px}
-@media(hover:hover){.sc-btn:hover{transform:none;color:#fff}}
-@media(max-width:767px){.sc-btn{display:flex;width:fit-content;min-width:0;margin:28px auto 0;justify-content:center}}
 /* ===== footer: Partnership at the bottom left + Press kit on its right (same style as the other links), 8px more gap to the wordmark ===== */
 .ft-r>div:nth-child(1){align-items:baseline}
 @media(max-width:767px){
@@ -916,7 +898,7 @@ p,li{text-wrap:pretty}
    Type scale: 36 title, 18 track row, 13 meta, 12 time. Spacing rhythm in multiples of 4 and 8.
    One left-aligned line in the right column: title, status, tracklist, waveform. */
 .listen>.sub{margin-top:16px;font-size:15px;line-height:1.55;color:var(--t3)}
-.kl{margin-top:clamp(48px,6vw,80px);column-gap:clamp(48px,7vw,112px)}
+.kl{margin-top:clamp(48px,6vw,80px);column-gap:clamp(24px,3vw,48px)}
 
 /* track title */
 .kl-side{text-align:left}
@@ -929,7 +911,7 @@ p,li{text-wrap:pretty}
 
 /* tracklist */
 .kl .kl-list{margin-top:clamp(14px,1.6vw,20px)}
-.kl .kl-row{grid-template-columns:clamp(28px,3vw,40px) minmax(0,1fr) auto 24px;gap:clamp(12px,1.6vw,20px);padding:20px 0;font:500 clamp(15px,1.35vw,18px)/1.3 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.005em}
+.kl .kl-row{grid-template-columns:var(--kn) minmax(0,1fr) auto var(--ki);gap:var(--kg);padding:20px 0;font:500 clamp(15px,1.35vw,18px)/1.3 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.005em}
 .kl .kl-row[aria-current="true"] .kl-t{font-weight:700}
 .kl .kl-n{font-size:13px;font-weight:500}
 .kl .kl-pc{font-size:13px;line-height:1}
@@ -937,7 +919,7 @@ p,li{text-wrap:pretty}
 .kl .kl-pc i{font-style:normal;font-weight:400;color:var(--t3)}
 
 /* waveform aligned with the track title column (number column width + gap) */
-.kl .kl-wfw{padding:0 0 20px calc(clamp(28px,3vw,40px) + clamp(12px,1.6vw,20px))}
+.kl .kl-wfw{padding:0 0 20px calc(var(--kn) + var(--kg))}
 
 @media(max-width:899px){
   .kl .kl-ti,.kl .kl-now,.kl .kl-st{text-align:center}
@@ -961,10 +943,6 @@ p,li{text-wrap:pretty}
 /* scroll is locked while the menu is open: reserve scrollbar space so the page does not widen by 15px (shift) */
 html{scrollbar-gutter:stable}
 
-/* mobile: "via SoundCloud" button 8px below the vinyl */
-@media(max-width:899px){
-  .kl .sc-btn{margin-top:8px}
-}
 
 /* mobile footer: everything centered (email, navigation links, social icons) */
 @media(max-width:767px){
@@ -973,3 +951,50 @@ html{scrollbar-gutter:stable}
   .ft-r>div:nth-child(1){display:flex;flex-wrap:wrap;justify-content:center;column-gap:20px;row-gap:0}
   .ft-r .soc{justify-content:center}
 }
+
+/* tracklist: tighter number gap, "Most listened" header, glass play button */
+.kl{--kn:16px;--kg:10px;--ki:36px}
+@media(max-width:899px){.kl{--ki:34px}}
+.kl .kl-n{font-variant-numeric:tabular-nums}
+.kl .kl-ic{width:var(--ki);height:var(--ki);border-radius:50%;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.22);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .3s,color .3s,border-color .3s,transform .3s cubic-bezier(.2,.7,.2,1)}
+.kl .kl-ic svg{width:14px;height:14px}
+.kl .kl-ic .ic-play{margin-left:2px}
+.kl .kl-row[aria-current="true"] .kl-ic{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.5)}
+.kl .kl-row:focus-visible .kl-ic{background:#fff;color:#0a0a0a}
+@media(hover:hover){.kl .kl-row:hover .kl-ic{background:#fff;color:#0a0a0a;border-color:#fff;transform:scale(1.08)}}
+
+/* SoundCloud link: icon-only glass circle on the top right corner of the cover (same style as the play buttons) */
+.kl-sc{position:absolute;z-index:3;top:clamp(10px,calc(var(--s)*.035),18px);left:calc(var(--s) - 48px - clamp(10px,calc(var(--s)*.035),18px));display:grid;place-items:center;width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.25);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;-webkit-tap-highlight-color:transparent;transition:background .3s,color .3s,border-color .3s,transform .3s cubic-bezier(.2,.7,.2,1)}
+.kl-sc:focus-visible{background:#fff;color:#0a0a0a;border-color:#fff;outline:0}
+@media(hover:hover){.kl-sc:hover{background:#fff;color:#0a0a0a;border-color:#fff;transform:scale(1.08)}}
+
+/* volume and shuffle: second row of the waveform box (volume is hidden on touch devices, where the system volume is used) */
+/* the waveform box is a 3 column grid: time | waveform | time. The volume sits on the second row, icon under the current time and slider under the waveform */
+.kl-wfw{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;row-gap:6px}
+.kl-vol{display:contents}
+.kl-vb,.kl-sh{position:relative;display:grid;place-items:center;width:16px;height:16px;padding:0;border:0;background:none;color:rgba(255,255,255,.72);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .25s}
+.kl-vb::before,.kl-sh::before{content:"";position:absolute;inset:-8px}
+.kl-vb{grid-column:1;grid-row:2;justify-self:start}
+.kl-sh{grid-column:3;grid-row:2;justify-self:end;color:rgba(255,255,255,.4)}
+.kl-sh[aria-pressed="true"]{color:#fff}
+.kl-sh[aria-pressed="true"]::after{content:"";position:absolute;left:50%;bottom:-7px;width:3px;height:3px;margin-left:-1.5px;border-radius:50%;background:#fff}
+.kl-vb svg,.kl-sh svg{width:16px;height:16px;display:block}
+.kl-vb:focus-visible,.kl-sh:focus-visible{color:#fff;outline:2px solid #fff;outline-offset:4px;border-radius:4px}
+.kl-vol[data-level="0"] .w1,.kl-vol[data-level="0"] .w2,.kl-vol[data-level="1"] .w2{display:none}
+.kl-vol:not([data-level="0"]) .wx{display:none}
+.kl-vr{--v:100%;-webkit-appearance:none;appearance:none;grid-column:2;grid-row:2;width:100%;height:16px;margin:0;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.kl-vr::-webkit-slider-runnable-track{height:3px;border-radius:99px;background:linear-gradient(to right,#fff var(--v),rgba(255,255,255,.22) var(--v))}
+.kl-vr::-moz-range-track{height:3px;border-radius:99px;background:rgba(255,255,255,.22)}
+.kl-vr::-moz-range-progress{height:3px;border-radius:99px;background:#fff}
+.kl-vr::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:12px;height:12px;margin-top:-4.5px;border:0;border-radius:50%;background:#fff;transition:transform .2s cubic-bezier(.2,.7,.2,1)}
+.kl-vr::-moz-range-thumb{width:12px;height:12px;border:0;border-radius:50%;background:#fff}
+.kl-vr:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:99px}
+@media(hover:hover){
+  .kl-vb:hover{color:#fff}
+  .kl-sh:hover{color:#fff}
+  .kl-vr:hover::-webkit-slider-thumb{transform:scale(1.25)}
+}
+@media(hover:none),(pointer:coarse){.kl-vb,.kl-vr{display:none}}
+
+/* beat pulse: the vinyl label swells slightly on every beat (--kp is 1 on the hit and decays to 0, set from app.js) */
+.kl .kl-lab{transform:scale(calc(1 + var(--kp,0)*.05))}
