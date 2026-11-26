@@ -968,21 +968,21 @@ html{scrollbar-gutter:stable}
 .kl-sc:focus-visible{background:#fff;color:#0a0a0a;border-color:#fff;outline:0}
 @media(hover:hover){.kl-sc:hover{background:#fff;color:#0a0a0a;border-color:#fff;transform:scale(1.08)}}
 
-/* volume and shuffle: second row of the waveform box (volume is hidden on touch devices, where the system volume is used) */
+/* volume and shuffle: second row of the waveform box (same layout on desktop and touch) */
 /* the waveform box is a 3 column grid: time | waveform | time. The volume sits on the second row, icon under the current time and slider under the waveform */
 .kl-wfw{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;row-gap:6px}
 .kl-vol{display:contents}
-.kl-vb,.kl-sh{position:relative;display:grid;place-items:center;width:16px;height:16px;padding:0;border:0;background:none;color:rgba(255,255,255,.72);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .25s}
+.kl-vb,.kl-sh{position:relative;display:grid;place-items:center;width:16px;height:16px;padding:0;border:0;background:none;color:rgba(255,255,255,.72);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .25s,filter .35s}
 .kl-vb::before,.kl-sh::before{content:"";position:absolute;inset:-8px}
 .kl-vb{grid-column:1;grid-row:2;justify-self:start}
 .kl-sh{grid-column:3;grid-row:2;justify-self:end;color:rgba(255,255,255,.4)}
-.kl-sh[aria-pressed="true"]{color:#fff}
-.kl-sh[aria-pressed="true"]::after{content:"";position:absolute;left:50%;bottom:-7px;width:3px;height:3px;margin-left:-1.5px;border-radius:50%;background:#fff}
+/* shuffle on: soft white glow only, no dot (a dot would add height to the row) */
+.kl-sh[aria-pressed="true"]{color:#fff;filter:drop-shadow(0 0 3px rgba(255,255,255,.75)) drop-shadow(0 0 8px rgba(255,255,255,.3))}
 .kl-vb svg,.kl-sh svg{width:16px;height:16px;display:block}
 .kl-vb:focus-visible,.kl-sh:focus-visible{color:#fff;outline:2px solid #fff;outline-offset:4px;border-radius:4px}
 .kl-vol[data-level="0"] .w1,.kl-vol[data-level="0"] .w2,.kl-vol[data-level="1"] .w2{display:none}
 .kl-vol:not([data-level="0"]) .wx{display:none}
-.kl-vr{--v:100%;-webkit-appearance:none;appearance:none;grid-column:2;grid-row:2;width:100%;height:16px;margin:0;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.kl-vr{--v:100%;-webkit-appearance:none;appearance:none;grid-column:2;grid-row:2;width:100%;height:16px;margin:0;background:transparent;cursor:pointer;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
 .kl-vr::-webkit-slider-runnable-track{height:3px;border-radius:99px;background:linear-gradient(to right,#fff var(--v),rgba(255,255,255,.22) var(--v))}
 .kl-vr::-moz-range-track{height:3px;border-radius:99px;background:rgba(255,255,255,.22)}
 .kl-vr::-moz-range-progress{height:3px;border-radius:99px;background:#fff}
@@ -994,7 +994,16 @@ html{scrollbar-gutter:stable}
   .kl-sh:hover{color:#fff}
   .kl-vr:hover::-webkit-slider-thumb{transform:scale(1.25)}
 }
-@media(hover:none),(pointer:coarse){.kl-vb,.kl-vr{display:none}}
+/* touch: the slider is draggable, bigger hit area (28px) with negative margin so the row keeps the desktop height; thumb grows while dragging (no hover on touch) */
+@media(hover:none),(pointer:coarse){
+  .kl-vr{height:28px;margin:-6px 0}
+  .kl-vr::-webkit-slider-runnable-track{height:4px}
+  .kl-vr::-moz-range-track,.kl-vr::-moz-range-progress{height:4px}
+  .kl-vr::-webkit-slider-thumb{width:16px;height:16px;margin-top:-6px}
+  .kl-vr::-moz-range-thumb{width:16px;height:16px}
+  .kl-vr:active::-webkit-slider-thumb{transform:scale(1.2)}
+  .kl-vr:active::-moz-range-thumb{transform:scale(1.2)}
+}
 
 /* beat pulse: the vinyl label swells slightly on every beat (--kp is 1 on the hit and decays to 0, set from app.js) */
 .kl .kl-lab{transform:scale(calc(1 + var(--kp,0)*.05))}
