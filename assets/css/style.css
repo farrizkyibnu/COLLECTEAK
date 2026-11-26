@@ -1,4 +1,4 @@
-:root{--lg:34px;--bh:50px;--bg:#04070f;--mut:#8b909a;--line:rgba(255,255,255,.12);--p:40px;--np:56px}
+:root{--lg:34px;--bh:50px;--bg:#04070f;--line:rgba(255,255,255,.12);--p:40px;}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:#fff;font:400 14px/1.45 "Plus Jakarta Sans",system-ui,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -6,12 +6,12 @@ button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid #8fb4ff;outline-offset:3px}
 .lenis.lenis-stopped{overflow:hidden}
 
-/* placeholder gambar */
+/* image placeholder */
 .ph{position:relative;overflow:hidden;background:linear-gradient(140deg,#101a2e,#070b14 55%,#1b0d12)}
 .ph::after{content:attr(data-l);position:absolute;left:12px;top:12px;font-size:11px;color:rgba(255,255,255,.28)}
 
 /* navbar */
-.nav{position:fixed;top:0;left:0;right:0;height:118px;z-index:30;display:grid;grid-template-columns:1fr auto;align-items:center;padding:0 var(--p);transition:height .45s cubic-bezier(.2,.7,.2,1)}
+.nav{position:fixed;top:0;left:0;right:0;height:118px;z-index:30;display:grid;grid-template-columns:1fr auto;align-items:center;padding:0 var(--p)}
 .nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:rgba(4,7,15,.42);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);box-shadow:0 1px 0 rgba(255,255,255,.06);opacity:0;transition:opacity .45s}
 .logo{display:block;line-height:0}
 .logo img{display:block;width:var(--lg);height:var(--lg)}
@@ -19,18 +19,17 @@ button{font:inherit;color:inherit}
 .nav.sc::before{opacity:1}
 .nav nav{display:flex;align-items:center;justify-self:end}
 .nav nav a{font-size:13px;color:var(--t2)}
-.pill-menu{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.55);-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);transition:background .35s,border-color .35s;border-radius:99px;height:var(--bh);padding:0 24px;font-size:14px;font-weight:500;cursor:pointer;position:relative;z-index:40}
+.pill-menu{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.55);-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);border-radius:99px;height:var(--bh);padding:0 24px;font-size:14px;font-weight:500;cursor:pointer;position:relative;z-index:40}
 
-/* tombol CTA + glow biru */
-.btn{white-space:nowrap;flex:none;position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:10px;border:1px solid #fff;border-radius:99px;height:55px;padding:0 24px;font-size:13px;font-weight:500;transition:transform .6s cubic-bezier(.2,.7,.2,1),color .4s}
-/* fill naik dari bawah: ujung atas melengkung lalu menjadi rata */
-.btn::before{content:"";position:absolute;z-index:-1;left:-10%;width:120%;bottom:0;height:100%;background:#fff;border-radius:50% 50% 0 0/100% 100% 0 0;transform:translateY(105%);transition:transform .65s cubic-bezier(.2,.7,.2,1),border-radius .65s cubic-bezier(.2,.7,.2,1)}
-/* teks: tiap huruf roll ke atas bergantian, huruf baru (gelap) naik dari bawah */
+/* CTA button with blue glow */
+.btn{white-space:nowrap;flex:none;position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:10px;border:1px solid #fff;border-radius:99px;height:55px;padding:0 24px;font-size:13px;font-weight:500}
+/* fill rises from the bottom: the top edge is curved, then becomes flat */
+.btn::before{content:"";position:absolute;z-index:-1;left:-10%;width:120%;bottom:0;height:100%;background:#fff;border-radius:50% 50% 0 0/100% 100% 0 0;transform:translateY(105%)}
+/* label: letters roll up one after another, the new (dark) letter rises from below */
 .btn .bt{display:flex;flex:none;overflow:hidden;height:1.35em;line-height:1.35em;height:round(1.35em,1px);line-height:round(1.35em,1px);white-space:pre}
-.btn .c{position:relative;display:block;color:#fff;transition:transform .6s cubic-bezier(.2,.7,.2,1) calc(var(--i)*18ms)}
+.btn .c{position:relative;display:block;color:#fff}
 .btn .c[data-c=" "]{min-width:.34em}
 .btn .c::after{content:attr(data-c);position:absolute;left:0;top:100%;color:#0a0a0a}
-.btn svg{transition:transform .55s cubic-bezier(.2,.7,.2,1),color .4s}
 .btn:focus-visible{transform:scale(.94);color:#0a0a0a}
 .btn:focus-visible::before{transform:translateY(0);border-radius:0}
 .btn:focus-visible .c{transform:translateY(-100%)}
@@ -41,10 +40,6 @@ button{font:inherit;color:inherit}
   .btn:hover svg{transform:translateY(3px)}
 }
 @media(hover:hover){.pill-menu:hover{background:rgba(255,255,255,.16);border-color:#fff}}
-.nav .btn-nav{justify-self:end;height:var(--bh);padding:0 24px 0 20px;font-size:14px;gap:9px}
-.btn .bi{display:block;flex:none;width:15px;height:15px;transition:transform .5s cubic-bezier(.2,.7,.2,1),color .4s}
-@media(hover:hover){.nav .btn-nav:hover .bi{transform:rotate(-14deg) scale(1.08)}
-  .bform .btn:hover .bi{transform:translateX(4px)}}
 .btn-solid{background:#fff;color:#0a0a0a}
 .btn-solid::before{background:#0a0a0a}
 .btn-solid .c{color:#0a0a0a}
@@ -52,40 +47,32 @@ button{font:inherit;color:inherit}
 .btn-solid:focus-visible{color:#fff}
 @media(hover:hover){.btn-solid:hover{color:#fff}}
 
-@media(min-width:1280px){.hero-cta p{font-size:16px;line-height:1.4;line-height:round(1.4em,1px);margin-bottom:16px}}
+/* hero bottom strip: running text */
 
-/* strip bawah hero: running text */
-.hero-strip{position:absolute;z-index:2;left:0;right:0;bottom:0;display:flex;align-items:center;gap:40px;padding:20px var(--p);border-top:1px solid var(--line)}
-
-/* running text LED di strip bawah hero: selebar strip */
+/* LED running text in the hero bottom strip, full strip width */
 .led{flex:1;min-width:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
 .led-t{display:flex;width:max-content;animation:ledrun 45s linear infinite}
 .led-t span{flex:none;padding-right:1em;white-space:nowrap;text-transform:uppercase;font-family:'Doto','DotGothic16',ui-monospace,monospace;font-weight:300;font-size:20px;line-height:20px;letter-spacing:.08em;color:#fff}
 @keyframes ledrun{to{transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){.led-t{animation:none}}
-@media(prefers-reduced-motion:reduce){.hero-bg>img{animation:none}}
 
 /* hero */
-.hero{position:relative;height:max(640px,min(940px,100vh));height:max(640px,min(940px,100svh));overflow:hidden}
+.hero{position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:-24px;background:radial-gradient(90% 55% at 30% 18%,rgba(190,20,20,.55),transparent 60%),radial-gradient(60% 40% at 80% 10%,rgba(190,20,20,.35),transparent 60%),#05070d}
-.hero-bg::after{display:none}
-.hero-bg>img{object-position:50% 25%;animation:drift 44s ease-in-out infinite alternate}
-@keyframes drift{from{transform:scale(1.02)}to{transform:scale(1.06) translate(-.8%,-.6%)}}
-.hero-bg{--hd:.42} /* tingkat gelap foto hero, 0 sampai 1 */
+.hero-bg>img{animation:drift 44s ease-in-out infinite alternate}
+@keyframes drift{from{transform:scale(1.02)}to{transform:scale(1.06) translate(-.8%,-.6%)}} /* hero photo darkness, 0 to 1 */
 .hero-bg::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(55% 45% at 22% 32%,rgba(4,7,15,calc(var(--hd)*.6)),transparent),
              radial-gradient(40% 38% at 78% 64%,rgba(4,7,15,calc(var(--hd)*.7)),transparent),
              rgba(4,7,15,var(--hd))}
-.hero::after{content:"";position:absolute;inset:auto 0 0;height:380px;background:linear-gradient(transparent,rgba(4,7,15,.72) 55%,var(--bg))}
+.hero::after{content:"";position:absolute;inset:auto 0 0}
 .wm{white-space:nowrap;position:absolute;z-index:2;left:var(--p);bottom:128px;font-family:'Bebas Neue','Anton',Impact,sans-serif;font-size:14vw;font-weight:400;line-height:.9;line-height:round(.9em,1px);letter-spacing:-.02em}
-/* tiap huruf bisa flip ke samping (animasinya lewat JS + Web Animations, hanya transform) */
+/* each letter can flip sideways (animated in JS with the Web Animations API, transform only) */
 .wl{display:inline-block}
 .wm b,.giant b{font-weight:800;font-style:italic}
 .hero-cta{position:absolute;z-index:2;right:var(--p);bottom:140px;width:400px}
 .hero-cta p{font-size:18px;line-height:1.45;line-height:round(1.45em,1px);margin-bottom:26px}
-.cta-row{display:flex;gap:10px;flex-wrap:wrap}
-@media(min-width:1280px){.cta-row{justify-content:flex-end}}
-/* scroll to explore: kanan bawah sejajar dasar wordmark, memudar setelah user mulai scroll */
+/* scroll to explore: bottom right, aligned with the wordmark baseline, fades out once the user scrolls */
 .scue{display:inline-flex;align-items:center;gap:10px;line-height:1;line-height:round(1em,1px);font-size:14px;font-weight:300;letter-spacing:.01em;color:var(--t3);transition:color .3s,opacity .5s}
 .scue svg{flex:none;animation:scbob 1.8s ease-in-out infinite}
 @keyframes scbob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
@@ -93,19 +80,13 @@ button{font:inherit;color:inherit}
 html.hs .scue{opacity:0;pointer-events:none}
 @media(prefers-reduced-motion:reduce){.scue svg{animation:none}}
 
-/* section umum */
-.sec h2{font-size:34px;font-weight:300;text-align:center;color:#d9dce2;letter-spacing:-.01em}
-#places{padding-top:150px}
-.vc{--cw:862px;cursor:grab;-webkit-user-select:none;user-select:none;overscroll-behavior-x:contain;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-top:60px;scrollbar-width:none}
-.vc::-webkit-scrollbar{display:none}
-.vcard{flex:0 0 var(--cw);aspect-ratio:3/2;scroll-snap-align:start;margin-right:1px}
-.vcard figcaption{position:absolute;left:14px;bottom:14px;z-index:2;display:flex;align-items:center;gap:7px;font-size:12px}
-.vc::after{content:"";flex:0 0 calc(100% - var(--cw))}
-.vc.drag,.tal.drag{scroll-snap-type:none;cursor:grabbing}
+/* shared section styles */
+.sec h2{font-size:34px;font-weight:300;text-align:center;letter-spacing:-.01em}
+.tal.drag{scroll-snap-type:none;cursor:grabbing}
 .dots{display:flex;justify-content:flex-end;align-items:center;gap:6px;margin-top:18px;padding:0 var(--p)}
 .dots button{--p:0;padding:10px 3px;background:none;border:0;cursor:pointer}
 .dots button:last-child{margin-right:-3px}
-.dots b{display:block;position:relative;width:8px;height:8px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.28);transition:width .6s cubic-bezier(.2,.7,.2,1),background .3s}
+.dots b{display:block;position:relative;width:8px;height:8px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.28)}
 @media(hover:hover){.dots button:hover b{background:rgba(255,255,255,.55)}}
 .dots .on b{width:56px;background:rgba(255,255,255,.35)}
 .dots b::after{content:"";position:absolute;inset:0;background:#fff;border-radius:inherit;transform:scaleX(var(--p));transform-origin:left}
@@ -115,19 +96,19 @@ html.hs .scue{opacity:0;pointer-events:none}
 /* talent */
 .tprog{display:none}
 .tal-sec{padding:190px var(--p) 0}
-.tal{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:95px} /* desktop: 4 kolom x 3 baris (11 performer + kartu CTA = 12), kartu lebih besar, selalu di dalam grid halaman */
+.tal{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:95px} /* desktop: 4 columns x 3 rows (11 performers + CTA card = 12), larger cards, always inside the page grid */
 .tcard>img{object-position:50% 50%}
 .tcard{aspect-ratio:2/3;background:#0a0d14}
 .tcard::after{color:rgba(0,0,0,.35)}
 
-/* galeri */
+/* gallery */
 .gal-sec{padding:200px var(--p) 0}
-.gal{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:100px calc(var(--p)*-1) 0} /* full-bleed: keluar dari padding section, selebar layar */
+.gal{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:100px calc(var(--p)*-1) 0} /* full-bleed: breaks out of the section padding to the full screen width */
 .col{display:flex;flex-direction:column;gap:4px}
-.gal .s{aspect-ratio:4/5}.gal .t{aspect-ratio:3/5} /* tile lebih tinggi: galeri lebih panjang ke bawah */
+.gal .s{aspect-ratio:4/5}.gal .t{aspect-ratio:3/5} /* taller tiles: a longer gallery */
 .gal .ph>img{object-position:50% 32%}
 .gal .ph:nth-child(odd){background:linear-gradient(140deg,#0b2447,#05070d 60%,#2a1204)}
-@media(max-width:767px){ /* gallery mobile: 2 kolom selang-seling, foto tinggi (5 unit) dan panjang (3 unit) bergantian. kiri T-P-T-P, kanan P-T-P-T */
+@media(max-width:767px){ /* mobile gallery: 2 alternating columns, tall (5 units) and wide (3 units) photos. Left T-W-T-W, right W-T-W-T */
   .gal{grid-template-columns:repeat(2,1fr);grid-auto-rows:16.5vw}
   .col{display:contents}
   .gal .ph{aspect-ratio:auto}
@@ -143,31 +124,28 @@ html.hs .scue{opacity:0;pointer-events:none}
 
 /* footer */
 footer{padding:260px var(--p) 0;overflow:hidden}
-.ft{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start}
-.need{font-size:56px;font-weight:300;letter-spacing:-.03em;line-height:1;line-height:round(1em,1px);margin-bottom:34px}
+.ft{position:relative;z-index:2;display:flex}
 .ft-r{display:flex;gap:56px}
 .ft-r div{display:flex;flex-direction:column;gap:12px;min-width:130px}
 .ft-r .soc{flex-direction:row;gap:10px;min-width:0}
 .ft-r .soc a{font-size:0}
-.ft-r h3{font-size:24px;font-weight:400;margin-bottom:2px}
-.ft-r a{font-size:20px;color:var(--t2);transition:color .3s}
-@media(hover:hover){.ft-r a:hover{color:#fff}}
+.ft-r h3{font-weight:400;margin-bottom:2px}
+.ft-r a{transition:color .3s}
 .giant{position:relative;padding:.05em 0;margin:130px 0 0;font-size:14.6vw;font-weight:400;line-height:.78;line-height:round(.78em,1px);letter-spacing:-.03em;white-space:nowrap;text-align:left}
 
 @property --b{syntax:'<color>';inherits:false;initial-value:#fff}
-.gt{--b:#fff;display:inline-block;background:linear-gradient(110deg,var(--b) 46%,#fff 50%,var(--b) 54%) var(--sp,100%) 0/300% 100% no-repeat;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transition:--b .6s}
+.gt{--b:#fff;display:inline-block}
 .gt.shine{--b:#c4c9d3}
 .gt.glitch{filter:drop-shadow(4px 0 #ff2d55) drop-shadow(-4px 0 rgba(255,255,255,.4))}
 .gc{--gp:220px;position:absolute;left:0;right:0;bottom:0;top:calc(var(--gp)*-1);width:100%;height:calc(100% + var(--gp));pointer-events:none;background:transparent}
 .bl{display:inline-block;width:0;height:0;vertical-align:baseline}
 
-
-/* gambar asli: taruh <img> di dalam kotak .ph */
+/* real image: place the <img> inside the .ph box */
 .ph>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-user-drag:none;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
 @media(hover:hover){.ph:hover>img{transform:scale(1.05)}}
 .ph:has(>img)::after{display:none}
-.vcard::before,.tcard::before,.gal .ph::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:#fff;opacity:0;transition:opacity .5s}
-@media(hover:hover){.vcard:hover::before,.tcard:hover::before,.gal .ph:hover::before{opacity:.1}}
+.tcard::before,.gal .ph::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:#fff;opacity:0;transition:opacity .5s}
+@media(hover:hover){.tcard:hover::before,.gal .ph:hover::before{opacity:.1}}
 .hero-bg{will-change:transform}
 @media(max-width:1199px){.tal{cursor:grab;-webkit-user-select:none;user-select:none}}
 
@@ -184,23 +162,23 @@ footer{padding:260px var(--p) 0;overflow:hidden}
 .iskip{left:var(--p);background:none;border:0;cursor:pointer;text-transform:uppercase}
 @media(prefers-reduced-motion:reduce){#intro{display:none}}
 
-/* overlay menu (mobile/tablet) */
+/* menu overlay (mobile and tablet) */
 .overlay{position:fixed;inset:0;z-index:25;display:flex;flex-direction:column;gap:26px;padding:104px var(--p) 28px;overflow-y:auto;background:rgba(4,7,15,.94);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);clip-path:inset(0 0 100% 0)}
 .menu-links{display:flex;flex-direction:column}
 .l{display:flex;align-items:center;gap:16px;padding:22px 2px;border-bottom:1px solid var(--line)}
-.l b{flex:1;font-size:32px;font-weight:300;letter-spacing:-.02em;line-height:1.1;line-height:round(1.1em,1px);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
-.l svg{opacity:.55;transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .3s}
+.l b{flex:1;font-size:32px;font-weight:300;letter-spacing:-.02em;line-height:1.1;line-height:round(1.1em,1px)}
+.l svg{opacity:.55}
 @media(hover:hover){.l:hover b{transform:translateX(8px)}.l:hover svg{transform:translate(3px,-3px);opacity:1}}
 .soc{display:flex;gap:10px}
 .soc a{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;transition:background .3s,transform .45s cubic-bezier(.2,.7,.2,1)}
 @media(hover:hover){.soc a:hover{background:rgba(255,255,255,.2);transform:translateY(-3px)}}
 .menu-soc{padding-top:4px}
-/* ikon socmed di menu dianimasikan GSAP: transisi CSS (mis. dari @media(hover:none)) tidak boleh ikut campur, kalau tidak ikon macet di opacity 0 */
+/* The menu social icons are animated by GSAP. CSS transitions (for example from @media(hover:none)) must not interfere, otherwise the icons get stuck at opacity 0. */
 .menu-soc a{transition:none!important}
-/* footer ending: copyright + kredit, di bawah wordmark */
+/* footer ending: copyright and credit, below the wordmark */
 .ft-end{position:relative;z-index:2;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 14px;margin:0;padding:28px 0 calc(28px + env(safe-area-inset-bottom,0px));font-size:13px;line-height:1.5;letter-spacing:.01em;color:var(--mut);text-align:center}
 .ft-end i{font-style:normal;opacity:.45}
-/* kredit tardsworks: glow lembut + hover desktop: tiap huruf roll ke atas bergantian, salinan baru (lebih terang) naik dari bawah (overlap) */
+/* tardsworks credit: soft glow. On desktop hover each letter rolls up in turn and a brighter copy rises from below (overlap) */
 .ft-end .cr-line{display:inline-flex;align-items:center;gap:.55em;white-space:pre}
 .ft-cr{display:inline-flex;align-items:center;gap:.32em;color:#fff;font-weight:500;cursor:pointer;filter:drop-shadow(0 0 4px rgba(130,175,255,.28));transition:filter .5s cubic-bezier(.2,.7,.2,1)}
 .cr-logo{flex:none;display:block;position:relative;top:.1em;width:.82em;height:auto;color:#fbfcff;transition:color .5s cubic-bezier(.2,.7,.2,1)}
@@ -216,7 +194,6 @@ footer{padding:260px var(--p) 0;overflow:hidden}
 @media(prefers-reduced-motion:reduce){.cr-c,.ft-cr{transition:none}}
 @media(max-width:767px){.ft-end{flex-direction:column;gap:4px;font-size:12px;padding-top:24px}.ft-end i{display:none}}
 
-
 .side{display:none}
 @media(min-width:1200px){
   .overlay{display:none}
@@ -226,60 +203,47 @@ footer{padding:260px var(--p) 0;overflow:hidden}
 }
 .side a{transition:color .3s}@media(hover:hover){.side a:hover{color:#fff}}
 
-/* tablet dan mobile */
+/* tablet and mobile */
 @media(max-width:1199px){
     .nav{padding:0 var(--p);height:84px}
   :root{--lg:30px;--bh:46px}
   .nav.sc{height:64px}
   .nav.open::before,.nav.sc.open::before{opacity:0}
-  .vc{--cw:70vw}
   .tal{display:grid;grid-template-columns:none;grid-template-rows:repeat(2,auto);grid-auto-flow:column;grid-auto-columns:calc((100% - 16px)/3);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;gap:8px;margin:60px 0 0;padding:0;scrollbar-width:none}
   .tprog{display:block;height:2px;margin:22px 0 0;background:rgba(255,255,255,.18);border-radius:2px;overflow:hidden}
   .tprog i{display:block;height:100%;width:30%;background:#fff;border-radius:2px}
   .tal::-webkit-scrollbar{display:none}
   .tw{scroll-snap-align:start}
   .tal-sec,.gal-sec{padding-top:110px}
-  #places{padding-top:120px}
-  footer{padding-top:140px}
-  .giant{margin-top:90px}
 }
 @media(max-width:1279px){
-  .hero{display:flex;flex-direction:column;justify-content:flex-end;gap:22px;padding:0 var(--p) 120px;height:max(600px,88vh);height:max(600px,88svh)}
+  .hero{flex-direction:column;justify-content:flex-end}
   .wm{position:static;font-size:22vw}
   .hero-cta{position:static;width:min(440px,100%)}
 }
 @media(max-width:767px){
   :root{--p:24px}
   .sec h2{font-size:26px}
-  .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px;padding:84px var(--p) 104px}
+  .hero{flex-direction:column}
   .wm,.hero-cta{position:static;width:auto}
   .wm{font-size:24vw}
-  .hero-cta p{font-size:16px;max-width:340px;margin:0 auto 22px}
-  .cta-row{justify-content:center}
-  .hero-strip{flex-direction:column;align-items:flex-start;gap:12px;padding:14px var(--p)}.led{width:100%;flex:none}.led-t span{font-size:17px;line-height:17px}
-  .vc{--cw:84vw}
+  .hero-cta p{font-size:16px}.led{width:100%;flex:none}.led-t span{font-size:17px;line-height:17px}
   
-  .tal{grid-template-rows:auto;grid-auto-columns:80%;padding:0 var(--p);scroll-padding:0 var(--p)} /* mobile: 1 baris, kartu pertama sejajar grid kiri (snap start), kartu berikutnya mengintip di kanan */
+  .tal{grid-template-rows:auto} /* mobile: single row, the first card aligns with the left grid edge (snap start), the next card peeks in from the right */
   .tw{scroll-snap-align:start}
-  .ft{flex-direction:column;gap:48px}
-  .need{font-size:40px}
-  .ft-r{gap:32px 40px;flex-wrap:wrap}.ft-r div{min-width:120px}
-  .ft-r h3{font-size:20px}.ft-r a{font-size:17px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
-
-/* HP kecil: hero pas satu layar sampai lebar 480px */
-@media(max-width:767px){.hero{height:100vh;height:100svh;min-height:540px;max-height:900px}.nav{grid-template-columns:1fr auto auto}.nav .btn-nav{margin-left:8px;max-width:160px;padding:0 18px 0 15px;transition:transform .6s cubic-bezier(.2,.7,.2,1),color .4s,max-width .5s cubic-bezier(.2,.7,.2,1),padding .5s cubic-bezier(.2,.7,.2,1),margin .5s cubic-bezier(.2,.7,.2,1),opacity .35s,visibility 0s}.nav:not(.ct) .btn-nav,.nav.open .btn-nav{max-width:0;margin-left:0;padding:0;border-width:0;opacity:0;visibility:hidden;pointer-events:none;transition:max-width .5s cubic-bezier(.2,.7,.2,1),padding .5s cubic-bezier(.2,.7,.2,1),margin .5s cubic-bezier(.2,.7,.2,1),opacity .35s,visibility 0s .5s}}
+/* small phones: the hero fits one screen up to 480px wide */
 @media(max-width:400px){
   :root{--p:20px}
   .hero{padding-bottom:112px}
   .wm{font-size:24vw}
   .hero-cta p{font-size:15px;max-width:300px}
 }
-@media(max-width:340px){.nav .btn-nav,.pill-menu{padding:0 13px}.pill-menu{gap:6px}}
+@media(max-width:340px){.pill-menu{padding:0 13px}.pill-menu{gap:6px}}
 @media(max-width:480px) and (max-height:660px){
-  .hero{gap:14px;padding-bottom:100px}
+  .hero{padding-bottom:100px}
   .hero-cta p{font-size:14.5px;margin-bottom:16px}
 }
 
@@ -296,42 +260,21 @@ footer{padding:260px var(--p) 0;overflow:hidden}
 .vid:focus-visible .play{background:#fff;color:#0a0a0a;transform:scale(1.08)}@media(hover:hover){.vid:hover .play{background:#fff;color:#0a0a0a;transform:scale(1.08)}}
 .vmeta{display:block;margin-top:16px}
 .vmeta b{display:block;font-size:15px;font-weight:500;line-height:1.35;line-height:round(1.35em,1px)}
-.vmeta small{display:block;margin-top:4px;font-size:12px;color:var(--mut)}
-.vmore{display:flex;justify-content:center;margin-top:56px}
+.vmeta small{display:block;margin-top:4px}
+.vmore{display:flex;justify-content:center}
 @media(hover:hover){.vmore .btn:hover svg{transform:translate(2px,-2px)}}
 @media(max-width:1199px){.vid-sec{padding-top:110px}}
-@media(max-width:767px){.vids{grid-template-columns:1fr;gap:28px;margin-top:48px}.vmore{margin-top:40px}}
+@media(max-width:767px){.vids{grid-template-columns:1fr;gap:28px;margin-top:48px}}
 
-/* about: tipografi editorial, kata menyala saat di-scroll */
+/* about: editorial typography, words light up on scroll */
 .about{padding:160px var(--p) 0}
-.ab-eye{display:flex;align-items:center;gap:14px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
-.ab-eye::before{content:"";width:36px;height:1px;background:currentColor}
-.statement{max-width:1180px;margin-top:40px;font-size:clamp(30px,4.7vw,68px);font-weight:300;line-height:1.1;line-height:round(1.1em,1px);letter-spacing:-.035em;color:#fff}
-.statement .w{display:inline-block}
-.statement .hl{font-weight:800;font-style:italic;letter-spacing:-.045em}
-.statement .dim{color:var(--mut)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:96px;border-top:1px solid var(--line)}
-.stats>div{padding:28px 24px 0 0}
-.stats b{display:block;font-size:clamp(40px,5.4vw,80px);font-weight:300;letter-spacing:-.04em;line-height:1;line-height:round(1em,1px);font-variant-numeric:tabular-nums}
-.stats span{display:block;margin-top:12px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
 /* listen */
 .listen{padding:160px var(--p) 0}
 /* booking form */
-.bform{max-width:820px;margin:72px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:28px 32px}
-.bform label{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
-.bform label.full{grid-column:1/-1}
-.bform input,.bform select,.bform textarea{display:block;width:100%;margin-top:8px;padding:10px 0 12px;background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;color:#fff;font-family:inherit;font-size:17px;font-weight:400;line-height:1.4;line-height:round(1.4em,1px);letter-spacing:0;text-transform:none;outline:none;transition:border-color .3s;color-scheme:dark}
-.bform select option{background:#04070f}
-.bform input:focus,.bform select:focus,.bform textarea:focus{border-color:#fff}
-.bform textarea{resize:vertical}
-.bform .btn{grid-column:1/-1;justify-self:center;cursor:pointer;gap:10px}
 @media(max-width:767px){
-  .about{padding-top:110px}.listen,.book{padding-top:110px}
-  .stats{margin-top:56px}.stats>div{padding-right:8px}.stats span{font-size:10px}
-  .bform{grid-template-columns:1fr;margin-top:44px}
-  .bform .btn{justify-self:stretch;width:100%;justify-content:center}}
+  .about{padding-top:110px}.listen,.book{padding-top:110px}}
 @media(max-width:1199px){.about{padding-top:130px}.listen{padding-top:130px}.book{padding-top:130px}}
-/* kursor kustom (hanya perangkat dengan mouse) */
+/* custom cursor (mouse devices only) */
 .cur{display:none}
 @media(hover:hover) and (pointer:fine){
   .cur{display:grid;place-items:center;position:fixed;left:0;top:0;z-index:95;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#fff;pointer-events:none;opacity:0;transition:width .4s cubic-bezier(.2,.7,.2,1),height .4s cubic-bezier(.2,.7,.2,1),margin .4s cubic-bezier(.2,.7,.2,1),opacity .3s}
@@ -341,16 +284,16 @@ footer{padding:260px var(--p) 0;overflow:hidden}
   .cur.big span{opacity:1}
   [data-cur]{cursor:none}
 }
-/* grain film */
+/* film grain */
 body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.035;background:var(--grain,none) 0 0/128px 128px}
 
 /* ===== LISTEN: multi-track player ===== */
-.kl{--s:min(30vw,400px);width:min(1240px,100%);margin:var(--hg) auto 0;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:clamp(40px,6vw,96px);align-items:center;position:relative}
+.kl{--s:min(30vw,400px);width:min(1240px,100%);margin:var(--hg) auto 0;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;position:relative}
 .kl *,.kl *::before,.kl *::after{box-sizing:border-box}
 .kl-left{display:flex;flex-direction:column;align-items:center}
-.kl-side{min-width:0;text-align:center}
+.kl-side{min-width:0}
 
-/* sleeve + piringan hitam: piringan geser keluar saat play */
+/* sleeve and vinyl: the vinyl slides out on play */
 .kl-art{position:relative;width:calc(var(--s)*1.515);height:var(--s);flex:none;transform:translateX(calc(var(--s)*.12));transition:transform 1s cubic-bezier(.2,.7,.2,1)}
 .kl.is-playing .kl-art{transform:none}
 .kl-cover{position:absolute;left:0;top:0;width:var(--s);height:var(--s);z-index:2;overflow:hidden;border-radius:6px;background:#14365b;box-shadow:0 30px 70px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.08)}
@@ -366,7 +309,7 @@ body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 @keyframes klspin{to{transform:rotate(360deg)}}
 .kl .sc-btn{margin-top:clamp(32px,4vw,44px)}
 
-/* judul + status */
+/* title and status */
 .kl-ti{font:600 clamp(22px,2.6vw,32px)/1.2 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.01em;overflow-wrap:anywhere;color:var(--t1);text-wrap:balance}
 .kl-ti .dj{font:800 1em/1 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.02em;text-transform:uppercase}
 .kl-now{margin-top:12px;font:300 clamp(14px,1.6vw,16px)/1 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.04em;color:var(--t3)}
@@ -392,7 +335,7 @@ body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .kl-row:focus-visible{outline:2px solid #fff;outline-offset:2px;border-radius:4px}
 .kl .vm{margin-top:clamp(28px,3.4vw,44px)}
 
-/* waveform: pindah ke baris lagu yang aktif */
+/* waveform: moves to the active track row */
 .kl:not(.is-playing) .kl-wfw{display:none}
 .kl-wfw{display:flex;align-items:center;gap:12px;padding:0 0 clamp(16px,2vw,22px) clamp(34px,4.4vw,56px);animation:klin .45s cubic-bezier(.2,.7,.2,1)}
 @keyframes klin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -422,10 +365,8 @@ body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
   .kl-wfw time{min-width:30px;font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){.kl-disc{animation:none!important}.kl-wfw{animation:none}.kl-art,.kl-vinyl,.kl-ic{transition:none!important}}
-.sclink{display:inline-flex;align-items:center;gap:6px;margin-top:28px;font-size:12px;letter-spacing:.08em;color:var(--mut);transition:color .3s}
-@media(hover:hover){.sclink:hover{color:#fff}}
 
-/* worked with: dinding logo bergaris tipis, hover = fill naik dari bawah (bahasa yang sama dengan tombol) */
+/* worked with: thin-lined logo wall, hover fill rises from the bottom (same language as the buttons) */
 .part-sec{padding:180px var(--p) 0}
 .wall{margin-top:95px;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
 .lg{position:relative;isolation:isolate;display:grid;place-items:center;aspect-ratio:3/2;border-right:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;color:#fff}
@@ -433,105 +374,89 @@ body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .lg img{max-width:62%;max-height:40%;width:auto;height:auto;opacity:.78;transition:filter .3s ease,opacity .3s ease}
 .lg img.sq{max-width:44%;max-height:58%}
 .lg small{position:absolute;left:18px;bottom:15px;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#0a0a0a;opacity:0;transition:opacity .3s ease}
-.lg-cta{place-items:end start;padding:20px;font-size:clamp(17px,1.5vw,22px);font-weight:300;line-height:1.15;line-height:round(1.15em,1px);letter-spacing:-.01em;transition:color .3s ease}
-.lg-cta svg{position:absolute;right:20px;top:20px;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
 .lg:active::before{opacity:1}
 .lg:active img{filter:invert(1);opacity:1}
 @media(hover:hover){
   .lg:hover::before{opacity:1}
   .lg:hover img{filter:invert(1);opacity:1}
   .lg:hover small{opacity:1}
-  .lg-cta:hover{color:#0a0a0a}.lg-cta:hover svg{transform:translate(3px,-3px)}
 }
 @media(min-width:1920px){.lg{aspect-ratio:16/9}}
 @media(max-width:1199px){.part-sec{padding-top:130px}.wall{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:767px){.part-sec{padding-top:110px}.wall{grid-template-columns:repeat(2,1fr);margin-top:44px}.lg{aspect-ratio:4/3}.lg-cta{grid-column:1/-1;aspect-ratio:auto;min-height:104px}}
-/* talent: hitam putih sebagai default, berwarna saat hover atau saat kartu ada di tengah carousel (HP) */
+@media(max-width:767px){.part-sec{padding-top:110px}.wall{grid-template-columns:repeat(2,1fr);margin-top:44px}.lg{aspect-ratio:4/3}}
+/* talent: black and white by default, colored on hover or when the card is centered in the carousel (phones) */
 .tcard>img{filter:grayscale(1) contrast(1.06);transition:filter .7s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
 .tw.on .tcard>img,.tw.tap .tcard>img{filter:none}
 @media(hover:hover){.tw:hover .tcard>img{filter:none}}
-/* ===== PERBAIKAN (audit) ===== */
+/* ===== GLOBAL SAFEGUARDS ===== */
 html,body{max-width:100%}
-main,footer{overflow-x:clip} /* tidak ada elemen yang bisa mendorong halaman melebar ke samping */
+main,footer{overflow-x:clip} /* nothing may push the page wider than the viewport */
 img,svg,video,iframe{max-width:100%}
-/* anti-flash: elemen yang akan dianimasikan disembunyikan sebelum GSAP siap (class .js dilepas oleh script) */
+/* anti-flash: elements that will be animated stay hidden until GSAP is ready (the .js class is removed by the script) */
 .js .rv,.js .stg,.js .nav,.js .wm,.js .hero-cta,.js .scue{visibility:hidden}
-/* Lenis (css resmi) */
+/* Lenis (official CSS) */
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
-/* overlay menu: tidak dirender saat tertutup (backdrop-filter layar penuh mahal) */
+/* menu overlay: not rendered while closed (a full-screen backdrop-filter is expensive) */
 .overlay{visibility:hidden}
-/* hero: animasi CSS berhenti saat hero di luar layar */
+/* hero: CSS animations stop while the hero is off-screen */
 .hero.off,.hero.off *{animation-play-state:paused!important}
-/* carousel: snap dimatikan selama animasi GSAP */
-.vc.anim{scroll-snap-type:none}
+/* carousel: snap is disabled during GSAP animations */
 /* form */
-.bform label{min-width:0}
-.bform input[type=date]{min-width:0;-webkit-appearance:none;appearance:none;min-height:46px}
-.bform input[aria-invalid=true]{border-color:#ff5a5f}
-@media(max-width:480px){
-  .lg-cta{font-size:17px}
-}
-@media(max-width:340px){
-  .need{font-size:34px}
-  .l b{font-size:28px}
-}
-/* shine wordmark hero (aktif sementara lewat class .sh) */
-.wm{--wb:#d3d9e6;color:var(--wb)} /* hierarki warna: wordmark off-white dingin, putih murni hanya untuk kilau */
+/* hero wordmark shine (temporarily active through the .sh class) */
+.wm{--wb:#d3d9e6;color:var(--wb)} /* color hierarchy: a cool off-white wordmark, pure white only for the shine */
 .wm .sh{background:linear-gradient(110deg,var(--wb) 41%,#fff 50%,var(--wb) 59%) var(--sp,100%) 0/300% 100% no-repeat;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-/* glow yang ikut pita shine: lapisan bayangan statis per huruf, hanya opacity-nya yang berubah (tidak ada blur yang dihitung ulang per frame) */
+/* glow that follows the shine band: a static shadow layer per letter, only its opacity changes (no blur is recomputed per frame) */
 .wl{position:relative}
 .wl::after{content:attr(data-c);position:absolute;left:0;top:0;pointer-events:none;color:transparent;-webkit-text-fill-color:transparent;text-shadow:0 0 .09em rgba(245,249,255,.95),0 0 .26em rgba(210,226,255,.65);opacity:var(--g,0)}
 .wm .sh .wl::after{will-change:opacity}
-.hero-cta p{color:var(--t3)} /* teks sekunder: kontras diturunkan supaya wordmark tetap fokus utama (kontras tetap > 4.5:1) */
-/* ===== RITME SPASI (UX law) =====
-   Proximity: judul lebih dekat ke isinya daripada ke section sebelumnya (jarak antar section = ±2,5x jarak judul ke isi).
-   Konsistensi: semua section memakai satu skala (kelipatan 8px), bukan angka acak 145 sampai 200. */
+.hero-cta p{color:var(--t3)} /* secondary text: contrast is lowered so the wordmark stays the main focus (contrast stays above 4.5:1) */
+/* ===== SPACING RHYTHM =====
+   Proximity: a heading sits closer to its content than to the previous section (section gap is about 2.5x the heading gap).
+   Consistency: every section uses one scale (multiples of 8px) instead of ad hoc values from 145 to 200. */
 :root{--sec:224px;--hg:72px;--ft:272px}
 @media(max-width:1199px){:root{--sec:168px;--hg:56px;--ft:200px}}
 @media(max-width:767px){:root{--sec:128px;--hg:48px;--ft:160px}}
-#places,.tal-sec,.gal-sec,.vid-sec,.listen,.part-sec,.book{padding-top:var(--sec)}
-.vc,.tal,.gal,.vids,.wall,.bform{margin-top:var(--hg)}
+.tal-sec,.gal-sec,.vid-sec,.listen,.part-sec,.book{padding-top:var(--sec)}
+.tal,.gal,.vids,.wall{margin-top:var(--hg)}
 .vmore{margin-top:48px}
-footer{padding-top:var(--ft)}
 .giant{margin-top:calc(var(--sec)*.75)}
 @media(max-width:767px){.vmore{margin-top:40px}}
-/* ===== RESPON KLIK: transisi lebih singkat, tanpa delay tap di layar sentuh ===== */
+/* ===== TAP RESPONSE: shorter transitions, no tap delay on touch screens ===== */
 a,button,[role=button],label,select,summary{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .btn{transition:transform .35s cubic-bezier(.2,.7,.2,1),color .25s}
 .btn::before{transition:transform .4s cubic-bezier(.2,.7,.2,1),border-radius .4s cubic-bezier(.2,.7,.2,1)}
 .btn .c{transition:transform .35s cubic-bezier(.2,.7,.2,1) calc(var(--i)*10ms)}
 .btn svg{transition:transform .35s cubic-bezier(.2,.7,.2,1),color .25s}
-.btn .bi{transition:transform .35s cubic-bezier(.2,.7,.2,1),color .25s}
 .pill-menu{transition:background .2s,border-color .2s,transform .12s}
 .pill-menu:active{transform:scale(.96)}
 .dots b{transition:width .4s cubic-bezier(.2,.7,.2,1),background .2s}
 .l b{transition:transform .3s cubic-bezier(.2,.7,.2,1)}
 .l svg{transition:transform .3s cubic-bezier(.2,.7,.2,1),opacity .2s}
-/* performer: tiap talent = .tw (kartu). Semua kontrol ada DI DALAM kartu.
-   Aktif saat hover (desktop) / kartu di tengah carousel (.on) / di-tap (.tap) / fokus KEYBOARD (:focus-visible, supaya klik mouse tidak bikin kartu nyangkut terbuka):
-   - kartu jadi berwarna, nama muncul di TENGAH
-   - bar glass naik dari BAWAH: Instagram, SoundCloud, tombol Press kit (ikon dokumen), dengan shine yang looping */
+/* performers: each talent is a .tw card and all controls live inside the card.
+   Active on hover (desktop), when centered in the carousel (.on), when tapped (.tap), or on KEYBOARD focus (:focus-visible, so a mouse click never leaves a card stuck open):
+   - the card turns to color and the name appears in the CENTER
+   - a glass bar rises from the BOTTOM: Instagram, SoundCloud and the Press kit button (document icon), with a looping shine */
 .tw{position:relative;min-width:0}
 .tinfo{position:absolute;z-index:2;inset:0;display:flex;align-items:center;justify-content:center;padding:14px;text-align:center;pointer-events:none}
 .tinfo::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(4,7,15,.3) 0%,rgba(4,7,15,.1) 26%,rgba(4,7,15,.1) 70%,rgba(4,7,15,.34) 100%);opacity:0;transition:opacity .4s}
 .tname{position:relative;margin:0;font-family:'Bebas Neue','Anton',Impact,sans-serif;font-weight:400;font-size:clamp(32px,3.2vw,48px);line-height:.88;line-height:round(.88em,1px);letter-spacing:-1.4px;text-transform:uppercase;color:#fff;text-wrap:balance;text-shadow:0 2px 24px rgba(0,0,0,.35);opacity:0;transform:scale(1.06);transition:opacity .4s,transform .55s cubic-bezier(.2,.7,.2,1)}
-/* desktop: bar glass naik dari BAWAH = ikon SoundCloud + Instagram (kiri, .tsocial) + tombol Press kit (kanan, .tpk-btn). .tsocial dan .tpk punya timing sama, jadi naik bersamaan */
+/* desktop: the glass bar rises from the BOTTOM = SoundCloud and Instagram icons (left, .tsocial) + Press kit button (right, .tpk-btn). .tsocial and .tpk share the same timing, so they rise together */
 .tw{--tbh:68px}
 .tic{display:flex;align-items:center;flex:none;width:40px;height:40px;justify-content:center;border:1px solid rgba(255,255,255,.7);border-radius:50%;color:#fff;background:transparent;transition:background .3s,color .3s,border-color .3s}
 .tic svg{display:block;width:18px;height:18px}
-.tic.tsc svg{width:21px;height:21px} /* glyph awan lebih lebar-pendek: diperbesar, garis tetap 1px sama seperti ikon lain */
+.tic.tsc svg{width:21px;height:21px} /* cloud glyph is wider and shorter: scaled up, stroke stays 1px like the other icons */
 .tic:focus-visible{background:#fff;color:#0a0a0a;border-color:#fff}
 .tsocial{position:absolute;z-index:4;left:16px;bottom:0;height:var(--tbh);display:flex;align-items:center;gap:10px;pointer-events:none;visibility:hidden;transform:translateY(110%);will-change:transform;transition:transform .55s cubic-bezier(.2,.7,.2,1),visibility 0s linear .55s}
 .tpk{position:absolute;z-index:3;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:flex-end;height:var(--tbh);padding:0 16px;overflow:hidden;border-radius:26px 26px 0 0;background:rgba(12,16,28,.4);-webkit-backdrop-filter:blur(18px) saturate(1.15);backdrop-filter:blur(18px) saturate(1.15);color:#fff;pointer-events:none;visibility:hidden;transform:translateY(110%);will-change:transform;transition:transform .55s cubic-bezier(.2,.7,.2,1),visibility 0s linear .55s,background .3s}
 .tpk>*{position:relative;z-index:1}
-.tpk-btn{height:49px;padding:0 20px;gap:9px;font-size:13px} /* .btn .btn-solid: fill naik + huruf roll saat hover */
+.tpk-btn{height:49px;padding:0 20px;gap:9px;font-size:13px} /* .btn .btn-solid: fill rises and letters roll on hover */
 .tpk-btn svg{flex:none;width:17px;height:17px}
 .tpk-btn:focus-visible svg{transform:translateY(-1px) scale(1.06)}@media(hover:hover){.tpk-btn:hover svg{transform:translateY(-1px) scale(1.06)}}
 .tpk::after{content:"";position:absolute;z-index:0;top:0;bottom:0;left:0;width:55%;background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.2) 50%,transparent 100%);transform:translateX(-140%) skewX(-20deg);pointer-events:none}
 @keyframes tpkShine{0%{transform:translateX(-140%) skewX(-20deg)}55%,100%{transform:translateX(300%) skewX(-20deg)}}
-/* ---- keadaan aktif ---- */
+/* ---- active state ---- */
 .tw:is(:has(:focus-visible),.on,.tap) .tinfo::before{opacity:1}
 .tw:is(:has(:focus-visible),.on,.tap) .tname{opacity:1;transform:none}
 .tw:is(:has(:focus-visible),.on,.tap) :is(.tsocial,.tpk){pointer-events:auto;visibility:visible;transform:none;transition:transform .55s cubic-bezier(.2,.7,.2,1),visibility 0s,background .3s}
@@ -547,93 +472,71 @@ a,button,[role=button],label,select,summary{touch-action:manipulation;-webkit-ta
   .tpk:hover{background:rgba(12,16,28,.55)}
 }
 @media(hover:none){.btn:active{opacity:.8}.tic:active,.tpk-btn:active{opacity:.7}}
-@media(hover:none){.tw{--tbh:72px}.tic{height:44px;width:44px}.tpk-btn{height:51px}} /* layar sentuh: target tap lebih besar */
-/* kartu video loop (kartu terakhir) */
-.tvid{background:#050407 url("../img/ui/video-poster.webp") center/118% auto no-repeat;border:1px solid var(--line)} /* poster = cadangan kalau video belum/tidak termuat */
+@media(hover:none){.tw{--tbh:72px}.tic{height:44px;width:44px}.tpk-btn{height:51px}} /* touch screens: larger tap targets */
+/* loop video card (last card) */
+.tvid{background:#050407 url("../img/ui/video-poster.webp") center/118% auto no-repeat;border:1px solid var(--line)} /* poster = fallback when the video has not loaded or cannot load */
 .tvid::before{display:none}
 .tloop{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform:scale(1.18);pointer-events:none}
-.tcta{position:absolute;z-index:2;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:6px;padding:64px 14px 16px;background:linear-gradient(to top,rgba(4,7,15,.94) 0%,rgba(4,7,15,.7) 50%,rgba(4,7,15,0) 100%);pointer-events:auto}
+.tcta{position:absolute;z-index:2;left:0;right:0;bottom:0;display:flex;flex-direction:column;padding:64px 14px 16px;background:linear-gradient(to top,rgba(4,7,15,.94) 0%,rgba(4,7,15,.7) 50%,rgba(4,7,15,0) 100%);pointer-events:auto}
 .tsub{font-size:12px;line-height:1.4;line-height:round(1.4em,1px);color:var(--t2)}
-.tcta small{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--t2)}
+.tcta small{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase}
 .tcta p{margin:0;font-family:'Bebas Neue','Anton',Impact,sans-serif;font-size:clamp(22px,2.1vw,30px);line-height:.92;line-height:round(.92em,1px);letter-spacing:-.5px;text-transform:uppercase;color:#fff;text-wrap:balance}
 @media(max-width:1199px){.tvid{border:0}}
-/* scroll cue mobile: turun mendekati running text, tetap ada jarak */
-.scue-m{display:none}
+/* mobile scroll cue: moved down close to the running text, keeping some distance */
 @media(max-width:767px){
   .hero-cta .scue{display:none}
-  .scue-m{display:flex;position:absolute;z-index:2;left:0;right:0;bottom:72px;justify-content:center}
 }
 
-/* ===== BRANDS: Lineup Poster. Tanpa garis dan tanpa hover; hierarki = ukuran (headliner > tier 2 > tier 3), urutan = urutan highlight ===== */
-.br-sec{padding:var(--sec) var(--p) 0}
-.lu{--w-deus:clamp(210px,17vw,320px);--w-gs:clamp(200px,20vw,380px);--w-uq:clamp(64px,6vw,112px);--w-hw:clamp(130px,13vw,240px);--w-jw:clamp(112px,11vw,200px);--w-rt:clamp(120px,12vw,220px);
-  list-style:none;margin-top:var(--hg);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;row-gap:14px}
+/* ===== BRANDS: lineup poster. No lines and no hover; hierarchy is size (headliner > tier 2 > tier 3), order follows the highlight order ===== */
+.lu{
+  list-style:none;margin-top:var(--hg);display:flex;flex-wrap:wrap;justify-content:center;align-items:center}
 .lu-brk{flex:0 0 100%;height:0}
 .lu-i{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:center;padding:var(--py) var(--px);color:#fff}
 .lu-i img{display:block;width:var(--w);height:auto;opacity:.78}
-.lu-i.t1{--py:38px;--px:60px}
-.lu-i.t2{--py:28px;--px:44px}
-.lu-i.t3{--py:22px;--px:34px}
 .lu-c{margin-left:clamp(8px,1.6vw,28px)}
-.lu-cta{margin-top:28px}
-.lu-cta a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:300;letter-spacing:.01em;color:var(--t3);padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.28);transition:color .3s,border-color .3s}
-.lu-cta svg{transition:transform .45s cubic-bezier(.2,.7,.2,1)}
-@media(hover:hover){
-  .lu-cta a:hover{color:#fff;border-color:#fff}.lu-cta a:hover svg{transform:translate(3px,-3px)}
-}
 @media(max-width:767px){
-  .lu{--w-deus:46vw;--w-gs:42vw;--w-uq:15vw;--w-hw:24vw;--w-jw:21vw;--w-rt:23vw;row-gap:8px}
-  .lu-i.t1{--py:22px;--px:30px}.lu-i.t2{--py:16px;--px:18px}.lu-i.t3{--py:12px;--px:7px}
   .lu-c{margin-left:4px}
-  .lu-cta{margin-top:20px}
 }
-/* ===== UPDATE MOBILE + VENUE ===== */
-/* bug carousel: overflow-x:auto membuat overflow-y ikut auto. Kartu .stg yang belum selesai reveal (y:48) menambah area scroll vertikal, jadi isi carousel bisa ketarik naik. Dikunci ke horizontal saja. */
-.vc{overflow-y:hidden}
+/* ===== MOBILE AND VENUE ===== */
+/* carousel fix: overflow-x:auto also turns overflow-y into auto. A .stg card that has not finished its reveal (y:48) adds vertical scroll area, so the carousel content could be pulled upward. Locked to horizontal only. */
 @media(max-width:1199px){.tal{overflow-y:hidden}}
 
-/* venue: grid rapat bergaris (stroke) */
-
+/* venue: tight grid with strokes */
 
 @media(max-width:767px){
-  /* talent: kartu lebih besar (68% lebar layar), carousel full-bleed, kartu samping tetap mengintip */
+  /* talent: larger cards (68% of the screen width), full-bleed carousel, side cards still peek in */
   .tal{margin-left:calc(-1*var(--p));margin-right:calc(-1*var(--p));padding:0 var(--p);scroll-padding:0 var(--p);grid-auto-columns:80vw;gap:8px}
   .tname{font-size:50px}
   .tic{height:46px;width:46px}
-  /* mobile: ikon IG (atas) + SoundCloud (bawah) turun dari ATAS kanan kartu; Press kit = pil glass penuh naik dari BAWAH */
+  /* mobile: IG (top) and SoundCloud (bottom) icons drop in from the TOP right of the card; Press kit = full glass pill rising from the BOTTOM */
   .tsocial{left:auto;right:10px;top:10px;bottom:auto;height:auto;flex-direction:column;gap:10px;transform:translateY(-170%)}
   .tsocial .tin{order:-1}
   .tsocial .tic{border:0;background:rgba(12,16,28,.4);-webkit-backdrop-filter:blur(18px) saturate(1.15);backdrop-filter:blur(18px) saturate(1.15);transition:none}
   .tsocial .tic svg{width:20px;height:20px}
   .tsocial .tic.tsc svg{width:23px;height:23px}
-  .tsocial .tic:hover,.tsocial .tic:focus-visible{background:rgba(12,16,28,.4);color:#fff} /* tanpa stroke dan tanpa animasi hover di mobile */
+  .tsocial .tic:hover,.tsocial .tic:focus-visible{background:rgba(12,16,28,.4);color:#fff} /* no strokes and no hover animation on mobile */
   .tpk{left:12px;right:12px;bottom:14px;height:55px;padding:0;justify-content:stretch;border-radius:99px;transform:translateY(190%)}
   .tpk-btn{flex:1;height:100%;border:0;background:transparent;color:#fff;font-size:13px;justify-content:center}
   .tpk-btn::before{background:#fff}
   .tpk-btn .c{color:#fff}
   .tpk-btn .c::after{color:#0a0a0a}
-  /* tanpa animasi hover/fokus di mobile: tidak ada scale, fill naik, huruf roll, atau gerak ikon */
+  /* no hover or focus animation on mobile: no scale, fill rise, letter roll or icon motion */
   .tpk-btn,.tpk-btn:hover,.tpk-btn:focus-visible{transform:none;color:#fff;transition:none}
   .tpk-btn::before,.tpk-btn:hover::before,.tpk-btn:focus-visible::before{display:none}
   .tpk-btn .c,.tpk-btn:hover .c,.tpk-btn:focus-visible .c{transform:none;transition:none}
   .tpk-btn .c::after{display:none}
   .tpk-btn svg,.tpk-btn:hover svg,.tpk-btn:focus-visible svg{transform:none;transition:none}
 
-  /* hero: konten di tengah (running text sudah di bawah), rata tengah, foto lebih terang dan fokus ke panggung */
-  .hero{justify-content:center;align-items:center;text-align:center;gap:18px;padding:84px var(--p) 104px}
-  .hero-bg{--hd:.34}
-  .hero-bg>img{object-position:14% 30%}
-  .hero::after{height:300px}
+  /* hero: content centered (the running text is already at the bottom), center aligned, brighter photo focused on the stage */
+  .hero{justify-content:center;align-items:center}
   .hero-cta p{margin:0 auto 20px;max-width:300px}
-  .cta-row{justify-content:center}
 
-  /* socmed footer: ikon atas-bawah */
-  .ft-r .soc{flex-direction:column;gap:10px}
+  /* footer social: icons stacked vertically */
 
-  /* venue: 7 logo + slot View more, sisanya terbuka setelah View more */
+  /* venue: 7 logos + the View more slot, the rest open after View more */
 }
 
-/* ===== FAB "Book us now": glass, muncul setelah user scroll, hilang saat form booking / footer terlihat ===== */
+/* ===== FAB "Book us now": glass, appears after the user scrolls, hidden while the booking form or footer is visible ===== */
 @media all{
   .fab{position:fixed;z-index:20;right:max(16px,env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom,0px));width:92px;height:92px;display:grid;place-items:center;border-radius:50%;color:#fff;overflow:visible;isolation:isolate;
     opacity:0;visibility:hidden;pointer-events:none;transform:translateY(18px) scale(.7);
@@ -660,22 +563,16 @@ a,button,[role=button],label,select,summary{touch-action:manipulation;-webkit-ta
 @media(min-width:1200px){.fab{right:32px;bottom:32px;width:104px;height:104px}.fab-core{width:50px;height:50px}.fab-core svg{width:24px;height:24px}}
 @media(prefers-reduced-motion:reduce){.fab-ring,.fab-core svg{animation:none!important}}
 
-/* venue: desktop/tablet tampil 14 logo dulu, mobile 8 dulu; sisanya lewat View more (.m = disembunyikan di mobile saja, .x = disembunyikan di semua ukuran sampai View more dibuka) */
+/* venue: desktop and tablet show 14 logos first, mobile shows 8; the rest open with View more (.m = hidden on mobile only, .x = hidden at every size until View more is opened) */
 .wall:not(.open) .lg.x{display:none}
-/* tile CTA: 14 logo + 1 CTA = 15 sel, pas penuh di grid 5 kolom (desktop) maupun 3 kolom (tablet) */
-.wall .lg-cta{grid-column:span 1;aspect-ratio:auto;min-height:0}
-.wall.open .lg-cta{grid-column:span 1}
-@media(max-width:1199px){.wall.open .lg-cta{grid-column:span 2}}
 @media(max-width:767px){
   .wall:not(.open) .lg.m{display:none}
-  .wall .lg-cta{grid-column:1/-1;min-height:104px}
-  .wall.open .lg-cta{grid-column:span 1;aspect-ratio:4/3;min-height:0}
 }
-/* judul section + copy tipis */
-.sub{margin:12px auto 0;max-width:42ch;text-align:center;font-size:14px;line-height:1.5;line-height:round(1.5em,1px);letter-spacing:.01em;color:var(--mut)}
+/* section title and light copy */
+.sub{margin:12px auto 0;text-align:center;font-size:14px;line-height:1.5;line-height:round(1.5em,1px);letter-spacing:.01em}
 @media(max-width:767px){.sub{font-size:13.5px;margin-top:10px}}
 
-/* View more / View less: tombol di tengah bawah wall, label dan panah ngeflip */
+/* View more / View less: centered below the wall, label and arrow flip */
 .vm{display:flex;justify-content:center;margin-top:40px}
 .vm-btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:10px;height:55px;padding:0 24px;border:1px solid #fff;border-radius:99px;background:transparent;color:#fff;font:500 13px/1 inherit;font-family:inherit;cursor:pointer;white-space:nowrap;perspective:600px;transition:color .4s}
 .vm-btn::before{content:"";position:absolute;z-index:-1;left:-10%;width:120%;bottom:0;height:100%;background:#fff;border-radius:50% 50% 0 0/100% 100% 0 0;transform:translateY(105%);transition:transform .4s cubic-bezier(.2,.7,.2,1),border-radius .4s cubic-bezier(.2,.7,.2,1)}
@@ -685,123 +582,64 @@ a,button,[role=button],label,select,summary{touch-action:manipulation;-webkit-ta
 .vm-chev{transform:perspective(120px) rotateX(0deg);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
 .vm-btn[aria-expanded="true"] .vm-label{transform:rotateX(180deg)}
 .vm-btn[aria-expanded="true"] .vm-chev{transform:perspective(120px) rotateX(180deg)}
-/* efek isi putih + ganti warna teks hanya untuk perangkat dengan hover (desktop); di mobile/touch tombol tidak berubah warna */
+/* white fill and text color change only on hover devices (desktop); on mobile and touch the button keeps its color */
 .vm-btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 @media(hover:hover) and (pointer:fine){.vm-btn:hover,.vm-btn:active{color:#0a0a0a}.vm-btn:hover::before,.vm-btn:active::before{transform:none;border-radius:0}}
 @media(prefers-reduced-motion:reduce){.vm-label,.vm-chev{transition:none}}
 
-/* ===== ABOUT (menggantikan venue carousel) ===== */
-.abt{padding:var(--sec) var(--p) 0}
-.abt-in{position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:start}
-.abt-head{grid-column:1/-1}
-.abt-title{margin-bottom:clamp(48px,5.5vw,72px);text-align:center;font-size:clamp(15px,1.4vw,18px);font-weight:400;line-height:1.3;line-height:round(1.3em,1px);letter-spacing:0;color:#fff}
-.abt-loc{font-size:clamp(16px,1.55vw,20px);font-weight:400;line-height:1.3;line-height:round(1.3em,1px);color:var(--t2)}
-.abt .abt-h{margin-top:14px;white-space:nowrap;font-size:clamp(34px,4.4vw,60px);font-weight:300;line-height:1.04;line-height:round(1.04em,1px);letter-spacing:-.035em;text-align:left;color:#fff}
-.abt-h .abt-m{font-weight:500}
-.abt-body{grid-column:7/13;margin-top:clamp(96px,11.5vw,180px)}
-.abt-since{font-size:clamp(15px,1.4vw,18px);line-height:1.4;line-height:round(1.4em,1px);font-weight:400;color:#fff}
-.abt-since b{font-weight:600}
-.abt-p{margin-top:clamp(18px,2vw,26px);font-size:clamp(26px,2.5vw,36px);line-height:1.55;line-height:round(1.55em,1px);font-weight:400;letter-spacing:-.022em;color:#c3c6cc;text-wrap:pretty}
-.abt-p em{font-family:Fraunces,"Iowan Old Style",Georgia,serif;font-style:italic;font-weight:300;font-size:1.05em;letter-spacing:-.01em;color:#fff}
-@media(max-width:1199px){.abt-body{grid-column:6/13}}
+/* ===== ABOUT (replaces the venue carousel) ===== */
 @media(max-width:767px){
-  /* mobile: mulai dari "Founded in 2024", blok teks di tengah layar. Judul tetap ada untuk screen reader */
-  .abt{min-height:min(72svh,600px);display:flex;align-items:center;padding:80px var(--p)}
-  .abt-in{display:block;width:100%}
-  .abt-loc,.abt .abt-h{position:absolute;width:1px;height:1px;margin:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-  .abt-title{margin-bottom:48px;font-size:16px}
-  .abt-body{margin:0}
-  .abt-since{font-size:15px}
-  .abt-p{margin-top:16px;max-width:none;font-size:clamp(24px,6.9vw,30px);line-height:1.34;line-height:round(1.34em,1px);letter-spacing:-.025em}
+  /* mobile: starts at "Founded in 2024", text block centered on screen. The heading stays for screen readers */
 }
-@media(max-width:340px){.abt-p{font-size:23px}}
 
-/* ===== BOOK di footer (kiri): headline + tombol ===== */
-.ft-book{max-width:min(560px,52vw);text-align:left}
-.ft-book .bk-h{margin:0;white-space:nowrap;font-size:clamp(26px,3.4vw,50px);font-weight:300;line-height:1.1;line-height:round(1.1em,1px);letter-spacing:-.03em;color:#fff;text-wrap:balance}
-.ft-book .bk-cta{display:flex;justify-content:flex-start;margin-top:clamp(24px,2.6vw,36px)}
-.ft-book .bk-cta .btn{min-width:168px;justify-content:center}
-/* footer: tanpa "Need Music?" (sudah dijawab section Book), kolom link di kanan grid */
+/* ===== BOOK in the footer (left): headline and button ===== */
+/* footer: no "Need Music?" (the Book section already answers it), link columns on the right of the grid */
 .ft{justify-content:space-between;align-items:flex-start}
-@media(max-width:767px){.ft{justify-content:flex-start}.ft-book{max-width:none}.ft-book .bk-h{font-size:clamp(22px,6.4vw,28px);line-height:1.15;line-height:round(1.15em,1px)}}
-footer{padding-top:calc(var(--ft)*.6)}
 
-/* footer mobile: Navigate / Find us lebih kecil; ikon socmed kecil tapi area tap tetap 44px */
+/* mobile footer: smaller Navigate and Find us; social icons are small but keep a 44px tap area */
 @media(max-width:767px){
-  footer{padding-top:calc(var(--ft)*.5)}
-  .ft{gap:30px}
-  .ft-r{gap:22px 30px}
-  .ft-r div{min-width:92px;gap:7px}
-  .ft-r h3{font-size:15px;margin-bottom:0}
-  .ft-r a{font-size:14px}
-  .ft-r .soc{gap:8px}
-  .ft-r .soc a{position:relative;width:30px;height:30px}
-  .ft-r .soc a::after{content:"";position:absolute;inset:-7px}
-  .ft-r .soc a svg{width:14px;height:14px}
+  .ft-r div{gap:7px}
+  .ft-r h3{margin-bottom:0}
+  .ft-r .soc a{position:relative}
+  .ft-r .soc a::after{content:"";position:absolute}
 }
-/* hemat GPU: animasi tak berhenti dijeda saat tidak terlihat */
+/* GPU saving: animations that never stop are paused while off-screen */
 .hero.off .hero-bg>img,.hero.off .led-t{animation-play-state:paused}
 .fab:not(.show) .fab-ring,.fab:not(.show) .fab-core svg{animation-play-state:paused}
 
-/* footer mobile: copy 2 baris di kiri, Navigate & Find us di kanan */
+/* mobile footer: copy on two lines at the left, Navigate and Find us at the right */
 @media(max-width:767px){
-  .ft{flex-direction:row;justify-content:space-between;align-items:flex-start;gap:16px}
-  .ft-book{flex:1 1 auto;min-width:0}
-  .ft-book .bk-h{font-size:clamp(16px,5vw,24px);line-height:1.2;line-height:round(1.2em,1px)}
-  .ft-book .bk-cta{margin-top:22px}
+  .ft{flex-direction:row;justify-content:space-between;gap:16px}
   .ft-r{flex-direction:column;flex-wrap:nowrap;gap:20px;flex:none}
   .ft-r div{min-width:0}
-  .ft-r .soc{flex-direction:row;gap:8px}
+  .ft-r .soc{flex-direction:row}
 }
-/* line-height pixel perfect: semua elemen tanpa aturan sendiri mendapat tinggi baris bilangan bulat (px) */
+/* pixel-exact line-height: every element without its own rule gets an integer line height (px) */
 @supports (line-height:round(1em,1px)){
-  /* hanya elemen teks blok; elemen inline (span, em, a, huruf wordmark) tetap mewarisi line-height induknya */
+  /* block text elements only; inline elements (span, em, a, wordmark letters) keep inheriting the parent line-height */
   :where(p,li,h1,h2,h3,h4,h5,h6,label,dt,dd,figcaption,blockquote,summary){line-height:round(1.45em,1px)}
 }
 
-/* footer mobile v2: Navigate di kanan, Find us pindah ke bawah tombol Book us (tinggi kolom seimbang, ikon tidak keluar dari grid) */
-@media(max-width:767px){
-  .ft{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"book nav" "find nav";column-gap:20px;row-gap:28px;align-items:start}
-  .ft-r{display:contents}
-  .ft-book{grid-area:book}
-  .ft-r>div:nth-child(1){grid-area:nav}
-  .ft-r>div:nth-child(2){grid-area:find}
-  .ft-r .soc{gap:8px}
-}
-/* about mobile: jarak atas/bawah dirapatkan (tanpa min-height yang menciptakan ruang kosong) */
-@media(max-width:767px){
-  .abt{min-height:0;display:block;padding:56px var(--p) 0}
-  .abt-title{margin-bottom:28px}
-  #talent{padding-top:88px}
-}
+/* mobile footer: Navigate on the right, Find us moves under the Book us button (balanced column height, icons stay inside the grid) */
+/* about on mobile: tighter top and bottom spacing (no min-height that creates empty space) */
 
+/* about: heading and paragraph only, centered */
 
-/* about: hanya judul + paragraf, rata tengah */
-.abt-in{display:block;max-width:920px;margin:0 auto;text-align:center}
-.abt-title{margin-bottom:clamp(24px,3vw,40px);text-align:center;font-size:clamp(15px,1.4vw,18px);font-weight:400;letter-spacing:0;text-transform:none;color:#fff}
-.abt-body{margin:0 auto;width:auto!important;justify-self:auto!important}
-.abt-p{margin:0 auto;max-width:26em;text-align:center;text-wrap:balance;font-size:clamp(26px,2.5vw,36px)}
-@media(max-width:767px){
-  .abt-title{margin-bottom:20px;font-size:16px}
-  .abt-p{margin:0 auto;max-width:none;font-size:clamp(20px,5.6vw,24px);line-height:1.4;line-height:round(1.4em,1px);letter-spacing:-.015em}
-}
-
-/* ===== HERO v2 (spek Figma: Bebas Neue 106.229/127, Plus Jakarta Sans 400 18/23 @60%, gap frame 24) ===== */
+/* ===== HERO (Figma spec: Bebas Neue 106.229/127, Plus Jakarta Sans 400 18/23 at 60%, frame gap 24) ===== */
 .hero{--hb:clamp(40px,7vh,72px);display:block;padding:0;gap:0;text-align:left;height:max(640px,100vh);height:max(640px,100svh);min-height:0;max-height:none}
 .hero-bg{--hd:.14}
 .hero-bg>img{object-position:50% 25%}
 .hero-bg::after{display:block;content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.2;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/180px 180px}
 .hero::after{height:46%;background:linear-gradient(transparent,rgba(4,7,15,.55) 45%,rgba(4,7,15,.9) 80%,var(--bg))}
 .hero-copy{position:absolute;z-index:2;left:var(--p);bottom:var(--hb);width:413px;max-width:none}
-/* wordmark: line-height 127px = 1.1955em, jarak ke paragraf = gap 24px - tinggi kotak 95px => -8px (-.0753em) */
+/* wordmark: line-height 127px = 1.1955em, distance to the paragraph = 24px gap - 95px box height => -8px (-.0753em) */
 .hero .wm{position:static;left:auto;bottom:auto;margin:0 0 -.0753em;font-size:106.229px;line-height:1.1955;line-height:round(1.1955em,1px);letter-spacing:0;--wb:#fff}
 .hero .hero-cta{position:static;width:auto;right:auto;bottom:auto;padding:0 4px}
 .hero .hero-cta p,.hero .scue{margin:0;font-size:18px;font-weight:400;line-height:23px;letter-spacing:0;color:var(--t3)}
-.hero .hero-cta p{max-width:405px}
 .hero .nw{white-space:nowrap}
 .hero .scue{position:absolute;z-index:2;right:var(--p);bottom:var(--hb);display:flex;align-items:center;gap:10px}
 .hero .scue svg{animation:none}
-/* arrow "snake": panah turun menembus kotaknya, hilang di bawah, lalu masuk lagi dari atas */
+/* "snake" arrow: the arrow slides down through its box, disappears at the bottom, then enters again from the top */
 .arw{position:relative;display:block;flex:none;width:14px;height:20px;overflow:hidden}
 .arw svg{position:absolute;left:1px;top:4px;display:block}
 .arw svg:nth-child(1){animation:snakeA 1.8s cubic-bezier(.65,0,.35,1) infinite}
@@ -815,11 +653,10 @@ footer{padding-top:calc(var(--ft)*.6)}
   .hero-copy{width:min(413px,44vw)}
   .hero .wm{font-size:8vw}
   .hero .hero-cta p,.hero .scue{font-size:15px;line-height:19px}
-  .hero .hero-cta p{max-width:340px}
 }
 #talent{padding-top:clamp(72px,8vw,120px)}
-/* running text: band tipis sebelum footer */
-.run-band{margin-top:clamp(72px,8vw,120px);padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+/* running text: thin band before the footer */
+.run-band{padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .run-band .led{width:100%}
 .run-band.off .led-t{animation-play-state:paused}
 @media(max-width:767px){
@@ -828,58 +665,50 @@ footer{padding-top:calc(var(--ft)*.6)}
   .hero-copy{left:0;right:0;bottom:24%;width:auto;padding:0 var(--p);text-align:center}
   .hero .wm{font-size:19.5vw}
   .hero .hero-cta{padding:0}
-  .hero .hero-cta p{max-width:none;margin:0 auto;font-size:clamp(12.5px,3.5vw,14px);line-height:1.278;line-height:round(1.278em,1px)}
+  .hero .hero-cta p{margin:0 auto;font-size:clamp(12.5px,3.5vw,14px);line-height:1.278;line-height:round(1.278em,1px)}
   .hero .scue{left:0;right:0;justify-content:center;font-size:14px;line-height:18px}
   #talent{padding-top:72px}
 }
 
-/* ===== footer wordmark: solid polos setelah partikel menyatu (tanpa gradient-clip, glitch, shine) ===== */
+/* ===== footer wordmark: plain solid text once the particles merge (no gradient clip, glitch or shine) ===== */
 .gt{background:none;-webkit-background-clip:border-box;background-clip:border-box;-webkit-text-fill-color:#fff;color:#fff;transition:none}
 .gt.shine,.gt.glitch{filter:none}
-/* ===== footer mobile: "Find us" disembunyikan (tetap terbaca screen reader), sisa ikon socmed; ruang animasi partikel dilebarkan ===== */
+/* ===== mobile footer: "Find us" is hidden (still read by screen readers), the social icons remain; more room for the particle animation ===== */
 @media(max-width:767px){
   .ft-r>div:nth-child(2) h3{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  /* kanvas partikel naik 130px (mobile) di atas wordmark; margin sedikit di atasnya supaya partikel tidak lewat di belakang tombol/ikon */
-  .giant{margin-top:clamp(150px,40vw,170px)}
+  /* particle canvas extends 130px (mobile) above the wordmark; a small margin above it keeps particles from passing behind the button and icons */
   .gc{--gp:130px}
-  .ft{row-gap:20px}
-  .ft-book .bk-h{white-space:normal}
-  /* ikon socmed: lebih besar, area tap 48px */
-  .ft-r .soc{gap:6px}
+  /* social icons: larger, 48px tap area */
   .ft-r .soc a{width:40px;height:40px;display:flex;align-items:center;justify-content:center}
   .ft-r .soc a::after{inset:-4px}
   .ft-r .soc a svg{width:22px;height:22px}
 }
-/* running text: band di bawah hero */
+/* running text: band under the hero */
 .run-band{margin-top:0}
-/* navbar mobile: tombol Contact tidak ditampilkan saat scroll (akses booking lewat menu dan FAB) */
-@media(max-width:767px){.nav .btn-nav{display:none}.nav{grid-template-columns:1fr auto}}
+/* mobile navbar: the Contact button is hidden on scroll (booking stays reachable through the menu and the FAB) */
+@media(max-width:767px){.nav{grid-template-columns:1fr auto}}
 
-/* ===== menu: 7 item (Performers, Gallery, Videos, Listen, Partners, Press kit, Booking) ===== */
+/* ===== menu: 7 items (Performers, Gallery, Videos, Listen, Partners, Press kit, Booking) ===== */
 @media(max-width:1199px){.overlay{gap:20px;padding-top:104px;background:rgba(4,7,15,.34);-webkit-backdrop-filter:blur(30px) saturate(1.3);backdrop-filter:blur(30px) saturate(1.3)}.l{padding:20px 2px;gap:12px}.l b{font-size:22px;letter-spacing:-.015em}.l .arx{--ax:12px}.menu-soc{gap:8px}.menu-soc a{width:40px;height:40px}.menu-soc a svg{width:18px;height:18px}}
 @media(max-width:340px){.l{padding:16px 2px}.l b{font-size:20px}}
-/* footer desktop/tablet: Navigate 2 kolom */
+/* desktop and tablet footer: Navigate in 2 columns */
 @media(min-width:768px){.ft-r>div:nth-child(1){display:grid;grid-template-columns:repeat(2,max-content);gap:12px 40px;align-content:start}.ft-r>div:nth-child(1) h3{grid-column:1/-1}}
-/* ===== footer mobile (versi B): headline, tombol penuh, garis, ikon socmed, link navigasi 3x2 ===== */
+/* ===== mobile footer: headline, full-width button, divider, social icons, navigation links ===== */
 @media(max-width:767px){
-  .ft{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"book" "find" "nav";row-gap:0;column-gap:0;align-items:start}
+  .ft{display:grid;grid-template-columns:minmax(0,1fr);row-gap:0;column-gap:0;align-items:start}
   .ft-r{display:contents}
-  .ft-book{grid-area:book;max-width:none}
-  .ft-book .bk-h{font-size:clamp(25px,7.2vw,30px);line-height:1.15;line-height:round(1.15em,1px);letter-spacing:-.025em;white-space:normal}
-  .ft-book .bk-cta{margin-top:24px}
-  .ft-book .bk-cta .btn{width:100%;min-width:0;height:55px;justify-content:center}
-  .ft-r>div:nth-child(2){grid-area:find;margin-top:28px;padding-top:16px;border-top:1px solid var(--line)}
-  .ft-r>div:nth-child(1){grid-area:nav;display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 16px;margin-top:4px}
+  .ft-r>div:nth-child(2){grid-area:find}
+  .ft-r>div:nth-child(1){grid-area:nav}
   .ft-r>div:nth-child(1) a{padding:11px 0}
   .ft-r>div h3{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   .ft-r .soc{gap:8px;justify-content:flex-start}
 }
 
-/* ===== kartu loop: tombol All press kit ===== */
+/* ===== loop card: All press kit button ===== */
 .tcta{gap:14px}
 .tcta-main{display:flex;flex-direction:column;gap:6px;color:inherit}
 .tcta-pk{align-self:stretch;justify-content:center}
-/* ===== footer: ukuran link = judul - 4px di semua breakpoint, link tidak pernah lebih terang dari judul ===== */
+/* ===== footer: link size = heading size - 4px at every breakpoint, links are never brighter than the heading ===== */
 .ft-r{--ft-t:24px}
 .ft-r h3{font-size:var(--ft-t);color:#fff}
 .ft-r a{font-size:calc(var(--ft-t) - 4px);color:var(--t2)}
@@ -888,53 +717,47 @@ footer{padding-top:calc(var(--ft)*.6)}
 @media(max-width:1199px){.ft-r{--ft-t:20px}}
 @media(max-width:767px){.ft-r{--ft-t:18px}}
 
-/* ===== section Partnership (Venues + Brands digabung): label kecil per blok ===== */
-.plabel{margin:var(--hg) 0 0;text-align:center;font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);line-height:1.2}
+/* ===== Partnership section (Venues and Brands combined): small label per block ===== */
+.plabel{margin:var(--hg) 0 0;text-align:center;font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;line-height:1.2}
 .plabel+.wall{margin-top:28px}
-.plabel.pl-b{margin-top:calc(var(--hg)*1.5)}
 .plabel.pl-b+.lu{margin-top:20px}
 @media(max-width:767px){.plabel+.wall{margin-top:20px}}
 
-/* ===== ENDING v2: Partnership → Book (stage sendiri) → garis → footer ===== */
+/* ===== ENDING: Partnership, then Book (its own stage), then a line, then the footer ===== */
 .plabel.pl-b{margin-top:calc(var(--hg)*2)}
 .book-sec{padding:var(--sec) var(--p) 0;text-align:center}
-.book-sec .bk-h{margin:0;white-space:normal;font-size:clamp(30px,4.8vw,68px);font-weight:300;line-height:1.1;line-height:round(1.1em,1px);letter-spacing:-.03em;color:#fff;text-wrap:balance}
+.book-sec .bk-h{margin:0;font-weight:300;letter-spacing:-.03em;color:#fff;text-wrap:balance}
 .book-sec .bk-sub{margin:clamp(16px,1.8vw,24px) auto 0;max-width:30em;font-size:clamp(14px,1.2vw,17px);color:var(--mut);text-wrap:balance}
 .book-sec .bk-cta{display:flex;justify-content:center;margin-top:clamp(32px,3.4vw,48px)}
 .book-sec .bk-cta .btn{min-width:188px;justify-content:center}
-footer{padding-top:calc(var(--sec)*.8)}
 .ft{padding-top:48px;border-top:1px solid var(--line)}
 .ft-mail{display:flex;flex-direction:column;gap:12px}
 .ft-mail h3{font-size:24px;font-weight:400;margin:0 0 2px;color:#fff}
 .ft-mail a{font-size:20px;color:var(--t2);transition:color .3s;overflow-wrap:anywhere}
 @media(hover:hover){.ft-mail a:hover{color:#fff}}
-@media(min-width:768px){.giant{margin-top:var(--sec)}}
 @media(max-width:1199px){.ft-mail h3{font-size:20px}.ft-mail a{font-size:16px}}
 @media(max-width:767px){
-  .book-sec .bk-h{font-size:clamp(28px,8vw,34px)}
   .book-sec .bk-cta .btn{width:100%;min-width:0;height:55px}
-  footer{padding-top:calc(var(--sec)*.7)}
   .ft{padding-top:32px}
   .ft-mail{grid-area:book;margin-bottom:8px;gap:0}
   .ft-mail h3{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  .ft-mail a{font-size:16px;padding:11px 0}
-  .ft-r>div:nth-child(1){flex-direction:row;flex-wrap:wrap;justify-content:flex-start;gap:0 24px}
+  .ft-mail a{padding:11px 0}
+  .ft-r>div:nth-child(1){flex-direction:row;flex-wrap:wrap;gap:0 24px}
 }
-/* band abu-abu lembut di Book: ritme gelap → abu → gelap, tepi memudar (tanpa garis keras) */
+/* soft gray band in Book: rhythm dark, gray, dark, with faded edges (no hard line) */
 .book-sec{padding-bottom:calc(var(--sec)*.8)}
 footer{padding-top:calc(var(--sec)*.25)}
 @media(max-width:767px){footer{padding-top:calc(var(--sec)*.2)}}
-/* band abu halus (smoothstep, tepi memudar panjang): selang-seling gelap/abu → Gallery, Listen, Book */
+/* soft gray band (smoothstep, long faded edges): alternates dark and gray across Gallery, Listen and Book */
 .gal-sec,.listen,.book-sec{position:relative;isolation:isolate}
 .gal-sec::before,.listen::before,.book-sec::before{content:"";position:absolute;z-index:-1;left:0;right:0;top:-14%;bottom:-14%;pointer-events:none;background:linear-gradient(180deg,rgba(30,40,62,0.000) 0.0%,rgba(30,40,62,0.006) 3.5%,rgba(30,40,62,0.020) 7.0%,rgba(30,40,62,0.042) 10.5%,rgba(30,40,62,0.070) 14.0%,rgba(30,40,62,0.102) 17.5%,rgba(30,40,62,0.136) 21.0%,rgba(30,40,62,0.170) 24.5%,rgba(30,40,62,0.202) 28.0%,rgba(30,40,62,0.230) 31.5%,rgba(30,40,62,0.252) 35.0%,rgba(30,40,62,0.266) 38.5%,rgba(30,40,62,0.272) 42.0%,rgba(30,40,62,0.272) 58.0%,rgba(30,40,62,0.266) 61.5%,rgba(30,40,62,0.252) 65.0%,rgba(30,40,62,0.230) 68.5%,rgba(30,40,62,0.202) 72.0%,rgba(30,40,62,0.170) 75.5%,rgba(30,40,62,0.136) 79.0%,rgba(30,40,62,0.102) 82.5%,rgba(30,40,62,0.070) 86.0%,rgba(30,40,62,0.042) 89.5%,rgba(30,40,62,0.020) 93.0%,rgba(30,40,62,0.006) 96.5%,rgba(30,40,62,0.000) 100.0%)}
-/* noise abu halus (statis) hanya di dalam band abu, memudar bareng gradient (foto & video tidak ikut berbintik) */
+/* fine static gray noise only inside the gray band, fading together with the gradient (photos and video do not get speckled) */
 .gal-sec::after,.listen::after,.book-sec::after{content:"";position:absolute;z-index:-1;left:0;right:0;top:-14%;bottom:-14%;pointer-events:none;opacity:.18;background:var(--grain-d,none) 0 0/128px 128px;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 38%,#000 62%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 38%,#000 62%,transparent 100%)}
-/* tombol "via SoundCloud": sama dengan tombol lain, ikon di kiri */
-.sc-btn{margin-top:40px;gap:10px;padding:0 26px 0 22px}
-.sc-btn .bi{width:20px;height:20px}
+/* "via SoundCloud" button: same as the other buttons, icon on the left */
+.sc-btn{margin-top:40px}
 @media(hover:hover){.sc-btn:hover svg{transform:none}}
 @media(max-width:767px){.sc-btn{margin-top:32px}}
-/* panah ↗ overlap seperti "Scroll to explore": panah lama keluar ke kanan-atas, salinannya masuk dari kiri-bawah (hover, desktop saja) */
+/* arrow overlap like "Scroll to explore": the old arrow exits to the top right, its copy enters from the bottom left (hover, desktop only) */
 .arx{position:relative;display:block;flex:none;overflow:hidden;width:var(--ax,14px);height:var(--ax,14px)}
 .arx svg{position:absolute;left:0;top:0;width:100%;height:100%}
 .arx svg+svg{display:none}
@@ -946,63 +769,64 @@ footer{padding-top:calc(var(--sec)*.25)}
   a:hover>.arx svg+svg{transform:translate(0,0)!important}
 }
 @media(prefers-reduced-motion:reduce){.arx svg{transition:none!important}}
-/* mobile: subtext CTA 1 baris, divider footer cukup 1 (garis atas) */
+/* mobile: CTA subtext on one line, a single footer divider (top line) */
 @media(max-width:767px){
   .book-sec .bk-sub{white-space:nowrap}
   .book-sec .bk-x{display:none}
-  .ft-r>div:nth-child(2){margin-top:12px;padding-top:0;border-top:0}
+  .ft-r>div:nth-child(2){padding-top:0;border-top:0}
 }
-/* mobile: socmed paling bawah (setelah link Navigate) */
+/* mobile: social icons at the very bottom (after the Navigate links) */
 @media(max-width:767px){
   .ft{grid-template-areas:"book" "nav" "find"}
   .ft-r>div:nth-child(1){margin-top:0}
   .ft-r>div:nth-child(2){margin-top:20px}
 }
-/* Brands: lebih compact (logo ±25% lebih kecil, padding & jarak baris dirapatkan) */
+/* Brands: more compact (logos about 25% smaller, tighter padding and row gap) */
 .lu{--w-deus:clamp(150px,12vw,230px);--w-gs:clamp(150px,15vw,280px);--w-uq:clamp(48px,4.4vw,82px);--w-hw:clamp(100px,10vw,180px);--w-jw:clamp(86px,8.4vw,150px);--w-rt:clamp(92px,9vw,165px);row-gap:8px}
 .lu-i.t1{--py:26px;--px:44px}.lu-i.t2{--py:20px;--px:34px}.lu-i.t3{--py:16px;--px:26px}
 @media(max-width:767px){
   .lu{--w-deus:34vw;--w-gs:32vw;--w-uq:11vw;--w-hw:18vw;--w-jw:16vw;--w-rt:17vw;row-gap:2px}
   .lu-i.t1{--py:14px;--px:22px}.lu-i.t2{--py:11px;--px:14px}.lu-i.t3{--py:9px;--px:6px}
 }
-/* mobile: tombol +4px (55 → 59) dan tombol section selebar grid */
+/* mobile: button +4px (55 to 59) and section buttons as wide as the grid */
 @media(max-width:767px){
-  .btn,.vm-btn,.tpk,.tpk-btn,.book-sec .bk-cta .btn,.ft-book .bk-cta .btn{height:59px}
+  .btn,.vm-btn,.tpk,.tpk-btn,.book-sec .bk-cta .btn{height:59px}
   .vmore .btn,.sc-btn,.vm-btn{width:100%;min-width:0;justify-content:center}
   .vmore,.vm{display:flex}
 }
-/* ===== LEVEL FOKUS MATA (hierarki visual) =====
-   WARNA teks   L1 #fff    fokus utama: judul, nama, CTA, hover/aktif
-                L2 .72     isi & penjelas: link, deskripsi
-                L3 .55     meta & label: caption, overline, subtitle
-                L4 .32     dekoratif / disabled
-   TIPOGRAFI    Display (hero, Book) › H2 section › Card title 15/500 › Body 14–18 › Caption 12–13 › Overline 12/11 CAPS +.14em */
-:root{--t1:#fff;--t2:rgba(255,255,255,.72);--t3:rgba(255,255,255,.55);--t4:rgba(255,255,255,.32);--mut:var(--t3);--fs-over:12px;--ls-over:.14em}
+/* ===== VISUAL FOCUS LEVELS (hierarchy) =====
+   TEXT COLOR
+   L1 #fff  main focus: titles, names, CTA, hover and active
+   L2 .72   body and explanation: links, descriptions
+   L3 .55   meta and labels: captions, overlines, subtitles
+   L4 .32   decorative or disabled
+   TYPOGRAPHY
+   Display (hero, Book) > section H2 > card title 15/500 > body 14 to 18 > caption 12 to 13 > overline 12/11 caps +.14em */
+:root{--t1:#fff;--t2:rgba(255,255,255,.72);--t3:rgba(255,255,255,.55);--mut:var(--t3);--fs-over:12px;--ls-over:.14em}
 @media(max-width:767px){:root{--fs-over:11px}}
 .sec h2{color:var(--t1)}
 .sub{color:var(--t3)}
 .bk-sub,.book-sec .bk-sub{color:var(--t2)}
-/* overline: semua label kecil satu gaya */
+/* overline: every small label shares one style */
 .plabel,.tcta small{font-size:var(--fs-over);font-weight:500;letter-spacing:var(--ls-over);text-transform:uppercase}
 .plabel{color:var(--t3)}
 .tcta small{color:var(--t2)}
-/* card: judul L1, meta L3 */
+/* card: title L1, meta L3 */
 .vmeta b{color:var(--t1)}
 .vmeta small{color:var(--t3);font-size:13px}
 @media(max-width:767px){.vmeta small{font-size:12px}}
-/* footer: label = overline L3, link = L2 → hover L1 */
+/* footer: label = overline L3, link = L2, hover = L1 */
 .ft-r h3,.ft-mail h3{font-size:var(--fs-over);font-weight:500;letter-spacing:var(--ls-over);text-transform:uppercase;color:var(--t3);margin:0 0 16px}
 .ft-r>div:nth-child(1) a,.ft-mail a{color:var(--t2);font-size:clamp(16px,1.3vw,18px);transition:color .3s}
 @media(hover:hover){.ft-r>div:nth-child(1) a:hover,.ft-mail a:hover{color:var(--t1)}}
 @media(max-width:767px){.ft-r>div:nth-child(1) a{font-size:15px}.ft-mail a{font-size:16px}}
 
-/* ===== SOUNDCLOUD BUTTON: panah ↗ kanan atas. Desktop: roll overlap (komponen .arx), arah sama dengan tombol lain ===== */
-.sc-btn{padding:0 22px 0 22px;gap:10px}
+/* ===== SOUNDCLOUD BUTTON: arrow at the top right. Desktop: overlap roll (.arx component), same direction as the other buttons ===== */
 .sc-btn .arx{--ax:14px;margin-left:2px}
-@media(hover:hover){.sc-btn:hover .arx svg{transform:none}} /* tablet + mouse: tanpa roll, panah tetap */
+@media(hover:hover){.sc-btn:hover .arx svg{transform:none}} /* tablet with mouse: no roll, the arrow stays still */
 @media(hover:hover) and (max-width:1023px){.sc-btn:hover .arx svg:first-child{transform:translate(2px,-2px)}}
 
-/* ===== MOBILE / LAYAR SENTUH: tanpa animasi hover, hanya press feel (menekan = mengecil sedikit + redup, cepat kembali) ===== */
+/* ===== MOBILE AND TOUCH SCREENS: no hover animation, only a press feel (pressing shrinks and dims slightly, then returns quickly) ===== */
 @media(hover:none){
   .btn,.tic,.tpk-btn,.soc a{transition:transform .12s ease-out,opacity .12s ease-out,background-color .12s ease-out}
   .btn:active,.tic:active,.tpk-btn:active,.soc a:active{transform:scale(.96);opacity:.78}
@@ -1010,19 +834,19 @@ footer{padding-top:calc(var(--sec)*.25)}
   .sc-btn:active .arx svg{transform:translate(1.5px,-1.5px)}
 }
 
-/* ===== SCROLL TO EXPLORE: teks lebih transparan, panah glow tipis (filter di .arw supaya glow tidak terpotong overflow) ===== */
+/* ===== SCROLL TO EXPLORE: more transparent text, thin glow on the arrow (filter on .arw so the glow is not clipped by overflow) ===== */
 .hero .scue .sct{color:rgba(255,255,255,.2);transition:color .3s}
 .hero .scue .arw{color:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.5)) drop-shadow(0 0 6px rgba(255,255,255,.2))}
 @media(hover:hover){.hero .scue:hover .sct{color:rgba(255,255,255,.55)}}
-/* mobile: teks cukup "Scroll" */
+/* mobile: the text is just "Scroll" */
 @media(max-width:767px){.hero .scue .sct-x{display:none}}
 
-/* ===== COPY LAYER: keseimbangan teks di semua platform =====
-   Breakpoint (selaras dengan yang sudah dipakai di file ini):
-   Phone   <= 767px   | Tablet 768-1199px | Desktop >= 1200px | Wide >= 1920px
-   Aturan: (1) frasa pendek dibungkus .ln = tidak pernah terpecah di tengah, baris baru hanya di antara frasa,
-           (2) text-wrap:balance supaya tidak ada satu kata sendirian di baris terakhir (yatim),
-           (3) lebar baca (max-width) mengikuti platform. */
+/* ===== COPY LAYER: text balance on every platform =====
+   Breakpoints (same as used elsewhere in this file):
+   Phone <= 767px | Tablet 768 to 1199px | Desktop >= 1200px | Wide >= 1920px
+   Rules: (1) short phrases are wrapped in .ln so they never break mid-phrase and new lines only fall between phrases,
+   (2) text-wrap:balance avoids a single orphan word on the last line,
+   (3) reading width (max-width) follows the platform. */
 .ln{display:inline-block}
 .sub,.bk-sub,.hero-cta p,.bk-h,.plabel,.tcta p{text-wrap:balance}
 p,li{text-wrap:pretty}
@@ -1031,7 +855,7 @@ p,li{text-wrap:pretty}
 /* Phone */
 @media(max-width:767px){
   .sub{max-width:34ch}
-  .sub .ln{display:block}               /* 2 frasa = 2 baris rapi */
+  .sub .ln{display:block}               /* 2 phrases = 2 clean lines */
 }
 /* Tablet */
 @media(min-width:768px) and (max-width:1199px){
@@ -1047,7 +871,7 @@ p,li{text-wrap:pretty}
   .sub{max-width:56ch}
 }
 
-/* ===== TOMBOL SOUNDCLOUD: text button (tanpa stroke, tanpa fill, tanpa ikon awan), teks sedikit lebih gelap dari putih; panah ↗ tetap ===== */
+/* ===== SOUNDCLOUD BUTTON: text button (no stroke, no fill, no cloud icon), text slightly darker than white; the arrow stays ===== */
 .sc-btn{height:auto;min-height:48px;padding:0 6px;gap:8px;border-color:transparent;background:none;color:rgba(255,255,255,.72)}
 .sc-btn::before{display:none}
 .sc-btn .c{color:rgba(255,255,255,.72)}
@@ -1055,18 +879,18 @@ p,li{text-wrap:pretty}
 .sc-btn:focus-visible{transform:none;color:#fff;outline:1px solid rgba(255,255,255,.5);outline-offset:6px}
 @media(hover:hover){.sc-btn:hover{transform:none;color:#fff}}
 @media(max-width:767px){.sc-btn{display:flex;width:fit-content;min-width:0;margin:28px auto 0;justify-content:center}}
-/* ===== footer: Partnership kiri-bawah + Press kit di kanannya (gaya sama dengan link lain), gap ke wordmark +8px ===== */
+/* ===== footer: Partnership at the bottom left + Press kit on its right (same style as the other links), 8px more gap to the wordmark ===== */
 .ft-r>div:nth-child(1){align-items:baseline}
 @media(max-width:767px){
   .ft-r>div:nth-child(1){display:grid;grid-template-columns:repeat(2,max-content);justify-content:start;column-gap:40px;row-gap:0}
   .giant{margin-top:calc(clamp(150px,40vw,170px) + 8px)}
 }
 @media(min-width:768px){.giant{margin-top:calc(var(--sec) + 8px)}}
-/* ===== headline Book (Let's work on events and projects together): lebih besar + line-height lebih lega ===== */
-/* selalu 2 baris: tiap baris tidak boleh wrap, ukuran font dibatasi supaya baris terpanjang ("and projects together" ±9,8em) muat di lebar konten (100vw - padding kiri/kanan) di semua breakpoint */
+/* ===== Book headline (Let's work on events and projects together): larger with looser line-height ===== */
+/* always 2 lines: no line may wrap, and the font size is capped so the longest line ("and projects together", about 9.8em) fits the content width (100vw minus side padding) at every breakpoint */
 .book-sec .bk-h{white-space:nowrap;font-size:min(clamp(34px,5.6vw,80px),calc((100vw - 2*var(--p))/10.6));line-height:1.16;line-height:round(1.16em,1px)}
 @media(max-width:767px){.book-sec .bk-h{font-size:min(clamp(28px,8.8vw,40px),calc((100vw - 2*var(--p))/10.6))}}
-/* ===== navbar scroll: hide/show via compositor; blur di HP/tablet diringankan (14px, tanpa saturate) ===== */
+/* ===== navbar on scroll: hide and show through the compositor; blur is lighter on phones and tablets (14px, no saturate) ===== */
 .nav{transition:translate .3s cubic-bezier(.2,.7,.2,1),height .45s cubic-bezier(.2,.7,.2,1)}
 .nav.nh{translate:0 -100%}
 .nav.open{translate:0 0}
@@ -1075,7 +899,7 @@ p,li{text-wrap:pretty}
   .nav::before{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);background:rgba(4,7,15,.5)}
 }
 
-/* ===== popup "Coming soon" (press kit belum tersedia): background blur, ikon hourglass outline, tombol Close ===== */
+/* ===== "Coming soon" popup (press kit not available yet): blurred background, outlined hourglass icon, Close button ===== */
 .soon{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:24px;background:rgba(4,7,15,.45);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);opacity:0;visibility:hidden;transition:opacity .3s ease,visibility 0s .3s}
 .soon.on{opacity:1;visibility:visible;transition:opacity .3s ease,visibility 0s}
 .soon-card{width:min(360px,100%);display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:40px 28px 28px;border:1px solid rgba(255,255,255,.18);border-radius:26px;background:rgba(12,16,28,.62);-webkit-backdrop-filter:blur(18px) saturate(1.15);backdrop-filter:blur(18px) saturate(1.15);box-shadow:0 24px 80px rgba(0,0,0,.45);transform:translateY(14px) scale(.97);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
@@ -1088,13 +912,13 @@ p,li{text-wrap:pretty}
 .soon-p{margin:0;font-size:14px;line-height:1.55;color:var(--t2,rgba(255,255,255,.72))}
 .soon .btn{margin-top:12px;height:50px;padding:0 34px;justify-content:center}
 
-/* ===== LISTEN revamp: tipografi + spacing (blok override, taruh paling bawah; hapus blok ini untuk balik ke versi lama) =====
-   Skala tipe: 36 judul · 18 baris lagu · 13 meta · 12 waktu. Ritme spasi kelipatan 4/8.
-   Satu garis rata kiri di kolom kanan: judul, status, tracklist, waveform. */
+/* ===== LISTEN typography and spacing =====
+   Type scale: 36 title, 18 track row, 13 meta, 12 time. Spacing rhythm in multiples of 4 and 8.
+   One left-aligned line in the right column: title, status, tracklist, waveform. */
 .listen>.sub{margin-top:16px;font-size:15px;line-height:1.55;color:var(--t3)}
 .kl{margin-top:clamp(48px,6vw,80px);column-gap:clamp(48px,7vw,112px)}
 
-/* judul lagu */
+/* track title */
 .kl-side{text-align:left}
 .kl .kl-ti{font:700 clamp(24px,2.7vw,36px)/1.15 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.025em;text-wrap:balance}
 .kl .kl-ti .dj{font:inherit;font-weight:800;letter-spacing:inherit;text-transform:none}
@@ -1112,7 +936,7 @@ p,li{text-wrap:pretty}
 .kl .kl-pc b{font-weight:600;color:var(--t2)}
 .kl .kl-pc i{font-style:normal;font-weight:400;color:var(--t3)}
 
-/* waveform sejajar dengan kolom judul lagu (lebar kolom nomor + gap) */
+/* waveform aligned with the track title column (number column width + gap) */
 .kl .kl-wfw{padding:0 0 20px calc(clamp(28px,3vw,40px) + clamp(12px,1.6vw,20px))}
 
 @media(max-width:899px){
@@ -1125,19 +949,27 @@ p,li{text-wrap:pretty}
   .kl .kl-wfw{padding-left:0}
 }
 
-/* desktop: cover rata atas + ikut menempel saat list panjang, jadi tidak re-center (loncat) waktu See more / See less */
+/* desktop: the cover is top aligned and sticks while the list is long, so it does not re-center (jump) on See more and See less */
 @media(min-width:900px){
   .kl{align-items:start}
   .kl-left{position:sticky;top:112px}
 }
 
-/* tombol Menu/Close: lebar dikunci ke label terpanjang ("Close") supaya pill tidak melebar/menyempit (geser) waktu diklik */
+/* Menu and Close button: width is locked to the longest label ("Close") so the pill does not grow or shrink (shift) when clicked */
 .pill-menu span{display:inline-block;text-align:center}
 .pill-menu span::after{content:"Close";display:block;height:0;overflow:hidden;visibility:hidden}
-/* scroll dikunci saat menu terbuka: sisakan ruang scrollbar agar halaman tidak melebar 15px (geser) */
+/* scroll is locked while the menu is open: reserve scrollbar space so the page does not widen by 15px (shift) */
 html{scrollbar-gutter:stable}
 
-/* mobile: tombol "via SoundCloud" 8px dari vinyl */
+/* mobile: "via SoundCloud" button 8px below the vinyl */
 @media(max-width:899px){
   .kl .sc-btn{margin-top:8px}
+}
+
+/* mobile footer: everything centered (email, navigation links, social icons) */
+@media(max-width:767px){
+  .ft-mail{align-items:center;text-align:center}
+  .ft-r>div{align-items:center}
+  .ft-r>div:nth-child(1){display:flex;flex-wrap:wrap;justify-content:center;column-gap:20px;row-gap:0}
+  .ft-r .soc{justify-content:center}
 }

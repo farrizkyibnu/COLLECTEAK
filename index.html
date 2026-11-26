@@ -1,11 +1,12 @@
 <!doctype html>
 <!--
-Intro
-- CSS     : assets/css/style.css  (warna/ukuran ada di variabel :root)
-- JS      : assets/js/main.js (animasi & interaksi), vendor/ = GSAP, ScrollTrigger, Lenis
-- Gambar  : assets/img/{ui,talent,gallery,venues,brands}/  (semua .webp)
-- Video   : assets/video/collecteak_loop.mp4
-- Font (Google Fonts) & Three.js (CDN) dimuat dari internet.
+Collecteak, single page site
+
+- CSS:    assets/css/style.css (colors and sizes are variables on :root)
+- JS:     assets/js/app.js (animation and interaction), vendor/ = GSAP, ScrollTrigger, Lenis
+- Images: assets/img/{ui,talent,gallery,venues,brands}/ (all .webp)
+- Video:  assets/video/collecteak_loop.mp4
+- Google Fonts and Three.js (CDN) load from the network.
 -->
 
 <html lang="en">
@@ -14,17 +15,28 @@ Intro
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" type="image/webp" sizes="32x32" href="assets/img/ui/favicon-32.webp">
 <link rel="icon" type="image/webp" sizes="16x16" href="assets/img/ui/favicon-16.webp">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/img/ui/apple-touch-icon.png"><meta name="theme-color" content="#04070f"><meta property="og:type" content="website"><meta property="og:title" content="COLLECTEAK"><meta property="og:description" content="Jakarta electronic music collective. RnB, Hip Hop, UK Garage and more. Book us for your night."><meta property="og:image" content="https://farrizkyibnu.github.io/collecteak/assets/img/share-preview.webp"><meta property="og:image:type" content="image/webp"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="COLLECTEAK, Jakarta electronic music collective, live crowd under red lasers"><meta property="og:url" content="https://farrizkyibnu.github.io/collecteak/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="COLLECTEAK"><meta name="twitter:description" content="Jakarta electronic music collective. RnB, Hip Hop, UK Garage and more. Book us for your night."><meta name="twitter:image" content="https://collecteak.github.io/assets/img/share-preview.webp"><title>COLLECTEAK</title>
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/ui/apple-touch-icon.png">
+<meta name="theme-color" content="#04070f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="COLLECTEAK">
+<meta property="og:description" content="Jakarta electronic music collective. RnB, Hip Hop, UK Garage and more. Book us for your night.">
+<meta property="og:image" content="https://farrizkyibnu.github.io/collecteak/assets/img/share-preview.webp">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="COLLECTEAK, Jakarta electronic music collective, live crowd under red lasers">
+<meta property="og:url" content="https://farrizkyibnu.github.io/collecteak/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="COLLECTEAK">
+<meta name="twitter:description" content="Jakarta electronic music collective. RnB, Hip Hop, UK Garage and more. Book us for your night.">
+<meta name="twitter:image" content="https://collecteak.github.io/assets/img/share-preview.webp">
+<title>COLLECTEAK</title>
 <meta name="description" content="Jakarta electronic music collective. RnB, Hip Hop, UK Garage and more. Book us for your night.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,800;1,800&family=Fraunces:ital,opsz,wght@1,9..144,300&family=Doto:wght@300&family=Bebas+Neue&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,800;1,800&family=Fraunces:ital,opsz,wght@1,9..144,300&family=Doto:wght@300&family=Bebas+Neue&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,800&family=Doto:wght@300&family=Bebas+Neue&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,800&family=Doto:wght@300&family=Bebas+Neue&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="assets/css/style.css">
-<link rel="preconnect" href="https://cdnjs.cloudflare.com">
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-
-
-
 <script src="assets/js/anti-flash.js"></script>
 </head>
 <body>
@@ -38,7 +50,7 @@ Intro
   </a>
   <nav>
     <div class="side" inert><a href="#talent">Performers</a><a href="#gallery">Gallery</a><a href="#partners">Partnership</a><a href="https://drive.google.com/file/d/1TA0PlPCqAmGu-Fb9R7sBhVUICGeK_vtX/view?usp=sharing" target="_blank" rel="noopener noreferrer" data-presskit aria-label="Press kit, all performers (opens in a new tab)">Press kit</a><a href="#book">Booking</a></div>
-    <button class="pill-menu" aria-expanded="false" aria-controls="menu">
+    <button class="pill-menu" type="button" aria-expanded="false" aria-controls="menu">
       <svg width="10" height="10" viewBox="0 0 10 10"><path d="M0 0h4v4H0zM6 0h4v4H6zM0 6h4v4H0zM6 6h4v4H6z" fill="currentColor"/></svg><span>Menu</span>
     </button>
   </nav>
@@ -73,10 +85,11 @@ Intro
 <section id="talent" class="sec tal-sec">
   <h2 class="rv">Performers</h2>
   <p class="sub rv">Selectors who never play it safe.</p>
-  <!-- PERFORMER: tiap talent = 1 blok .tw (kartu .tcard; semua kontrol ada di dalam kartu).
-       Foto = <img>. Desktop: bar glass bawah = SoundCloud (.tsc), Instagram (.tin), tombol Press kit (.tpk-btn, ikon folder). Mobile: .tsocial (IG di atas SoundCloud) pindah ke kanan atas kartu, Press kit jadi pil glass di bawah.
-       Ganti href="#" dengan URL-nya (link Drive untuk Press Kit). Selama href="#", tombolnya tetap tampil aktif tapi kalau diklik tidak terjadi apa-apa.
-       Kartu terakhir (.tw-cta) = video loop 3D logo + copy 3 baris, link ke #book; file video ada di assets/video/collecteak_loop.mp4. -->
+  <!-- PERFORMERS: each talent is one .tw block (a .tcard card, all controls live inside the card).
+       Photo = <img>. Desktop: the bottom glass bar holds SoundCloud (.tsc), Instagram (.tin) and the Press kit button (.tpk-btn, folder icon).
+       Mobile: .tsocial (IG above SoundCloud) moves to the top right of the card and Press kit becomes a glass pill at the bottom.
+       Replace href="#" with the real URL (Drive link for the Press kit). While href="#" the button looks active but does nothing when clicked.
+       The last card (.tw-cta) is the 3D logo loop video with 3 lines of copy, linking to #book. -->
   <div class="tal">
     <div class="tw stg">
       <div class="ph tcard">
