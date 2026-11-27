@@ -316,7 +316,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   }
   /* beat lab (dev helper, only active when the URL contains #beatlab):
      play a track, press T on every beat to estimate its BPM and first beat, press [ or ] to nudge the offset by 10 ms, press R to restart the taps.
-     The values are shown in a small box and logged to the console; copy them to the track row as data-bpm and data-beat. */
+     The values are shown in a small box; copy them to the track row as data-bpm and data-beat. */
   if(/beatlab/.test(location.hash+location.search)){
     var taps=[],box=document.createElement('pre');
     box.style.cssText='position:fixed;left:12px;bottom:12px;z-index:200;margin:0;padding:10px 12px;border-radius:10px;background:rgba(0,0,0,.72);color:#fff;font:12px/1.5 ui-monospace,Menlo,monospace;white-space:pre-wrap;pointer-events:none';
@@ -325,7 +325,6 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
       var r=rows[idx];
       box.textContent='BEAT LAB  T = tap on the beat  [ ] = nudge 10 ms  R = reset\n'+
         'track '+(idx+1)+': taps '+taps.length+(taps.length<8?' (tap at least 8, 24+ is better)':'')+(r.dataset.bpm?'\ndata-bpm="'+r.dataset.bpm+'" data-beat="'+(r.dataset.beat||'0')+'"':'');
-      if(r.dataset.bpm)console.log('track '+(idx+1)+' data-bpm="'+r.dataset.bpm+'" data-beat="'+(r.dataset.beat||'0')+'"');
     };
     var estimate=function(){
       if(taps.length<8)return;
@@ -909,9 +908,13 @@ document.querySelectorAll('[data-count]').forEach((el) => {
   ScrollTrigger.create({ trigger: el, start: 'top 92%', once: true, onEnter: () => gsap.to(o, { v: n, duration: 1.6, ease: 'power3.out', onUpdate: () => (el.textContent = Math.round(o.v) + s) }) });
 });
 
-const WA = '6281932440500'; /* isi nomor WhatsApp format 628xxxxxxxxxx; kosong = tombol Book us membuka email */
+const WA = '6281932440500'; /* WhatsApp number as 628xxxxxxxxxx; empty = the Book us button opens email */
 const bk = $('#bookbtn');
-if (WA && bk) { bk.href = `https://wa.me/${WA}?text=${encodeURIComponent("Hi Collecteak, I'd like to book you.")}`; bk.target = '_blank'; bk.rel = 'noopener noreferrer'; }
+if (WA && bk) {
+  const msg = "Hi Collecteak, I'd like to book you for an event.\n\nDate:\nVenue:\nVibe:";
+  bk.href = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`; bk.target = '_blank'; bk.rel = 'noopener noreferrer';
+  bk.setAttribute('aria-label', 'Book us on WhatsApp (opens in a new tab)');
+}
 
 /* mobile: tombol Contact di navbar muncul setelah hero, hilang saat sudah sampai form booking */
 ScrollTrigger.create({ start: () => innerHeight * 0.8, endTrigger: '#book', end: 'top 85%', invalidateOnRefresh: true, toggleClass: { targets: nav, className: 'ct' } });
@@ -950,6 +953,8 @@ if (matchMedia('(hover:none)').matches) {
       started = true;
       const s = document.createElement('script');
       s.src = 'https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js';
+      s.integrity = 'sha384-RRHfJ6w1mTlKUBMYT/hvnRiOzEB/vyRV3DrQOseb6oYfvaZSfdd0byS4bHps0k2R';
+      s.crossOrigin = 'anonymous';
       s.onload = init;
       document.head.appendChild(s);
     }
