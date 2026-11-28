@@ -918,7 +918,7 @@ p,li{text-wrap:pretty}
 .kl .kl-pc i{font-style:normal;font-weight:400;color:var(--t3)}
 
 /* waveform aligned with the track title column (number column width + gap) */
-.kl .kl-wfw{padding:0 0 20px calc(var(--kn) + var(--kg))}
+.kl .kl-wfw{padding:0 0 20px}
 
 @media(max-width:899px){
   .kl .kl-ti,.kl .kl-now,.kl .kl-st{text-align:center}
