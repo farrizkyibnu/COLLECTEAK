@@ -78,6 +78,9 @@ function close(){
 }
 b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expanded')==='true'?close():open();setTimeout(function(){busy=false},1500)});
 })();
+/* failsafe: CSS menyembunyikan konten selama html.js ada. Kalau script utama gagal jalan (GSAP gagal dimuat, error di WebView lama), lepas class-nya supaya halaman tidak kosong */
+setTimeout(function(){document.documentElement.classList.remove('js')},6000);
+window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigger)document.documentElement.classList.remove('js')});
 /* ===== Listen (Kolektikan Vol. 1) ===== */
 /* ===== LISTEN: multi-track player. SoundCloud Widget API (iframe tersembunyi) + waveform seek + jumlah play live ===== */
 (function(){
@@ -118,7 +121,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   /* optimistic UI: tampilan langsung berubah saat di-tap (opt=true/false), tanpa menunggu event dari iframe SoundCloud.
      Event PLAY/PAUSE yang asli menggantikannya. Kalau tidak ada konfirmasi dalam 4 dtk, kembali ke status asli. */
   function isOn(){return opt!==null?opt:playing}
-  function setOpt(v){opt=v;clearTimeout(optT);if(v!==null)optT=setTimeout(function(){var was=opt;opt=null;ui();if(was===true&&!playing)status('Tap again to play')},4000)}
+  function setOpt(v){opt=v;clearTimeout(optT);if(v!==null)optT=setTimeout(function(){var was=opt;opt=null;ui();if(was===true&&!playing)showNative(idx,'Audio was blocked by this browser. Tap play on the player below.')},4000)}
   function fmtCount(v){
     if(v<10000)return v.toLocaleString('en-US');
     if(v<1e6)return (v/1000).toFixed(1).replace(/\.0$/,'')+'K';
@@ -277,6 +280,24 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
       navigator.mediaSession.metadata=new MediaMetadata({title:r.dataset.title,artist:r.dataset.by,album:'Kolektikan Vol. 1'});
   }
 
+  /* NATIVE MODE. In-app browser (Threads, Instagram, Facebook, TikTok, WebView Android) memblokir play() yang dikirim lewat postMessage ke iframe lintas-origin,
+     karena itu bukan gesture pengguna di dalam iframe. Solusinya: tampilkan player SoundCloud asli. Tap tombol play-nya = gesture asli, jadi pasti bunyi.
+     Aktif otomatis di in-app browser, dan sebagai cadangan di browser mana pun kalau play tidak terkonfirmasi dalam 4 detik. */
+  var IAB=/Instagram|Barcelona|Threads|FBAN|FBAV|FB_IAB|FBIOS|musical_ly|TikTok|Line\/|MicroMessenger|\bwv\b/i.test(navigator.userAgent||'');
+  var nativeMode=IAB,nf=null;
+  function showNative(i,msg){
+    nativeMode=true;clearTimeout(optT);opt=null;
+    W.forEach(function(s){if(s&&s.w){try{s.w.pause()}catch(e){}}});
+    W=[];sw=null;
+    [].slice.call(root.querySelectorAll('.kl-frame')).forEach(function(f){f.remove()});
+    if(!nf){
+      nf=document.createElement('iframe');nf.className='kl-native';nf.title='SoundCloud player';
+      nf.allow='autoplay';nf.height='166';nf.setAttribute('frameborder','no');nf.setAttribute('scrolling','no');
+      root.querySelector('.kl-side').insertBefore(nf,more.parentNode);
+    }
+    if(nf.dataset.u!==rows[i].dataset.url){nf.dataset.u=rows[i].dataset.url;nf.src=embedSrc(rows[i].dataset.url,false)}
+    playing=false;ui();status(msg||'');
+  }
   /* SoundCloud widget */
   function loadApi(){
     if(window.SC&&SC.Widget)return Promise.resolve();
@@ -411,6 +432,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   }
   function makeWidget(i){
     if(W[i])return W[i];
+    if(nativeMode)return {w:null,ready:false,p:Promise.resolve()};
     var s=W[i]={w:null,ready:false,p:null};
     s.p=loadApi().then(function(){
       return new Promise(function(resolve){
@@ -434,6 +456,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   }
   function go(i,auto){
     var prev=idx;idx=(i+n)%n;if(idx>=3&&!isOpen)setOpen(true);
+    if(nativeMode){hasPlayed=true;markActive();setMeta(idx);showNative(idx,'');elNow.textContent='Tap play on the player below';return}
     if(prev!==idx){
       var o=W[prev];if(o&&o.ready){try{o.w.pause()}catch(e){}}
       playing=false;lastPos=0;
@@ -454,6 +477,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   var sw=null;
   function whenVisible(fn){if(vis)fn();else setTimeout(function(){whenVisible(fn)},15000)}
   function cycle(i){
+    if(nativeMode||!sw)return;
     if(i>=n){setTimeout(function(){whenVisible(function(){cycle(0)})},180000);return}
     var done=false,t=setTimeout(function(){if(!done){done=true;cycle(i+1)}},7000),o={auto_play:false};
     for(var k in OPT)o[k]=OPT[k];
@@ -467,6 +491,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
     sw.load(rows[i].dataset.url,o);
   }
   function statsInit(){
+    if(nativeMode)return;
     loadApi().then(function(){
       var f=makeFrame(embedSrc(rows[0].dataset.url,false)),w=SC.Widget(f);
       w.bind(SC.Widget.Events.READY,function(){if(!sw){sw=w;cycle(0)}});
@@ -537,7 +562,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
   rows.forEach(function(_,i){renderCount(i)});
   markActive();setMeta(0);ui();
   var started=false;
-  function boot(){makeWidget(idx).p.then(function(){fetchMeta(idx);return preload()}).then(function(){setTimeout(statsInit,800)}).catch(function(){status('Player failed to load. Check your connection.')})}
+  function boot(){if(nativeMode){showNative(idx,'');return}makeWidget(idx).p.then(function(){fetchMeta(idx);return preload()}).then(function(){setTimeout(statsInit,800)}).catch(function(){status('Player failed to load. Check your connection.')})}
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(en){
       vis=en[0].isIntersecting;
@@ -1074,3 +1099,10 @@ if (matchMedia('(hover:none)').matches) {
   }
 })();
 
+/* thumbnail YouTube: kalau maxresdefault tidak ada, pakai hqdefault; kalau tetap gagal, sembunyikan. Pengganti atribut onerror inline (CSP script-src tanpa 'unsafe-inline') */
+document.addEventListener('error', (e) => {
+  const t = e.target;
+  if (!t || t.tagName !== 'IMG' || !t.closest('.vthumb')) return;
+  if (t.dataset.f) t.style.display = 'none';
+  else { t.dataset.f = 1; t.src = t.src.replace('maxresdefault', 'hqdefault'); }
+}, true);

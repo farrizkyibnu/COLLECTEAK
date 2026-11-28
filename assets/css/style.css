@@ -1007,3 +1007,6 @@ html{scrollbar-gutter:stable}
 
 /* beat pulse: the vinyl label swells slightly on every beat (--kp is 1 on the hit and decays to 0, set from app.js) */
 .kl .kl-lab{transform:scale(calc(1 + var(--kp,0)*.05))}
+
+/* native SoundCloud player (fallback in-app browser) */
+.kl-native{display:block;width:100%;height:166px;border:0;border-radius:12px;margin-top:14px;background:#000}
