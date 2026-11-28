@@ -345,7 +345,6 @@ body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opa
 .kl-wf:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:4px}
 .kl-tip{position:absolute;bottom:calc(100% + 6px);left:0;transform:translateX(-50%);padding:5px 8px;border-radius:6px;background:#fff;color:#04070f;font:600 11px/1 'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;pointer-events:none;opacity:0;transition:opacity .15s;white-space:nowrap}
 .kl-tip.on{opacity:1}
-.kl-frame{position:absolute;width:1px;height:1px;left:0;bottom:0;border:0;opacity:.01;pointer-events:none}
 
 @media(hover:hover){
   .kl-row:hover .kl-t,.kl-row:hover .kl-n{color:var(--t1)}
@@ -1006,7 +1005,11 @@ html{scrollbar-gutter:stable}
 }
 
 /* beat pulse: the vinyl label swells slightly on every beat (--kp is 1 on the hit and decays to 0, set from app.js) */
-.kl .kl-lab{transform:scale(calc(1 + var(--kp,0)*.05))}
+.kl .kl-lab{transform:scale(calc(1 + var(--kp,0)*.09))}
+/* tombol play track aktif memancarkan ring dan cover ikut berdenyut tiap kick */
+.kl.is-playing .kl-row[aria-current] .kl-ic{box-shadow:0 0 0 calc(var(--kp,0)*6px) rgba(255,255,255,calc(var(--kp,0)*.16))}
+.kl .kl-cover img{scale:calc(1 + var(--kp,0)*.018)}
 
 /* native SoundCloud player (fallback in-app browser) */
-.kl-native{display:block;width:100%;height:166px;border:0;border-radius:12px;margin-top:14px;background:#000}
+.kl .kl-list .kl-st:not(:empty){margin:0;padding:0 0 16px}
+.kl-st a{color:#fff;text-decoration:underline;text-underline-offset:2px}

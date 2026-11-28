@@ -82,7 +82,7 @@ b.addEventListener('click',function(){if(busy)return;b.getAttribute('aria-expand
 setTimeout(function(){document.documentElement.classList.remove('js')},6000);
 window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigger)document.documentElement.classList.remove('js')});
 /* ===== Listen (Kolektikan Vol. 1) ===== */
-/* ===== LISTEN: multi-track player. SoundCloud Widget API (iframe tersembunyi) + waveform seek + jumlah play live ===== */
+/* ===== LISTEN: multi-track player. <audio> dari assets/audio + waveform seek + sound pulse dari data audio (tracks-data.js) ===== */
 (function(){
   var root=document.getElementById('kl'); if(!root) return;
   var rows=[].slice.call(root.querySelectorAll('.kl-row')), n=rows.length;
@@ -91,15 +91,15 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
       elCur=$('klCur'),elDur=$('klDur'),elWf=$('klWf'),cv=$('klCv'),tip=$('klTip'),
       elBox=$('klWfw'),elSt=$('klSt'),elVol=$('klVol'),elMute=$('klMute'),elVolBox=$('klVolBox');
   var COVER0=elCover.getAttribute('src');
-  var FLAGS='&hide_related=true&show_comments=false&show_reposts=false&show_teaser=false&visual=false';
-  var OPT={hide_related:true,show_comments:false,show_reposts:false,show_teaser:false,visual:false};
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  var idx=0,W=[],durs=[],apiP=null,opt=null,optT=0;
-  var playing=false,hasPlayed=false,dur=0,lastPos=0,lastTs=0,lastSec=-1;
+  var idx=0,playing=false,hasPlayed=false,dur=0,lastSec=-1;
   var growRaf=0,born=0,drag=false,dragRatio=0,hoverRatio=null,vis=false,raf=0;
+  /* satu elemen audio untuk semua track: play() dipanggil langsung di handler tap, jadi jalan juga di in-app browser */
+  var au=new Audio();au.preload='metadata';
+  var FPS=window.KL_FPS||40,DATA=window.KL_TRACKS||{},cache=[];
   var spin=null,more=$('klMore'),isOpen=false,busy=false,xs=[].slice.call(root.querySelectorAll('.kl-list li.x'));
-  var wf=[],counts=rows.map(function(r){return parseInt(r.dataset.plays,10)||0});
+  var counts=rows.map(function(r){return parseInt(r.dataset.plays,10)||0});
 
   function now(){return (window.performance&&performance.now)?performance.now():Date.now()}
   function fmt(ms){if(!isFinite(ms)||ms<0)ms=0;var s=Math.floor(ms/1000);return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2)}
@@ -118,51 +118,31 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
   }
   function setTitle(t){curTitle=t;paintTitle()}
   function status(t){elSt.textContent=t||''}
-  /* optimistic UI: tampilan langsung berubah saat di-tap (opt=true/false), tanpa menunggu event dari iframe SoundCloud.
-     Event PLAY/PAUSE yang asli menggantikannya. Kalau tidak ada konfirmasi dalam 4 dtk, kembali ke status asli. */
-  function isOn(){return opt!==null?opt:playing}
-  function setOpt(v){opt=v;clearTimeout(optT);if(v!==null)optT=setTimeout(function(){var was=opt;opt=null;ui();if(was===true&&!playing)showNative(idx,'Audio was blocked by this browser. Tap play on the player below.')},4000)}
+  function isOn(){return playing}
+  /* pesan gagal: desain tetap, hanya muncul teks kecil + link di bawah track */
+  function failed(){
+    playing=false;ui();draw();
+    var a=document.createElement('a');a.href=rows[idx].dataset.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='listen on SoundCloud';
+    elSt.textContent='Audio didn\u2019t start. Tap play again or ';
+    elSt.appendChild(a);elSt.appendChild(document.createTextNode('.'));
+  }
   function fmtCount(v){
     if(v<10000)return v.toLocaleString('en-US');
     if(v<1e6)return (v/1000).toFixed(1).replace(/\.0$/,'')+'K';
     return (v/1e6).toFixed(1).replace(/\.0$/,'')+'M';
   }
   function renderCount(i){var b=rows[i].querySelector('.kl-pc b');if(b&&counts[i])b.textContent=fmtCount(counts[i])}
-  function curPos(){return playing?Math.min(dur||1e12,lastPos+(now()-lastTs)):lastPos}
+  function curPos(){return (au.currentTime||0)*1000}
   function curRatio(){return dur?Math.min(1,curPos()/dur):0}
 
-  /* waveform */
-  function seeded(str){
-    var h=2166136261;for(var i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}
-    return function(){h+=0x6D2B79F5;var t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}
-  }
-  function fakeWave(key){
-    var r=seeded(key),N=256,out=[],p1=r()*6,p2=r()*6;
-    for(var i=0;i<N;i++){
-      var e=.5+.22*Math.sin(i/N*9+p1)+.14*Math.sin(i/N*23+p2);
-      var v=e*(.55+.45*r());if(i%8<2)v*=1.18;
-      out.push(Math.max(.08,Math.min(1,v)));
-    }
-    return out;
-  }
-  function getWf(i){return wf[i]||(wf[i]={s:fakeWave(slug(rows[i].dataset.url)),real:false})}
-  function resample(arr,N,max){
-    var out=[],L=arr.length;
-    for(var k=0;k<N;k++){
-      var a=Math.floor(k*L/N),b=Math.max(a+1,Math.floor((k+1)*L/N)),m=0,sum=0;
-      for(var j=a;j<b&&j<L;j++){sum+=arr[j];if(arr[j]>m)m=arr[j]}
-      out.push(Math.min(1,(.5*m+.5*sum/(b-a))/max));
-    }
-    return out;
-  }
-  function loadWaveform(i,url){
-    if(!url||(wf[i]&&wf[i].real)||!window.fetch)return;
-    fetch(url.replace(/\.png(\?.*)?$/,'.json')).then(function(r){return r.json()}).then(function(j){
-      if(!j||!j.samples||!j.samples.length)return;
-      var max=j.height||Math.max.apply(null,j.samples)||1;
-      wf[i]={s:resample(j.samples,256,max),real:true};
-      if(i===idx)startGrow();
-    }).catch(function(){});
+  /* data per track: waveform asli + energi kick/mid/hi per frame */
+  function bytes(b){var t=atob(b),o=new Uint8Array(t.length);for(var i=0;i<t.length;i++)o[i]=t.charCodeAt(i);return o}
+  function getData(i){
+    if(cache[i])return cache[i];
+    var d=DATA[slug(rows[i].dataset.url)],o={s:[],e:null,d:0},k;
+    if(d){var w=bytes(d.w);for(k=0;k<w.length;k++)o.s.push(w[k]/255);o.e=bytes(d.e);o.d=d.d*1000}
+    else for(k=0;k<256;k++)o.s.push(.3);
+    return cache[i]=o;
   }
   function startGrow(){
     born=now();
@@ -173,18 +153,17 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
     if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
     else ctx.fillRect(x,y,w,h);
   }
-  /* beat pulse: a track with data-bpm (and data-beat, the first beat in seconds) on its row gets a hit on every beat, locked to the playback clock.
-     Tracks without data-bpm keep the static waveform. Calibrate the values with the tap helper (open the page with #beatlab). */
-  var lastKp=-1;
+  /* sound pulse: nilai kick/mid/hi di posisi putar sekarang (interpolasi antar frame, jadi halus di 60/120 Hz) */
+  var lastKp=-1,PZ=[0,0,0];
   function beatPulse(){
-    var k=0,r=rows[idx],bpm=parseFloat(r.dataset.bpm);
-    if(playing&&!reduce&&bpm>0){
-      var per=60/bpm,t=curPos()/1000-(parseFloat(r.dataset.beat)||0);
-      if(t>=0)k=Math.exp(-(t%per)/per*6);
+    var e=getData(idx).e,c;PZ=[0,0,0];
+    if(playing&&!reduce&&e){
+      var f=curPos()/1000*FPS,a=Math.floor(f),t=f-a,L=e.length/3;
+      if(a>=0&&a<L-1)for(c=0;c<3;c++)PZ[c]=(e[a*3+c]*(1-t)+e[(a+1)*3+c]*t)/255;
     }
-    k=Math.round(k*100)/100;
+    var k=Math.round(PZ[0]*100)/100;
     if(k!==lastKp){lastKp=k;root.style.setProperty('--kp',k)}
-    return k;
+    return PZ;
   }
   function draw(){
     var w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;
@@ -192,14 +171,19 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
     if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
     var ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
     var bw=w<360?2:(w<520?2.2:2.6),gap=w<520?1.5:1.8,step=bw+gap,nb=Math.max(10,Math.floor((w+gap)/step));
-    var s=getWf(idx).s,L=s.length,p=drag?dragRatio:curRatio(),hv=hoverRatio,x0=(w-(nb*step-gap))/2;
-    var base=h*.7,gt=reduce?1e5:now()-born,pulse=beatPulse();
+    var s=getData(idx).s,L=s.length,p=drag?dragRatio:curRatio(),hv=hoverRatio,x0=(w-(nb*step-gap))/2;
+    var base=h*.7,gt=reduce?1e5:now()-born,z=beatPulse(),tm=curPos()/1000;
     for(var i=0;i<nb;i++){
       var a=Math.floor(i*L/nb),b=Math.max(a+1,Math.floor((i+1)*L/nb)),m=0;
       for(var k=a;k<b;k++)if(s[k]>m)m=s[k];
       var e=Math.min(1,Math.max(0,(gt-(i/nb)*420)/460));e=1-Math.pow(1-e,3);
-      var pos=(i+.5)/nb,fo=pulse?pulse*(.1+.5*Math.max(0,1-Math.abs(pos-p)/.07)):0;
-      var up=Math.min(base-1,Math.max(2,Math.pow(m,.8)*base*.96*e*(1+fo))),dn=up*.34,x=x0+i*step;
+      /* saat main: tinggi bar disisakan ruang (.7) supaya bisa melompat. kick = semua bar naik, paling kuat di sekitar playhead;
+         mid = gelombang yang bergerak dari playhead; hi = kilatan di bar selang-seling */
+      var pos=(i+.5)/nb,dist=Math.abs(i-p*nb),near=Math.exp(-dist*dist/30);
+      var wave=.5+.5*Math.sin(dist*.75-tm*14);
+      var fo=z[0]*(.34+.6*near)+z[1]*wave*(.05+.32*near)+(i%2?z[2]*(.04+.22*near):0);
+      var room=playing&&!reduce?.6:.9;
+      var up=Math.min(base-1,Math.max(2,m*base*e*(room+fo))),dn=up*(.34+.1*z[0]),x=x0+i*step;
       var on=pos<=p,pv=!on&&hv!==null&&pos<=hv;
       ctx.fillStyle=on?'#fff':(pv?'rgba(255,255,255,.62)':'rgba(255,255,255,.3)');
       rr(ctx,x,base-up,bw,up,bw/2);
@@ -261,6 +245,7 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
   function ui(){
     var on=isOn();
     root.classList.toggle('is-playing',on);
+    if(!on){lastKp=0;root.style.setProperty('--kp',0)}
     elNow.textContent=on?'Now playing':(hasPlayed?'Paused':n+' tracks · Collecteak');
     paintTitle();
     if(spin&&window.gsap)gsap.to(spin,{timeScale:on?1:0,duration:on?1.2:2,ease:on?'power2.in':'power2.out',overwrite:true});
@@ -269,111 +254,53 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
   }
   function markActive(){
     rows.forEach(function(r,i){if(i===idx)r.setAttribute('aria-current','true');else r.removeAttribute('aria-current')});
-    var li=rows[idx].parentNode;if(elBox.parentNode!==li)li.appendChild(elBox);
+    var li=rows[idx].parentNode;if(elBox.parentNode!==li){li.appendChild(elBox);li.appendChild(elSt)}
   }
     function setMeta(i){
     var r=rows[i];
     setTitle(r.dataset.title);
-    elCur.textContent='0:00';elDur.textContent='--:--';dur=0;lastPos=0;lastSec=-1;
+    elCur.textContent='0:00';dur=getData(i).d;elDur.textContent=dur?fmt(dur):'--:--';lastSec=-1;
     status('');startGrow();
     if('mediaSession' in navigator&&window.MediaMetadata)
-      navigator.mediaSession.metadata=new MediaMetadata({title:r.dataset.title,artist:r.dataset.by,album:'Kolektikan Vol. 1'});
+      navigator.mediaSession.metadata=new MediaMetadata({title:r.dataset.title,artist:r.dataset.by,album:ALBUM,artwork:[{src:COVER0,sizes:'500x500'}]});
   }
 
-  /* NATIVE MODE. In-app browser (Threads, Instagram, Facebook, TikTok, WebView Android) memblokir play() yang dikirim lewat postMessage ke iframe lintas-origin,
-     karena itu bukan gesture pengguna di dalam iframe. Solusinya: tampilkan player SoundCloud asli. Tap tombol play-nya = gesture asli, jadi pasti bunyi.
-     Aktif otomatis di in-app browser, dan sebagai cadangan di browser mana pun kalau play tidak terkonfirmasi dalam 4 detik. */
-  var IAB=/Instagram|Barcelona|Threads|FBAN|FBAV|FB_IAB|FBIOS|musical_ly|TikTok|Line\/|MicroMessenger|\bwv\b/i.test(navigator.userAgent||'');
-  var nativeMode=IAB,nf=null;
-  function showNative(i,msg){
-    nativeMode=true;clearTimeout(optT);opt=null;
-    W.forEach(function(s){if(s&&s.w){try{s.w.pause()}catch(e){}}});
-    W=[];sw=null;
-    [].slice.call(root.querySelectorAll('.kl-frame')).forEach(function(f){f.remove()});
-    if(!nf){
-      nf=document.createElement('iframe');nf.className='kl-native';nf.title='SoundCloud player';
-      nf.allow='autoplay';nf.height='166';nf.setAttribute('frameborder','no');nf.setAttribute('scrolling','no');
-      root.querySelector('.kl-side').insertBefore(nf,more.parentNode);
-    }
-    if(nf.dataset.u!==rows[i].dataset.url){nf.dataset.u=rows[i].dataset.url;nf.src=embedSrc(rows[i].dataset.url,false)}
-    playing=false;ui();status(msg||'');
-  }
-  /* SoundCloud widget */
-  function loadApi(){
-    if(window.SC&&SC.Widget)return Promise.resolve();
-    if(apiP)return apiP;
-    apiP=new Promise(function(res,rej){
-      var s=document.createElement('script');s.src='https://w.soundcloud.com/player/api.js';
-      s.onload=res;s.onerror=function(){apiP=null;rej(new Error('api'))};document.head.appendChild(s);
+  /* audio engine */
+  function src(i){return 'assets/audio/'+slug(rows[i].dataset.url)+'.mp3'}
+  function load(i){au.src=src(i);au.load()}
+  function play(){
+    status('');playing=true;hasPlayed=true;ui();
+    route();wake();applyVol();
+    var at=au.getAttribute('src'),pr=au.play();
+    if(pr&&pr.catch)pr.catch(function(err){
+      /* AbortError = diganti track lain atau di-pause sebelum mulai, bukan kegagalan */
+      if(err&&err.name==='AbortError')return;
+      if(au.getAttribute('src')===at)failed();
     });
-    return apiP;
+    kick();
   }
-  function embedSrc(u,auto){return 'https://w.soundcloud.com/player/?url='+encodeURIComponent(u)+'&auto_play='+(auto?'true':'false')+FLAGS}
-  function makeFrame(src){
-    var f=document.createElement('iframe');
-    f.className='kl-frame';f.title='SoundCloud player';f.allow='autoplay';f.tabIndex=-1;
-    f.setAttribute('aria-hidden','true');f.setAttribute('scrolling','no');f.setAttribute('frameborder','no');
-    f.src=src;root.appendChild(f);return f;
-  }
-  /* Satu iframe per track: track yang sudah siap bisa langsung play()/pause() saat di-tap (tanpa fetch ulang),
-     dan play() terpanggil sinkron di handler klik (lebih lolos aturan autoplay mobile). Top 3 di-preload, sisanya dibuat
-     saat hover/sentuh atau saat dipilih. */
-  function cw(){var s=W[idx];return s&&s.ready?s.w:null}
-  function fetchMeta(i){
-    var s=W[i];if(!s||!s.ready)return;
-    s.w.getCurrentSound(function(m){
-      if(!m)return;
-      if(m.permalink_url&&m.permalink_url.indexOf(slug(rows[i].dataset.url))===-1)return;
-      durs[i]=m.duration||durs[i]||0;
-      if(typeof m.playback_count==='number'){counts[i]=m.playback_count;renderCount(i)}
-      if(m.title){var t=rows[i].querySelector('.kl-t');if(t)t.textContent=m.title}
-      loadWaveform(i,m.waveform_url);
-      if(i!==idx)return;
-      if(m.title)setTitle(m.title);
-      dur=durs[i];elDur.textContent=fmt(dur);draw();
-      if('mediaSession' in navigator&&window.MediaMetadata)
-        navigator.mediaSession.metadata=new MediaMetadata({title:curTitle,artist:rows[idx].dataset.by,album:'Kolektikan Vol. 1',artwork:[{src:COVER0,sizes:'500x500'}]});
-    });
-  }
-  /* beat lab (dev helper, only active when the URL contains #beatlab):
-     play a track, press T on every beat to estimate its BPM and first beat, press [ or ] to nudge the offset by 10 ms, press R to restart the taps.
-     The values are shown in a small box; copy them to the track row as data-bpm and data-beat. */
-  if(/beatlab/.test(location.hash+location.search)){
-    var taps=[],box=document.createElement('pre');
-    box.style.cssText='position:fixed;left:12px;bottom:12px;z-index:200;margin:0;padding:10px 12px;border-radius:10px;background:rgba(0,0,0,.72);color:#fff;font:12px/1.5 ui-monospace,Menlo,monospace;white-space:pre-wrap;pointer-events:none';
-    document.body.appendChild(box);
-    var show=function(){
-      var r=rows[idx];
-      box.textContent='BEAT LAB  T = tap on the beat  [ ] = nudge 10 ms  R = reset\n'+
-        'track '+(idx+1)+': taps '+taps.length+(taps.length<8?' (tap at least 8, 24+ is better)':'')+(r.dataset.bpm?'\ndata-bpm="'+r.dataset.bpm+'" data-beat="'+(r.dataset.beat||'0')+'"':'');
-    };
-    var estimate=function(){
-      if(taps.length<8)return;
-      /* rough period from the median gap, then a least-squares fit of tap time against beat index (precise BPM and first beat) */
-      var d=[],i;for(i=1;i<taps.length;i++)d.push(taps[i]-taps[i-1]);
-      d.sort(function(a,b){return a-b});
-      var p0=d[Math.floor(d.length/2)],n=taps.length,sx=0,sy=0,sxx=0,sxy=0,idxs=taps.map(function(t){return Math.round((t-taps[0])/p0)});
-      for(i=0;i<n;i++){sx+=idxs[i];sy+=taps[i];sxx+=idxs[i]*idxs[i];sxy+=idxs[i]*taps[i]}
-      var den=n*sxx-sx*sx;if(!den)return;
-      var per=(n*sxy-sx*sy)/den,a=(sy-per*sx)/n,r=rows[idx];
-      r.dataset.bpm=(60/per).toFixed(2);r.dataset.beat=(((a%per)+per)%per).toFixed(3);
-    };
-    document.addEventListener('keydown',function(e){
-      var k=e.key.toLowerCase(),r=rows[idx];
-      if(e.metaKey||e.ctrlKey||e.altKey)return;
-      if(k==='t'&&playing){taps.push(curPos()/1000);if(taps.length>64)taps.shift();estimate();show()}
-      else if(k==='r'){taps=[];delete r.dataset.bpm;delete r.dataset.beat;show()}
-      else if((k==='['||k===']')&&r.dataset.bpm){r.dataset.beat=((parseFloat(r.dataset.beat)||0)+(k===']'?.01:-.01)).toFixed(3);show()}
-    });
-    root.addEventListener('click',function(){taps=[];setTimeout(show,0)});
-    show();
-  }
+  function pause(){au.pause();playing=false;lastSec=-1;ui();draw()}
 
-  /* volume: one SoundCloud widget exists per track, so the level is stored here and pushed to each widget when it is ready, when it plays and when the slider moves */
+  /* volume: level disimpan di localStorage. Di iOS au.volume diabaikan, jadi di sana volume lewat Web Audio (GainNode) */
   var vol=1,lastVol=1;
   try{var sv=parseFloat(localStorage.getItem('kl-vol'));if(isFinite(sv)&&sv>=0&&sv<=1)vol=sv}catch(e){}
   if(vol>0)lastVol=vol;
-  function applyVol(w){try{w.setVolume(vol*100)}catch(e){}}
+  var canVol=true;try{au.volume=.5;canVol=au.volume===.5}catch(e){canVol=false}
+  /* Web Audio baru dipasang saat volume di iOS perlu di bawah 100%, supaya pemutaran normal tetap lewat <audio> biasa.
+     Harus dipanggil dari interaksi pengguna (geser slider / tap play) agar AudioContext boleh berjalan. */
+  var ac=null,gain=null;
+  function wake(){if(ac&&ac.state!=='running'){var r=ac.resume();if(r&&r.catch)r.catch(function(){})}}
+  function route(){
+    var C=window.AudioContext||window.webkitAudioContext;
+    if(canVol||gain||!C||vol<=0||vol>=1)return;
+    try{
+      if(navigator.audioSession)navigator.audioSession.type='playback';
+      var c=new C(),g=c.createGain();
+      g.connect(c.destination);c.createMediaElementSource(au).connect(g);
+      ac=c;gain=g;
+    }catch(e){}
+  }
+  function applyVol(){try{au.volume=vol}catch(e){}au.muted=vol===0;if(gain)gain.gain.value=vol}
   function paintVol(){
     if(!elVol)return;
     var p=Math.round(vol*100);
@@ -384,10 +311,11 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
   }
   function setVol(v,keep){
     vol=Math.max(0,Math.min(1,v));if(vol>0)lastVol=vol;
-    W.forEach(function(s){if(s&&s.ready)applyVol(s.w)});
+    route();wake();applyVol();
     paintVol();
     if(!keep)try{localStorage.setItem('kl-vol',String(vol))}catch(e){}
   }
+  applyVol();
   if(elVol){
     elVol.addEventListener('input',function(){setVol(elVol.value/100)});
     elMute.addEventListener('click',function(){setVol(vol>0?0:(lastVol||.6))});
@@ -415,107 +343,32 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
     });
     paintShuffle();
   }
-  function bindEvents(w,i){
-    var E=SC.Widget.Events;
-    w.bind(E.PLAY,function(){
-      if(i!==idx){try{w.pause()}catch(e){}return}
-      applyVol(w);setOpt(null);var was=playing;playing=true;hasPlayed=true;lastTs=now();ui();if(!was)startGrow();status('');kick();
-    });
-    w.bind(E.PAUSE,function(){if(i!==idx)return;lastPos=curPos();playing=false;setOpt(null);ui();draw()});
-    w.bind(E.FINISH,function(){if(i!==idx)return;lastPos=0;playing=false;setOpt(null);ui();var nx=nextTrack();go(nx.i,nx.auto)});
-    w.bind(E.PLAY_PROGRESS,function(e){
-      if(i!==idx)return;
-      if(!dur&&e.relativePosition>0){dur=e.currentPosition/e.relativePosition;elDur.textContent=fmt(dur)}
-      lastPos=e.currentPosition;lastTs=now();
-    });
-    if(E.ERROR)w.bind(E.ERROR,function(){if(i!==idx)return;playing=false;setOpt(null);ui();status('This track can\u2019t be played right now.')});
-  }
-  function makeWidget(i){
-    if(W[i])return W[i];
-    if(nativeMode)return {w:null,ready:false,p:Promise.resolve()};
-    var s=W[i]={w:null,ready:false,p:null};
-    s.p=loadApi().then(function(){
-      return new Promise(function(resolve){
-        var f=makeFrame(embedSrc(rows[i].dataset.url,false)),w=SC.Widget(f);
-        s.w=w;
-        w.bind(SC.Widget.Events.READY,function(){
-          if(s.ready)return;
-          s.ready=true;applyVol(w);bindEvents(w,i);resolve(w);fetchMeta(i);
-        });
-      });
-    }).catch(function(){W[i]=null;throw 0});
-    s.p.catch(function(){});
-    return s;
-  }
-  function preload(){
-    var seq=Promise.resolve();
-    for(var k=1;k<Math.min(3,n);k++)(function(i){
-      seq=seq.then(function(){return (W[i]||makeWidget(i)).p}).then(function(){return new Promise(function(r){setTimeout(r,500)})}).catch(function(){});
-    })(k);
-    return seq;
-  }
+  au.addEventListener('play',function(){playing=!au.paused;ui();kick()});
+  au.addEventListener('playing',function(){playing=true;hasPlayed=true;status('');ui();kick()});
+  /* pause dari luar (earphone dicabut, telepon masuk); event basi saat ganti track diabaikan lewat au.paused */
+  au.addEventListener('pause',function(){if(au.paused&&playing&&!au.ended){playing=false;ui();draw()}});
+  au.addEventListener('ended',function(){playing=false;ui();var nx=nextTrack();go(nx.i,nx.auto)});
+  au.addEventListener('error',function(){if(au.getAttribute('src'))failed()});
+  au.addEventListener('loadedmetadata',function(){if(isFinite(au.duration)){dur=au.duration*1000;elDur.textContent=fmt(dur);draw()}});
   function go(i,auto){
-    var prev=idx;idx=(i+n)%n;if(idx>=3&&!isOpen)setOpen(true);
-    if(nativeMode){hasPlayed=true;markActive();setMeta(idx);showNative(idx,'');elNow.textContent='Tap play on the player below';return}
-    if(prev!==idx){
-      var o=W[prev];if(o&&o.ready){try{o.w.pause()}catch(e){}}
-      playing=false;lastPos=0;
-    }
-    markActive();setMeta(idx);
-    if(durs[idx]){dur=durs[idx];elDur.textContent=fmt(dur)}
-    var s=W[idx]||makeWidget(idx),at=idx;
-    setOpt(auto?true:null);ui();
-    if(s.ready){if(auto&&!playing)s.w.play();fetchMeta(idx);return}
-    s.p.then(function(w){
-      if(idx!==at)return;
-      if(auto&&!playing)w.play();
-      fetchMeta(at);
-    }).catch(function(){if(idx===at){setOpt(null);ui();status('Player failed to load. Check your connection.')}});
-  }
-
-  /* jumlah play live: widget kedua membaca playback_count tiap track, diulang tiap 3 menit selama section terlihat */
-  var sw=null;
-  function whenVisible(fn){if(vis)fn();else setTimeout(function(){whenVisible(fn)},15000)}
-  function cycle(i){
-    if(nativeMode||!sw)return;
-    if(i>=n){setTimeout(function(){whenVisible(function(){cycle(0)})},180000);return}
-    var done=false,t=setTimeout(function(){if(!done){done=true;cycle(i+1)}},7000),o={auto_play:false};
-    for(var k in OPT)o[k]=OPT[k];
-    o.callback=function(){
-      sw.getCurrentSound(function(s){
-        if(done)return;done=true;clearTimeout(t);
-        if(s&&typeof s.playback_count==='number'){counts[i]=s.playback_count;renderCount(i)}
-        cycle(i+1);
-      });
-    };
-    sw.load(rows[i].dataset.url,o);
-  }
-  function statsInit(){
-    if(nativeMode)return;
-    loadApi().then(function(){
-      var f=makeFrame(embedSrc(rows[0].dataset.url,false)),w=SC.Widget(f);
-      w.bind(SC.Widget.Events.READY,function(){if(!sw){sw=w;cycle(0)}});
-    }).catch(function(){});
+    idx=(i+n)%n;if(idx>=3&&!isOpen)setOpen(true);
+    au.pause();playing=false;
+    markActive();setMeta(idx);load(idx);
+    if(auto)play();else{ui();draw()}
   }
 
   /* kontrol */
   rows.forEach(function(r,i){
     r.addEventListener('click',function(){
-      var s=W[i];
-      if(i===idx&&s&&s.ready){
-        if(isOn()){setOpt(false);ui();s.w.pause()}else{setOpt(true);ui();s.w.play()}
-        return;
-      }
+      if(i===idx&&au.getAttribute('src')&&!au.error){if(playing)pause();else play();return}
       go(i,true);
     });
-    /* siapkan iframe track ini lebih awal (hover mouse / mulai sentuh) supaya klik berikutnya langsung bunyi */
-    r.addEventListener('pointerdown',function(){if(!W[i])makeWidget(i)},{passive:true});
-    r.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'&&!W[i])makeWidget(i)},{passive:true});
   });
   function commit(r){
-    var w=cw();if(!w||!dur)return;
+    if(!dur)return;
     var ms=Math.max(0,Math.min(.999,r))*dur;
-    w.seekTo(ms);lastPos=ms;lastTs=now();lastSec=-1;
+    if(!au.getAttribute('src'))load(idx);
+    au.currentTime=ms/1000;lastSec=-1;
     elCur.textContent=fmt(ms);draw();
   }
   function ratioOf(e){var b=elWf.getBoundingClientRect();return Math.min(1,Math.max(0,(e.clientX-b.left)/b.width))}
@@ -550,19 +403,19 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
 
   if('mediaSession' in navigator){
     try{
-      navigator.mediaSession.setActionHandler('play',function(){var w=cw();if(w)w.play()});
-      navigator.mediaSession.setActionHandler('pause',function(){var w=cw();if(w)w.pause()});
+      navigator.mediaSession.setActionHandler('play',play);
+      navigator.mediaSession.setActionHandler('pause',pause);
       navigator.mediaSession.setActionHandler('previoustrack',function(){go(idx-1,true)});
       navigator.mediaSession.setActionHandler('nexttrack',function(){go(nextTrack().i,true)});
       navigator.mediaSession.setActionHandler('seekto',function(d){if(dur&&d.seekTime!=null)commit(d.seekTime*1000/dur)});
     }catch(e){}
   }
 
-  /* init: player dibuat saat section mendekati layar (600px) supaya tap pertama langsung bunyi */
+  /* init: metadata audio baru dimuat saat section mendekati layar (600px) */
   rows.forEach(function(_,i){renderCount(i)});
   markActive();setMeta(0);ui();
   var started=false;
-  function boot(){if(nativeMode){showNative(idx,'');return}makeWidget(idx).p.then(function(){fetchMeta(idx);return preload()}).then(function(){setTimeout(statsInit,800)}).catch(function(){status('Player failed to load. Check your connection.')})}
+  function boot(){if(!au.getAttribute('src'))load(idx)}
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(en){
       vis=en[0].isIntersecting;
