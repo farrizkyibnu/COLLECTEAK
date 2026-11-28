@@ -412,11 +412,57 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
     }catch(e){}
   }
 
+  /* jumlah play dari SoundCloud: Widget API dipakai HANYA untuk membaca playback_count (tidak pernah memutar apa pun).
+     Iframe-nya ditaruh di luar layar dan dihapus setelah semua angka terbaca. Kalau gagal, angka terakhir tetap tampil. */
+  var statsBusy=false;
+  function loadApi(){
+    if(window.SC&&SC.Widget)return Promise.resolve();
+    return new Promise(function(res,rej){
+      var s=document.createElement('script');s.src='https://w.soundcloud.com/player/api.js';
+      s.onload=res;s.onerror=function(){s.remove();rej(new Error('api'))};document.head.appendChild(s);
+    });
+  }
+  function refreshPlays(){
+    if(statsBusy)return;statsBusy=true;
+    loadApi().then(function(){
+      var f=document.createElement('iframe'),timer=0,started=false,over=false;
+      f.className='kl-stats';f.title='SoundCloud play counts';f.tabIndex=-1;f.setAttribute('aria-hidden','true');
+      f.src='https://w.soundcloud.com/player/?url='+encodeURIComponent(rows[0].dataset.url)+'&auto_play=false';
+      document.body.appendChild(f);
+      var w=SC.Widget(f);
+      function finish(){if(over)return;over=true;clearTimeout(timer);f.remove();statsBusy=false}
+      function read(i){
+        if(over)return;
+        if(i>=n){finish();return}
+        var moved=false;
+        function next(){if(moved||over)return;moved=true;clearTimeout(timer);read(i+1)}
+        function get(){
+          if(moved||over)return;
+          w.getCurrentSound(function(m){
+            if(moved||over)return;
+            /* pastikan data milik track ini, bukan sisa track sebelumnya */
+            if(m&&m.playback_count>0&&(!m.permalink_url||slug(m.permalink_url)===slug(rows[i].dataset.url))){counts[i]=m.playback_count;renderCount(i)}
+            next();
+          });
+        }
+        timer=setTimeout(next,8000);
+        if(i===0)get();else w.load(rows[i].dataset.url,{auto_play:false,callback:get});
+      }
+      timer=setTimeout(finish,15000);
+      w.bind(SC.Widget.Events.READY,function(){if(started)return;started=true;clearTimeout(timer);read(0)});
+    }).catch(function(){statsBusy=false});
+  }
+
   /* init: metadata audio baru dimuat saat section mendekati layar (600px) */
   rows.forEach(function(_,i){renderCount(i)});
   markActive();setMeta(0);ui();
   var started=false;
-  function boot(){if(!au.getAttribute('src'))load(idx)}
+  function boot(){
+    if(!au.getAttribute('src'))load(idx);
+    setTimeout(refreshPlays,800);
+    /* diperbarui tiap 3 menit selama section terlihat */
+    setInterval(function(){if(vis&&!document.hidden)refreshPlays()},180000);
+  }
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(en){
       vis=en[0].isIntersecting;

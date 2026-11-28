@@ -1013,3 +1013,5 @@ html{scrollbar-gutter:stable}
 /* native SoundCloud player (fallback in-app browser) */
 .kl .kl-list .kl-st:not(:empty){margin:0;padding:0 0 16px}
 .kl-st a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+/* iframe pembaca jumlah play: selalu di luar layar */
+.kl-stats{position:fixed;left:-9999px;top:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none}
