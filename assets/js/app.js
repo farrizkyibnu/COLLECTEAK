@@ -169,7 +169,8 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
     var w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;
     var dpr=Math.min(window.devicePixelRatio||1,2),W=Math.round(w*dpr),H=Math.round(h*dpr);
     if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
-    var ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+    var ctx=cv.getContext('2d');/* hapus seluruh buffer: di scaling pecahan (mis. 125%) baris pixel terakhir tidak ikut terhapus kalau pakai ukuran CSS */
+    ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cv.width,cv.height);ctx.setTransform(dpr,0,0,dpr,0,0);
     var bw=w<360?2:(w<520?2.2:2.6),gap=w<520?1.5:1.8,step=bw+gap,nb=Math.max(10,Math.floor((w+gap)/step));
     var s=getData(idx).s,L=s.length,p=drag?dragRatio:curRatio(),hv=hoverRatio,x0=(w-(nb*step-gap))/2;
     var base=h*.7,gt=reduce?1e5:now()-born,z=beatPulse(),tm=curPos()/1000;
@@ -183,7 +184,7 @@ window.addEventListener('error',function(){if(!window.gsap||!window.ScrollTrigge
       var wave=.5+.5*Math.sin(dist*.75-tm*14);
       var fo=z[0]*(.34+.6*near)+z[1]*wave*(.05+.32*near)+(i%2?z[2]*(.04+.22*near):0);
       var room=playing&&!reduce?.6:.9;
-      var up=Math.min(base-1,Math.max(2,m*base*e*(room+fo))),dn=up*(.34+.1*z[0]),x=x0+i*step;
+      var up=Math.min(base-1,Math.max(2,m*base*e*(room+fo))),dn=up/base*(h-base-4),x=x0+i*step; /* bayangan sebanding bar, berhenti >=2px di atas tepi bawah */
       var on=pos<=p,pv=!on&&hv!==null&&pos<=hv;
       ctx.fillStyle=on?'#fff':(pv?'rgba(255,255,255,.62)':'rgba(255,255,255,.3)');
       rr(ctx,x,base-up,bw,up,bw/2);
